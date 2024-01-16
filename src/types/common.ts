@@ -31,28 +31,25 @@ export const CompanyResponseSchema = z.object({
 });
 export type CompanyResponse = z.infer<typeof CompanyResponseSchema>;
 
-export const CustomFieldResponseSchema = z.object({
-  data: z
+export const CustomFieldSchema = z.object({
+  id: z.string(),
+  key: z.string(),
+  name: z.string(),
+  type: z.string(),
+  order: z.number(),
+  object: z.string(),
+  options: z
     .array(
       z.object({
         id: z.string(),
         key: z.string(),
-        name: z.string(),
-        type: z.string(),
-        order: z.number(),
-        object: z.string(),
-        options: z
-          .array(
-            z.object({
-              id: z.string(),
-              key: z.string(),
-              label: z.string(),
-              color: z.string(),
-            }),
-          )
-          .optional(),
+        label: z.string(),
+        color: z.string(),
       }),
     )
-    .nullable(),
+    .optional(),
+});
+export const CustomFieldResponseSchema = z.object({
+  data: z.array(CustomFieldSchema).nullable(),
 });
 export type CustomFieldResponse = z.infer<typeof CustomFieldResponseSchema>;
