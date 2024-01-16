@@ -18,12 +18,19 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.15.4",
+    "@mui/material-nextjs": "^5.15.3",
     "@prisma/client": "^5.7.1",
     "@vercel/postgres": "^0.5.1",
     "next": "14.0.4",
     "prisma": "^5.7.1",
     "react": "^18",
     "react-dom": "^18"
+   
   },
   "devDependencies": {
     "@types/node": "^20",
