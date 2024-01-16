@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { CustomFieldSchema } from '@/types/common';
 
 export const PermissionsSchema = z.array(z.enum(['view', 'edit']));
 export const CustomFieldAccessRequestSchema = z.array(
@@ -10,8 +9,10 @@ export const CustomFieldAccessRequestSchema = z.array(
 );
 export type CustomFieldAccessRequest = z.infer<typeof CustomFieldAccessRequestSchema>;
 
-export const CustomFieldAccessResponseSchema = z.object({
-  permissions: PermissionsSchema,
-  customField: CustomFieldSchema,
-});
+export const CustomFieldAccessResponseSchema = z.array(
+  z.object({
+    customFieldId: z.string().uuid(),
+    permissions: PermissionsSchema,
+  }),
+);
 export type CustomFieldAccessResponse = z.infer<typeof CustomFieldAccessResponseSchema>;
