@@ -5,14 +5,18 @@ export const Toggle = ({ handleClick, selected }: { handleClick: () => void; sel
   return (
     <Stack
       direction="row"
+      justifyContent="center"
       onClick={() => handleClick()}
       sx={{
         border: (theme) => `1px solid ${theme.color.borders.borderHover}`,
         padding: 2,
         borderRadius: (theme) => theme.shape.radius050,
+        cursor: 'pointer',
       }}
     >
-      <Stack direction="column">{selected ? <ToggleIconSelected /> : <ToggleIconUnselected />}</Stack>
+      <Stack direction="column" justifyContent="center">
+        {selected ? <ToggleIconSelected /> : <ToggleIconUnselected />}
+      </Stack>
     </Stack>
   );
 };
