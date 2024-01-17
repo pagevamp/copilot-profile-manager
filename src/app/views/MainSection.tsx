@@ -1,6 +1,7 @@
 'use client';
 
 import SearchBar from '@/components/searchBar/SearchBar';
+import { Toggle } from '@/components/toggle/Toggle';
 import { Box, Stack, Typography } from '@mui/material';
 
 const MainSection = () => {
@@ -10,9 +11,12 @@ const MainSection = () => {
         flexBasis: '70%',
       }}
     >
-      <Stack direction="row">
+      <Stack direction="row" justifyContent="space-between">
         <Typography variant="lg">Client profile updates </Typography>
-        <SearchBar />
+        <Stack direction="row">
+          <SearchBar />
+          <Toggle selected={true} handleClick={() => {}} />
+        </Stack>
       </Stack>
     </Box>
   );
