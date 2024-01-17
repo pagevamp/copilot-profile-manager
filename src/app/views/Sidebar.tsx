@@ -4,6 +4,7 @@ import { CustomFieldAccessTable } from '@/components/customFieldAccessTable/Cust
 import { Abc, LocationOn, Phone } from '@mui/icons-material';
 import { Box, Stack, Typography } from '@mui/material';
 import { Switch } from '@/components/switch/Switch';
+import { useAppState } from '@/hooks/useAppState';
 
 const customFields = [
   {
@@ -37,13 +38,17 @@ const customFields = [
 ];
 
 export const Sidebar = () => {
+  const appState = useAppState();
   return (
     <Box
       sx={(theme) => ({
-        flexBasis: '27%',
+        width: { xs: '100%', sm: '400px' },
         borderTop: `1px solid ${theme.color.borders.border}`,
         borderLeft: `1px solid ${theme.color.borders.border}`,
         height: '100vh',
+        display: appState?.showSidebar ? 'block' : 'none',
+        flexShrink: 0,
+        zIndex: 1200,
       })}
     >
       <Box

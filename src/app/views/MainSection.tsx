@@ -1,33 +1,27 @@
 'use client';
 
-import SearchBar from '@/components/searchBar/SearchBar';
-import { Toggle } from '@/components/toggle/Toggle';
-import { Box, Stack, Typography } from '@mui/material';
+import { useAppState } from '@/hooks/useAppState';
+import useWindowWidth from '@/hooks/useWindowWidth';
+import { Header } from '@/layouts/Header';
+import { Box } from '@mui/material';
+import { Sidebar } from './Sidebar';
 
 const MainSection = () => {
+  const appState = useAppState();
+  const windowWidth = useWindowWidth();
+
   return (
     <Box
       sx={{
-        flexBasis: '73%',
+        flexBasis: 0,
+        maxWidth: '100%',
+        flexGrow: 1,
       }}
     >
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        sx={(theme) => ({
-          borderBottom: `1px solid ${theme.color.borders.border}`,
-          borderTop: `1px solid ${theme.color.borders.border}`,
-          padding: '20px 24px',
-        })}
-      >
-        <Typography variant="lg" fontSize="13px">
-          Client profile updates{' '}
-        </Typography>
-        <Stack direction="row" columnGap={4} alignItems="center">
-          <SearchBar />
-          <Toggle selected={true} handleClick={() => {}} />
-        </Stack>
-      </Stack>
+      <Header />
+      {windowWidth <= 600 && <Sidebar />}
+
+      {windowWidth <= 600 ? !appState?.showSidebar && <h1 style={{ padding: 20 }}>im body</h1> : <h1> im body </h1>}
     </Box>
   );
 };
