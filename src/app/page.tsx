@@ -1,5 +1,13 @@
-import { Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
+import { Sidebar } from './views/Sidebar';
+import MainSection from './views/MainSection';
 
 export default function Home() {
-  return <Typography variant="3xl">Hello, world!</Typography>;
+  return (
+    <Stack direction="row">
+      <MainSection />
+
+      <Sidebar />
+    </Stack>
+  );
 }

@@ -122,6 +122,7 @@ export const theme = createTheme({
       fontStyle: 'normal',
       fontWeight: 500,
       lineHeight: '24px',
+      color: '#212B36',
     },
     md: {
       fontFamily: 'Inter',
@@ -129,6 +130,7 @@ export const theme = createTheme({
       fontStyle: 'normal',
       fontWeight: 500,
       lineHeight: '22px',
+      color: '#212B36',
     },
     sm: {
       fontFamily: 'Inter',
