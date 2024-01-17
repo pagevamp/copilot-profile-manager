@@ -1,7 +1,7 @@
 import React from 'react';
 
 const useWindowWidth = () => {
-  const [windowWidth, setWindowWidth] = React.useState<number>(0);
+  const [windowWidth, setWindowWidth] = React.useState<number>(window.outerWidth);
 
   function handleResize() {
     setWindowWidth(window.outerWidth);

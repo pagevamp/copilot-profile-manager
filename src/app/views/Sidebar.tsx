@@ -42,7 +42,7 @@ export const Sidebar = () => {
   return (
     <Box
       sx={(theme) => ({
-        width: { xs: '100%', sm: '400px' },
+        width: { xs: '95%', sm: '400px' },
         borderTop: `1px solid ${theme.color.borders.border}`,
         borderLeft: `1px solid ${theme.color.borders.border}`,
         height: '100vh',

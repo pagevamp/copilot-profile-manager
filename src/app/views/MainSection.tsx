@@ -19,9 +19,10 @@ const MainSection = () => {
       }}
     >
       <Header />
-      {windowWidth <= 600 && <Sidebar />}
+      {windowWidth && (windowWidth <= 600 ? <Sidebar /> : null)}
 
-      {windowWidth <= 600 ? !appState?.showSidebar && <h1 style={{ padding: 20 }}>im body</h1> : <h1> im body </h1>}
+      {windowWidth &&
+        (windowWidth <= 600 ? !appState?.showSidebar && <h1 style={{ padding: 20 }}>im body</h1> : <h1> im body </h1>)}
     </Box>
   );
 };
