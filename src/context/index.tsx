@@ -1,3 +1,5 @@
+'use client';
+
 import { FC, ReactNode, useState, createContext, Dispatch, SetStateAction } from 'react';
 
 export interface IAppState {
