@@ -16,7 +16,7 @@ export const Header = () => {
         padding: { xs: '12px 16px', sm: '20px 24px' },
       })}
     >
-      <Typography variant="lg" fontSize="13px">
+      <Typography variant="lg" fontSize="13px" sx={{ overflow: 'hidden' }}>
         Client profile updates
       </Typography>
       <Stack direction="row" columnGap={4} alignItems="center">
