@@ -19,7 +19,7 @@ export const AppContext = createContext<IAppContext | null>(null);
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
   const [state, setState] = useState<IAppState>({
-    showSidebar: true,
+    showSidebar: false,
   });
 
   return (

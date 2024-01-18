@@ -9,8 +9,12 @@ export const ToggleDecider = ({ children }: { children: ReactNode }) => {
   const appState = useAppState();
 
   useEffect(() => {
-    if (windowWidth <= 600) {
-      appState?.setAppState((prev) => ({ ...prev, showSidebar: false }));
+    if (windowWidth) {
+      if (windowWidth <= 600) {
+        appState?.setAppState((prev) => ({ ...prev, showSidebar: false }));
+      } else {
+        appState?.setAppState((prev) => ({ ...prev, showSidebar: true }));
+      }
     }
   }, [windowWidth]);
 
