@@ -5,6 +5,7 @@ import useWindowWidth from '@/hooks/useWindowWidth';
 import { Header } from '@/layouts/Header';
 import { Box } from '@mui/material';
 import { Sidebar } from './Sidebar';
+import { TableCore } from '@/components/table/Table';
 
 const MainSection = () => {
   const appState = useAppState();
@@ -21,8 +22,8 @@ const MainSection = () => {
       <Header />
       {windowWidth && (windowWidth <= 600 ? <Sidebar /> : null)}
 
-      {windowWidth &&
-        (windowWidth <= 600 ? !appState?.showSidebar && <h1 style={{ padding: 20 }}>im body</h1> : <h1> im body </h1>)}
+      {/* If window width is less than 600 and showSidebar is false then show <TableCore/> or else, show <TableCore /> always */}
+      {windowWidth && windowWidth <= 600 ? appState?.showSidebar ? null : <TableCore /> : <TableCore />}
     </Box>
   );
 };

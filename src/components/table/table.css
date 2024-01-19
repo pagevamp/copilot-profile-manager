@@ -1,0 +1,11 @@
+.ag-theme-quartz {
+    --ag-background-color: #fff;
+  --ag-header-background-color: #fff;
+  --ag-borders: 'none';
+}
+
+.ag-header-container {
+  border-bottom: 1px solid #EDEDF0;
+}
+
+
