@@ -7,3 +7,46 @@
 .ag-header-container {
   border-bottom: 1px solid #ededf0;
 }
+
+.ag-header-cell-text {
+  color: #6B6F76;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.ag-cell {
+  color: #0E0E10;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.on-scroll ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  cursor: pointer;
+}
+.on-scroll ::-webkit-scrollbar-button {
+    background: #fff
+}
+.on-scroll ::-webkit-scrollbar-track-piece {
+    width: 6px;
+    background: #fff
+}
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 12px;
+}
+.on-scroll ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  cursor: pointer;
+}
+
+.on-scroll ::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.5);
+  border-radius: 12px;
+}
+
+
