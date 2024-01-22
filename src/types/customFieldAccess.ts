@@ -1,13 +1,13 @@
 import { z } from 'zod';
+import { Permission } from '@prisma/client';
 
-export const PermissionsSchema = z.array(z.enum(['view', 'edit']));
 export const CustomFieldAccessRequestSchema = z.object({
   token: z.string(),
   companyId: z.string().uuid(),
   accesses: z.array(
     z.object({
       customFieldId: z.string().uuid(),
-      permissions: PermissionsSchema,
+      permission: z.nativeEnum(Permission),
     }),
   ),
 });
@@ -17,7 +17,7 @@ export const CustomFieldAccessResponseSchema = z.array(
   z.object({
     customFieldId: z.string().uuid(),
     companyId: z.string().uuid(),
-    permissions: PermissionsSchema,
+    permission: z.nativeEnum(Permission),
   }),
 );
 export type CustomFieldAccessResponse = z.infer<typeof CustomFieldAccessResponseSchema>;

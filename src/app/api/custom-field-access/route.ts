@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const customFieldAccess = customFieldAccesses.find((access) => access.customFieldId === customField.id);
     return {
       ...customField,
-      permissions: customFieldAccess ? customFieldAccess.permissions : [],
+      permission: customFieldAccess ? customFieldAccess.permission : null,
     };
   });
 

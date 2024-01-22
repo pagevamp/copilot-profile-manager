@@ -10,11 +10,16 @@ datasource db {
   url      = env("POSTGRES_PRISMA_URL")
 }
 
+enum Permission {
+ VIEW
+ EDIT
+}
+
 model CustomFieldAccess {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   customFieldId String?  @db.Uuid
   companyId     String?  @db.Uuid
-  permissions   Json?    @db.JsonB
+  permission    Permission
   createdAt     DateTime @default(now()) @db.Timestamptz()
   updatedAt     DateTime @updatedAt @ignore @db.Timestamptz()
 }
