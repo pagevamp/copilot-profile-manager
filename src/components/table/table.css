@@ -6,6 +6,7 @@
 
 .ag-header-container {
   border-bottom: 1px solid #ededf0;
+  /* width: 100% !important; */
 }
 
 .ag-header-cell-text {
@@ -21,6 +22,7 @@
   font-style: normal;
   font-weight: 400;
 }
+
 
 .on-scroll ::-webkit-scrollbar {
   width: 6px;

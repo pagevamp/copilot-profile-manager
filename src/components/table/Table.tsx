@@ -57,23 +57,24 @@ export const TableCore = () => {
       'Phone number': '3847228833',
       Address: 'Kathmandu',
       Hobby: 'Music',
+      chobby: 'Music',
     },
   ]);
 
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<any>([
-    { field: 'Client', cellRenderer: ClientCellRenderer },
-    { field: 'company', cellRenderer: CompanyCellRenderer },
-    { field: 'Last updated' },
-    { field: 'Phone number' },
-    { field: 'Address' },
-    { field: 'Hobby' },
+    { field: 'Client', cellRenderer: ClientCellRenderer, flex: 1 },
+    { field: 'company', cellRenderer: CompanyCellRenderer, flex: 1 },
+    { field: 'Last updated', flex: 1 },
+    { field: 'Phone number', flex: 1 },
+    { field: 'Address', flex: 1 },
+    { field: 'Hobby', flex: 1 },
   ]);
 
   const defaultColDef = useMemo(() => {
     return {
       resizable: false,
-      width: 240,
+      minWidth: 200,
     };
   }, []);
 
