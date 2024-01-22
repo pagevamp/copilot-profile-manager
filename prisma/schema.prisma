@@ -23,3 +23,13 @@ model CustomFieldAccess {
   createdAt     DateTime @default(now()) @db.Timestamptz()
   updatedAt     DateTime @updatedAt @ignore @db.Timestamptz()
 }
+
+model ClientProfileUpdates {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clientId        String   @db.Uuid
+  companyId       String   @db.Uuid
+  newCustomFields Json
+  oldCustomFields Json?
+  createdAt       DateTime @default(now()) @db.Timestamptz()
+  updatedAt       DateTime @updatedAt @ignore @db.Timestamptz()
+}
