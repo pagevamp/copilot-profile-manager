@@ -6,6 +6,7 @@ import './table.css';
 import { useMemo, useState } from 'react';
 import { ClientCellRenderer } from './cellRenderers/ClientCellRenderer';
 import { CompanyCellRenderer } from './cellRenderers/CompanyCellRenderer';
+import { HistoryCellRenderer } from './cellRenderers/HistoryCellRenderer';
 
 export const TableCore = () => {
   // Row Data: The data to be displayed.
@@ -14,7 +15,7 @@ export const TableCore = () => {
       Client: { image: 'https://robohash.org/stefan-one', name: 'Tesla', email: 'tesla@gmail.com', id: 1 },
       company: { image: 'https://robohash.org/generate', name: 'Chase' },
       'Last updated': '1m',
-      'Phone number': '9283774466',
+      'Phone number': { value: '1928366444', showDot: true },
       Address: 'Texas',
       Hobby: 'Music',
     },
@@ -22,7 +23,7 @@ export const TableCore = () => {
       Client: { image: 'https://robohash.org/stefan-eleven', name: 'Wongchi', email: 'wongchi@gmail.com', id: 2 },
       company: { image: 'https://robohash.org/generate', name: 'Amazon' },
       'Last updated': '1d',
-      'Phone number': '1928366444',
+      'Phone number': { value: '9283774466', showDot: false },
       Address: '',
       Hobby: 'Dance',
     },
@@ -30,7 +31,7 @@ export const TableCore = () => {
       Client: { image: 'https://robohash.org/stefan-hundred', name: 'Holyland', email: 'holyland@gmail.com', id: 3 },
       company: { image: 'https://robohash.org/generate', name: 'Walt Disney Co.' },
       'Last updated': '',
-      'Phone number': '2883743322',
+      'Phone number': { value: '2883743322', showDot: true },
       Address: 'New York',
       Hobby: 'Flying',
     },
@@ -38,7 +39,7 @@ export const TableCore = () => {
       Client: { image: 'https://robohash.org/stefan-five', name: 'Nokia', email: 'nokia@gmail.com', id: 4 },
       company: { image: 'https://robohash.org/generate', name: 'Scrappy' },
       'Last updated': '2d',
-      'Phone number': '9182663344',
+      'Phone number': { value: '9182663344', showDot: true },
       Address: 'Hongkong',
       Hobby: '',
     },
@@ -46,7 +47,7 @@ export const TableCore = () => {
       Client: { image: 'https://robohash.org/stefan-four', name: 'Prolink', email: 'prolink@gmail.com', id: 5 },
       company: { image: 'https://robohash.org/generate', name: 'Facebook' },
       'Last updated': '1 month',
-      'Phone number': '',
+      'Phone number': { value: '', showDot: false },
       Address: 'Manila',
       Hobby: 'Diving',
     },
@@ -54,7 +55,7 @@ export const TableCore = () => {
       Client: { image: 'https://robohash.org/stefan-three', name: 'Apple', email: 'apple@gmail.com', id: 6 },
       company: { image: 'https://robohash.org/generate', name: 'Catch' },
       'Last updated': '12 hours',
-      'Phone number': '3847228833',
+      'Phone number': { value: '3847228833', showDot: false },
       Address: 'Kathmandu',
       Hobby: 'Music',
       chobby: 'Music',
@@ -90,7 +91,11 @@ export const TableCore = () => {
       comparator,
     },
     { field: 'Last updated', flex: 1 },
-    { field: 'Phone number', flex: 1 },
+    {
+      field: 'Phone number',
+      flex: 1,
+      cellRenderer: HistoryCellRenderer,
+    },
     { field: 'Address', flex: 1 },
     { field: 'Hobby', flex: 1 },
   ]);

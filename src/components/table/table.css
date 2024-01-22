@@ -2,11 +2,13 @@
   --ag-background-color: #fff;
   --ag-header-background-color: #fff;
   --ag-borders: 'none';
+  --ag-font-family: 'Inter', sans-serif;
+ --ag-grid-size: 12px;
+    --ag-list-item-height: 40px;
 }
 
 .ag-header-container {
   border-bottom: 1px solid #ededf0;
-  /* width: 100% !important; */
 }
 
 .ag-header-cell-text {
@@ -22,6 +24,7 @@
   font-style: normal;
   font-weight: 400;
 }
+
 
 .on-scroll ::-webkit-scrollbar {
   width: 6px;
