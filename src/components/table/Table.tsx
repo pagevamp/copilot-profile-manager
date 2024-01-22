@@ -11,7 +11,7 @@ export const TableCore = () => {
   // Row Data: The data to be displayed.
   const [rowData, setRowData] = useState<any>([
     {
-      Client: { image: 'https://robohash.org/stefan-one', name: 'Tesla', email: 'tesla@gmail.com' },
+      Client: { image: 'https://robohash.org/stefan-one', name: 'Tesla', email: 'tesla@gmail.com', id: 1 },
       company: { image: 'https://robohash.org/generate', name: 'Chase' },
       'Last updated': '1m',
       'Phone number': '9283774466',
@@ -19,7 +19,7 @@ export const TableCore = () => {
       Hobby: 'Music',
     },
     {
-      Client: { image: 'https://robohash.org/stefan-eleven', name: 'Wongchi', email: 'wongchi@gmail.com' },
+      Client: { image: 'https://robohash.org/stefan-eleven', name: 'Wongchi', email: 'wongchi@gmail.com', id: 2 },
       company: { image: 'https://robohash.org/generate', name: 'Amazon' },
       'Last updated': '1d',
       'Phone number': '1928366444',
@@ -27,7 +27,7 @@ export const TableCore = () => {
       Hobby: 'Dance',
     },
     {
-      Client: { image: 'https://robohash.org/stefan-hundred', name: 'Holyland', email: 'holyland@gmail.com' },
+      Client: { image: 'https://robohash.org/stefan-hundred', name: 'Holyland', email: 'holyland@gmail.com', id: 3 },
       company: { image: 'https://robohash.org/generate', name: 'Walt Disney Co.' },
       'Last updated': '',
       'Phone number': '2883743322',
@@ -35,7 +35,7 @@ export const TableCore = () => {
       Hobby: 'Flying',
     },
     {
-      Client: { image: 'https://robohash.org/stefan-five', name: 'Nokia', email: 'nokia@gmail.com' },
+      Client: { image: 'https://robohash.org/stefan-five', name: 'Nokia', email: 'nokia@gmail.com', id: 4 },
       company: { image: 'https://robohash.org/generate', name: 'Scrappy' },
       'Last updated': '2d',
       'Phone number': '9182663344',
@@ -43,7 +43,7 @@ export const TableCore = () => {
       Hobby: '',
     },
     {
-      Client: { image: 'https://robohash.org/stefan-four', name: 'Prolink', email: 'prolink@gmail.com' },
+      Client: { image: 'https://robohash.org/stefan-four', name: 'Prolink', email: 'prolink@gmail.com', id: 5 },
       company: { image: 'https://robohash.org/generate', name: 'Facebook' },
       'Last updated': '1 month',
       'Phone number': '',
@@ -51,7 +51,7 @@ export const TableCore = () => {
       Hobby: 'Diving',
     },
     {
-      Client: { image: 'https://robohash.org/stefan-three', name: 'Apple', email: 'apple@gmail.com' },
+      Client: { image: 'https://robohash.org/stefan-three', name: 'Apple', email: 'apple@gmail.com', id: 6 },
       company: { image: 'https://robohash.org/generate', name: 'Catch' },
       'Last updated': '12 hours',
       'Phone number': '3847228833',
@@ -61,10 +61,34 @@ export const TableCore = () => {
     },
   ]);
 
+  const comparator = (valueA: any, valueB: any) => {
+    const nameA = valueA.name.toUpperCase(); // ignore case
+    const nameB = valueB.name.toUpperCase(); // ignore case
+
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    return 0; // names are equal
+  };
+
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<any>([
-    { field: 'Client', cellRenderer: ClientCellRenderer, flex: 1 },
-    { field: 'company', cellRenderer: CompanyCellRenderer, flex: 1 },
+    {
+      field: 'Client',
+      cellRenderer: ClientCellRenderer,
+      flex: 1,
+      comparator,
+    },
+    {
+      field: 'company',
+      cellRenderer: CompanyCellRenderer,
+      flex: 1,
+      comparator,
+    },
     { field: 'Last updated', flex: 1 },
     { field: 'Phone number', flex: 1 },
     { field: 'Address', flex: 1 },

@@ -1,8 +1,8 @@
 import { Box, Stack, Typography } from '@mui/material';
 
-export const ClientCellRenderer = ({ value }: { value: { image: string; name: string; email: string } }) => {
+export const ClientCellRenderer = ({ value }: { value: { image: string; name: string; email: string; id: string } }) => {
   return (
-    <Stack direction="row" alignItems="center" gap={3}>
+    <Stack direction="row" alignItems="center" gap={3} key={value.id}>
       <Box component="img" src={value.image} alt="avatar" sx={{ width: '28px', height: '28px' }} />
       <Stack direction="column">
         <Typography variant="sm" lineHeight={'16px'}>
