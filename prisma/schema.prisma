@@ -12,7 +12,8 @@ datasource db {
 
 model CustomFieldAccess {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  customFieldId String?  @unique @db.Uuid
+  customFieldId String?  @db.Uuid
+  companyId     String?  @db.Uuid
   permissions   Json?    @db.JsonB
   createdAt     DateTime @default(now()) @db.Timestamptz()
   updatedAt     DateTime @updatedAt @ignore @db.Timestamptz()

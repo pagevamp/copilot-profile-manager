@@ -8,14 +8,18 @@ import { z } from 'zod';
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const token = searchParams.get('token');
+  const companyId = searchParams.get('companyId');
   if (!token) {
-    errorHandler('Missing token', 422);
+    return errorHandler('Missing token', 422);
+  }
+  if (!companyId) {
+    return errorHandler('Missing companyId', 422);
   }
   const copilotClient = new CopilotAPI(z.string().parse(token));
   const customFields = (await copilotClient.getCustomFields()).data;
 
   const customFieldAccessService = new CustomFieldAccessService();
-  const customFieldAccesses = await customFieldAccessService.findAll();
+  const customFieldAccesses = await customFieldAccessService.findAll(z.string().uuid().parse(companyId));
 
   const customFieldsWithAccess = customFields?.map((customField) => {
     const customFieldAccess = customFieldAccesses.find((access) => access.customFieldId === customField.id);
@@ -29,8 +33,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  // confusion: how to authenticate user? token not required here
-  // will all the records go to the same db for all IUs?
   const data = await request.json();
   const customFieldAccess = CustomFieldAccessRequestSchema.safeParse(data);
   if (!customFieldAccess.success) {
