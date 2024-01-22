@@ -66,13 +66,10 @@ export const TableCore = () => {
   ]);
 
   const comparator = (valueA: any, valueB: any) => {
-    const nameA = valueA.name.toUpperCase(); // ignore case
-    const nameB = valueB.name.toUpperCase(); // ignore case
-
-    if (nameA < nameB) {
+    if (valueA < valueB) {
       return -1;
     }
-    if (nameA > nameB) {
+    if (valueA > valueB) {
       return 1;
     }
 
@@ -106,6 +103,10 @@ export const TableCore = () => {
       field: 'Phone number',
       flex: 1,
       cellRenderer: HistoryCellRenderer,
+      valueGetter: (params: any) => {
+        const phoneProps = params.data['Phone number'];
+        return `${phoneProps.value} ${phoneProps.showDot}`;
+      },
     },
     { field: 'Address', flex: 1 },
     { field: 'Hobby', flex: 1 },

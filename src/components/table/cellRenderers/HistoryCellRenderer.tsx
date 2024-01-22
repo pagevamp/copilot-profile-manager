@@ -1,17 +1,20 @@
 import { Box, Popper, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-export const HistoryCellRenderer = ({ value }: { value: { value: string; showDot: boolean } }) => {
+export const HistoryCellRenderer = ({ value }: { value: string }) => {
+  const h = value.split(' ');
+  const val = h[0];
+  const showDot = h[1] === 'true';
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
-    if (value.showDot) {
+    if (showDot) {
       setAnchorEl(anchorEl ? null : event.currentTarget);
     }
   };
 
   const handleMouseLeave = (event: React.MouseEvent<HTMLElement>) => {
-    if (value.showDot && anchorEl === event.currentTarget) {
+    if (showDot && anchorEl === event.currentTarget) {
       setAnchorEl(null);
     }
   };
@@ -21,7 +24,7 @@ export const HistoryCellRenderer = ({ value }: { value: { value: string; showDot
 
   return (
     <Box position="relative">
-      {value.showDot && (
+      {showDot && (
         <Typography
           aria-describedby={id}
           variant="bodyMd"
@@ -37,7 +40,7 @@ export const HistoryCellRenderer = ({ value }: { value: { value: string; showDot
           &#x2022;
         </Typography>
       )}
-      <Typography variant="bodyMd">{value.value}</Typography>
+      <Typography variant="bodyMd">{val}</Typography>
 
       <Popper id={id} open={open} anchorEl={anchorEl}>
         <HistoryList />
