@@ -20,7 +20,10 @@ export const Header = () => {
         Client profile updates
       </Typography>
       <Stack direction="row" columnGap={4} alignItems="center">
-        <SearchBar />
+        <SearchBar
+          value={appState?.searchKeyword as string}
+          getSearchKeyword={(keyword) => appState?.setAppState((prev) => ({ ...prev, searchKeyword: keyword }))}
+        />
         <Toggle
           selected={appState?.showSidebar as boolean}
           handleClick={() => appState?.setAppState((prev) => ({ ...prev, showSidebar: !appState.showSidebar }))}

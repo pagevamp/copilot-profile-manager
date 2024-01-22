@@ -7,8 +7,11 @@ import { useMemo, useState } from 'react';
 import { ClientCellRenderer } from './cellRenderers/ClientCellRenderer';
 import { CompanyCellRenderer } from './cellRenderers/CompanyCellRenderer';
 import { HistoryCellRenderer } from './cellRenderers/HistoryCellRenderer';
+import { useAppState } from '@/hooks/useAppState';
 
 export const TableCore = () => {
+  const appState = useAppState();
+
   // Row Data: The data to be displayed.
   const [rowData, setRowData] = useState<any>([
     {
@@ -83,12 +86,20 @@ export const TableCore = () => {
       cellRenderer: ClientCellRenderer,
       flex: 1,
       comparator,
+      valueGetter: (params: any) => {
+        const client = params.data.Client;
+        return `${client.image} ${client.name} ${client.email}`;
+      },
     },
     {
       field: 'company',
       cellRenderer: CompanyCellRenderer,
       flex: 1,
       comparator,
+      valueGetter: (params: any) => {
+        const company = params.data.company;
+        return `${company.image} ${company.name}`;
+      },
     },
     { field: 'Last updated', flex: 1 },
     {
@@ -115,6 +126,7 @@ export const TableCore = () => {
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
         suppressMovableColumns={true}
+        quickFilterText={appState?.searchKeyword}
       />
     </Box>
   );

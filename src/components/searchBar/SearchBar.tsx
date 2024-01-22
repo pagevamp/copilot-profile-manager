@@ -2,11 +2,17 @@ import { SearchIcon } from '@/icons';
 import { InputAdornment, TextField, styled } from '@mui/material';
 import { useState } from 'react';
 
-const SearchBar = () => {
+interface ISearchBar {
+  value: string;
+  getSearchKeyword: (keyword: string) => void;
+}
+
+const SearchBar = ({ value, getSearchKeyword }: ISearchBar) => {
   const [focused, setFocused] = useState(false);
 
   return (
     <StyledTextField
+      value={value}
       focused={focused}
       variant="outlined"
       placeholder={focused ? 'Find in view...' : 'Search'}
@@ -26,6 +32,7 @@ const SearchBar = () => {
       autoComplete="off"
       onBlur={() => setFocused(false)}
       onFocus={() => setFocused(true)}
+      onChange={(e) => getSearchKeyword(e.target.value)}
     />
   );
 };
