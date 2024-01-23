@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { ManagePageContainer } from './views/ManagePageContainer';
 import { SimpleButton } from '@/components/styled/SimpleButton';
-// import { EmptyStateFallback } from './views/EmptyStateFallback';
 
 export default function Home() {
   return (
