@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { ManagePageContainer } from './views/ManagePageContainer';
 import { SimpleButton } from '@/components/styled/SimpleButton';
 
-export default function Home() {
+export default function ManagePage() {
   return (
     <Box
       sx={{

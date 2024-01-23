@@ -2,7 +2,7 @@
 
 import { MultiSelect } from '@/components/multiSelect/MultiSelect';
 import { StyledTextInput } from '@/components/styled/StyledTextInput';
-import { Chip, Stack, Typography, styled } from '@mui/material';
+import { Stack, Typography, styled } from '@mui/material';
 
 export const ManagePageContainer = () => {
   return (
@@ -40,4 +40,10 @@ const InputContainer = styled(Stack)({
   rowGap: 1.33,
 });
 
-const data = [{ name: 'Option 1' }, { name: 'Option 2' }, { name: 'Option 3' }, { name: 'Option 4' }, { name: 'Option 5' }];
+const data: { name: string }[] = [
+  { name: 'Option 1' },
+  { name: 'Option 2' },
+  { name: 'Option 3' },
+  { name: 'Option 4' },
+  { name: 'Option 5' },
+];
