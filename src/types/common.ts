@@ -53,3 +53,11 @@ export const CustomFieldResponseSchema = z.object({
   data: z.array(CustomFieldSchema).nullable(),
 });
 export type CustomFieldResponse = z.infer<typeof CustomFieldResponseSchema>;
+
+export const ClientRequestSchema = z.object({
+  givenName: z.string().optional(),
+  familyName: z.string().optional(),
+  companyId: z.string().uuid().optional(),
+  customFields: z.record(z.union([z.string(), z.array(z.string())])).optional(),
+});
+export type ClientRequest = z.infer<typeof ClientRequestSchema>;

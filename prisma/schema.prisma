@@ -11,15 +11,25 @@ datasource db {
 }
 
 enum Permission {
- VIEW
- EDIT
+  VIEW
+  EDIT
 }
 
 model CustomFieldAccess {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  customFieldId String  @db.Uuid
-  companyId     String  @db.Uuid
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customFieldId String     @db.Uuid
+  companyId     String     @db.Uuid
   permission    Permission
-  createdAt     DateTime @default(now()) @db.Timestamptz()
-  updatedAt     DateTime @updatedAt @ignore @db.Timestamptz()
+  createdAt     DateTime   @default(now()) @db.Timestamptz()
+  updatedAt     DateTime   @updatedAt @ignore @db.Timestamptz()
+}
+
+model ClientProfileUpdates {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clientId        String   @db.Uuid
+  companyId       String   @db.Uuid
+  newCustomFields Json     @db.JsonB
+  oldCustomFields Json?    @db.JsonB
+  createdAt       DateTime @default(now()) @db.Timestamptz()
+  updatedAt       DateTime @updatedAt @ignore @db.Timestamptz()
 }

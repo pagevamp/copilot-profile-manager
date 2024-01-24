@@ -6,6 +6,7 @@ import {
   ClientsResponseSchema,
   CompanyResponse,
   CompanyResponseSchema,
+  ClientRequest,
   CustomFieldResponse,
   CustomFieldResponseSchema,
   MeResponse,
@@ -33,6 +34,11 @@ export class CopilotAPI {
 
   async getClients() {
     return ClientsResponseSchema.parse(await this.copilot.listClients({}));
+  }
+
+  async updateClient(clientId: string, requestBody: ClientRequest): Promise<ClientResponse> {
+    // @ts-ignore
+    return ClientResponseSchema.parse(await this.copilot.updateAClient({ id: clientId, requestBody }));
   }
 
   async getCompany(companyId: string): Promise<CompanyResponse> {
