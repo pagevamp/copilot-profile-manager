@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CustomFieldAccessRequestSchema } from '@/types/customFieldAccess';
 import { CustomFieldAccessService } from '@/app/api/custom-field-access/services/customFieldAccess.service';
-import { errorHandler } from '@/utils/common';
+import { respondError } from '@/utils/common';
 import { CopilotAPI } from '@/utils/copilotApiUtils';
 import { z } from 'zod';
 
@@ -10,10 +10,10 @@ export async function GET(request: NextRequest) {
   const token = searchParams.get('token');
   const companyId = searchParams.get('companyId');
   if (!token) {
-    return errorHandler('Missing token', 422);
+    return respondError('Missing token', 422);
   }
   if (!companyId) {
-    return errorHandler('Missing companyId', 422);
+    return respondError('Missing companyId', 422);
   }
   const copilotClient = new CopilotAPI(z.string().parse(token));
   const customFields = (await copilotClient.getCustomFields()).data;

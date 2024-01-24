@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ClientProfileUpdatesRequestSchema } from '@/types/clientProfileUpdates';
 import { CopilotAPI } from '@/utils/copilotApiUtils';
-import { errorHandler } from '@/utils/common';
-import { ApiError } from 'copilot-node-sdk/codegen/api';
+import { handleError } from '@/utils/common';
+import { ClientProfileUpdatesService } from '@/app/api/client-profile-updates/services/clientProfileUpdates.service';
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
@@ -11,23 +11,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(clientProfileUpdates.error.issues);
   }
   try {
+    //todo: check access
     const copilotClient = new CopilotAPI(clientProfileUpdates.data.token);
-    const customFields = clientProfileUpdates.data.form.reduce(
-      (customFields: Record<string, string | string[]>, customField) => {
-        customFields[customField.key] = customField.value;
-        return customFields;
+    const existingCustomFields = (await copilotClient.getCustomFields()).data;
+    const customFieldBody = clientProfileUpdates.data.form.reduce(
+      (customFieldBody: Record<string, string | string[]>, customField) => {
+        customFieldBody[customField.key] = customField.value;
+        return customFieldBody;
       },
       {},
     );
-    console.log(customFields);
-    const response = await copilotClient.updateClient(clientProfileUpdates.data.clientId, { customFields });
-    console.log(response);
+    const response = await copilotClient.updateClient(clientProfileUpdates.data.clientId, { customFields: customFieldBody });
+    const service = new ClientProfileUpdatesService();
+    // await service.save()
 
-    return NextResponse.json({});
+    return NextResponse.json(response);
   } catch (error) {
-    const apiError = error as ApiError;
-    console.error(apiError);
-    return errorHandler(apiError.body.message, apiError.status);
+    return handleError(error);
   }
 }
 
