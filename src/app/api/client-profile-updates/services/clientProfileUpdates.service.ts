@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import DBClient from '@/lib/db';
-import { ClientProfileUpdates, customFieldUpdatesSchema } from '@/types/clientProfileUpdates';
-import { z } from 'zod';
+import { ClientProfileUpdates } from '@/types/clientProfileUpdates';
 
 export class ClientProfileUpdatesService {
   private prismaClient: PrismaClient = DBClient.getInstance();
