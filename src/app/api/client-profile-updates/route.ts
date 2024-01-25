@@ -13,13 +13,15 @@ export async function POST(request: NextRequest) {
   }
   try {
     //todo: check access
+    //todo: Refactor
     const copilotClient = new CopilotAPI(clientProfileUpdateRequest.data.token);
     const allCustomFields = (await copilotClient.getCustomFields()).data;
     if (!allCustomFields) {
       return respondError('Custom fields not defined.');
     }
     const allCustomFieldKeys = allCustomFields.map((customField) => customField.key);
-    // No need to check if valid values are provided for custom fields as the copilot SDK throws error. E.g: string value sent for multiSelect fields
+    // todo:: Need to check if valid values are provided for custom fields. Copilot SDK only throws error when string value is sent for multiSelect fields
+    // but not when array  sent for text fields
     const validFormCustomFields = clientProfileUpdateRequest.data.form.filter((customField) =>
       allCustomFieldKeys.includes(customField.key),
     );
@@ -30,9 +32,6 @@ export async function POST(request: NextRequest) {
       },
       {},
     );
-    const clientUpdateResponse = await copilotClient.updateClient(clientProfileUpdateRequest.data.clientId, {
-      customFields: customFieldBody,
-    });
     const client: ClientResponse = await copilotClient.getClient(clientProfileUpdateRequest.data.clientId);
     let oldCustomFields: CustomFieldUpdates = [];
     if (client.customFields) {
@@ -41,16 +40,39 @@ export async function POST(request: NextRequest) {
         value,
       }));
     }
+    const newCustomFields = validFormCustomFields.filter((newField) => {
+      let isOldFieldPresentWithSameValue = oldCustomFields.some((oldField) => {
+        if (oldField.key !== newField.key) {
+          return false;
+        }
+
+        let oldValue = Array.isArray(oldField.value) ? oldField.value.sort() : oldField.value;
+        let newValue = Array.isArray(newField.value) ? newField.value.sort() : newField.value;
+
+        return JSON.stringify(oldValue) === JSON.stringify(newValue);
+      });
+
+      return !isOldFieldPresentWithSameValue;
+    });
+    if (newCustomFields.length === 0) {
+      return NextResponse.json({});
+    }
+
+    const clientUpdateResponse = await copilotClient.updateClient(clientProfileUpdateRequest.data.clientId, {
+      customFields: customFieldBody,
+    });
+    //todo:: compare clientUpdateResponse.customFields with newCustomFields to make sure the values are updated in copilot SDK
 
     const service = new ClientProfileUpdatesService();
     await service.save({
       clientId: clientProfileUpdateRequest.data.clientId,
       companyId: clientProfileUpdateRequest.data.companyId,
       oldCustomFields: oldCustomFields,
-      newCustomFields: [],
+      newCustomFields: newCustomFields,
     });
 
     return NextResponse.json(clientUpdateResponse);
+    // return NextResponse.json({  });
   } catch (error) {
     return handleError(error);
   }
