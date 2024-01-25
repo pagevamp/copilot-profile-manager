@@ -23,3 +23,6 @@ export const ClientProfileUpdatesSchema = z.object({
   oldCustomFields: CustomFieldUpdatesSchema,
 });
 export type ClientProfileUpdates = z.infer<typeof ClientProfileUpdatesSchema>;
+
+export const ClientProfileUpdatesResponseSchema = z.array(ClientProfileUpdatesSchema);
+export type ClientProfileUpdatesResponse = z.infer<typeof ClientProfileUpdatesResponseSchema>;

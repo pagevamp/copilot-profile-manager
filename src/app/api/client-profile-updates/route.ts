@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ClientProfileUpdatesRequestSchema, CustomFieldUpdates } from '@/types/clientProfileUpdates';
 import { CopilotAPI } from '@/utils/copilotApiUtils';
-import { handleError, respondError } from '@/utils/common';
+import { getCurrentUser, handleError, respondError } from '@/utils/common';
 import { ClientProfileUpdatesService } from '@/app/api/client-profile-updates/services/clientProfileUpdates.service';
 import { ClientResponse } from '@/types/common';
+import { z } from 'zod';
+import { copilotApi } from 'copilot-node-sdk';
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
@@ -79,5 +81,27 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  return NextResponse.json({});
+  const searchParams = request.nextUrl.searchParams;
+  const token = searchParams.get('token');
+  if (!token) {
+    return respondError('Missing token', 422);
+  }
+  const copilotClient = new CopilotAPI(z.string().parse(token));
+  const currentUser = await copilotClient.me();
+  //todo:: check currentUser.isClientAccessLimited later
+  const clients = await copilotClient.getClients();
+  const clientLookup: Record<string, any> = {};
+  clients.data?.forEach((client) => {
+    clientLookup[client.id] = client;
+  });
+  const companies = await copilotClient.getCompanies();
+  const companyLookup: Record<string, any> = {};
+  companies.data?.forEach((company) => {
+    companyLookup[company.id] = company;
+  });
+  const service = new ClientProfileUpdatesService();
+  let clientProfileUpdates = await service.findByCompanyIds([]);
+  clientProfileUpdates.forEach((update) => {});
+
+  return NextResponse.json(clientProfileUpdates);
 }
