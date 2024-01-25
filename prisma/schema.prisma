@@ -1,0 +1,25 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+enum Permission {
+ VIEW
+ EDIT
+}
+
+model CustomFieldAccess {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customFieldId String  @db.Uuid
+  companyId     String  @db.Uuid
+  permission    Permission
+  createdAt     DateTime @default(now()) @db.Timestamptz()
+  updatedAt     DateTime @updatedAt @ignore @db.Timestamptz()
+}
