@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <ThemeRegistry options={{ key: 'mui' }}>
-        <body className={inter.className}>{children}</body>
-      </ThemeRegistry>
+      <body className={inter.className}>
+        <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
+      </body>
     </html>
   );
 }
