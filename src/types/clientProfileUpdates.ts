@@ -1,11 +1,6 @@
 import { z } from 'zod';
 
-export const CustomFieldUpdatesSchema = z.array(
-  z.object({
-    key: z.string(),
-    value: z.union([z.string(), z.array(z.string())]),
-  }),
-);
+export const CustomFieldUpdatesSchema = z.record(z.union([z.string(), z.array(z.string())]));
 export type CustomFieldUpdates = z.infer<typeof CustomFieldUpdatesSchema>;
 
 export const ClientProfileUpdatesRequestSchema = z.object({
@@ -19,8 +14,8 @@ export type ClientProfileUpdatesRequest = z.infer<typeof ClientProfileUpdatesReq
 export const ClientProfileUpdatesSchema = z.object({
   clientId: z.string().uuid(),
   companyId: z.string().uuid(),
-  newCustomFields: CustomFieldUpdatesSchema,
-  oldCustomFields: CustomFieldUpdatesSchema,
+  customFields: CustomFieldUpdatesSchema,
+  changedFields: CustomFieldUpdatesSchema,
 });
 export type ClientProfileUpdates = z.infer<typeof ClientProfileUpdatesSchema>;
 
@@ -29,9 +24,8 @@ export const ClientProfileUpdatesResponseSchema = z.array(
     id: z.string().uuid(),
     clientId: z.string().uuid(),
     companyId: z.string().uuid(),
-    newCustomFields: CustomFieldUpdatesSchema,
-    oldCustomFields: CustomFieldUpdatesSchema,
-    // updatedAt: z.date(),
+    customFields: CustomFieldUpdatesSchema,
+    changedFields: CustomFieldUpdatesSchema,
   }),
 );
 export type ClientProfileUpdatesResponse = z.infer<typeof ClientProfileUpdatesResponseSchema>;

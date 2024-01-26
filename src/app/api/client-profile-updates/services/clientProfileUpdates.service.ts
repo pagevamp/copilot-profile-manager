@@ -10,16 +10,16 @@ export class ClientProfileUpdatesService {
   private prismaClient: PrismaClient = DBClient.getInstance();
 
   async save(requestData: ClientProfileUpdates): Promise<void> {
-    console.log('Old custom fields');
-    console.log(requestData.oldCustomFields);
-    console.log('New custom fields');
-    console.log(requestData.newCustomFields);
+    console.log('Changed fields');
+    console.log(requestData.changedFields);
+    console.log('Custom fields');
+    console.log(requestData.customFields);
     await this.prismaClient.clientProfileUpdates.create({
       data: {
         clientId: requestData.clientId,
         companyId: requestData.companyId,
-        newCustomFields: requestData.newCustomFields,
-        oldCustomFields: requestData.oldCustomFields,
+        customFields: requestData.customFields,
+        changedFields: requestData.changedFields,
       },
     });
   }
