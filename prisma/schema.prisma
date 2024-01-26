@@ -19,7 +19,7 @@ model CustomFieldAccess {
   id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   customFieldId String     @db.Uuid
   companyId     String     @db.Uuid
-  permission    Permission
+  permission    Permission //todo:: make it array
   createdAt     DateTime   @default(now()) @db.Timestamptz()
   updatedAt     DateTime   @updatedAt @ignore @db.Timestamptz()
 }

@@ -16,7 +16,7 @@ export const ClientResponseSchema = z.object({
   email: z.string(),
   companyId: z.string(),
   status: z.string(),
-  avatarImageUrl: z.string(),
+  avatarImageUrl: z.string().nullable(),
   customFields: z.record(z.string(), z.union([z.string(), z.array(z.string())])).nullable(),
 });
 export type ClientResponse = z.infer<typeof ClientResponseSchema>;
@@ -29,7 +29,7 @@ export type ClientsResponse = z.infer<typeof ClientsResponseSchema>;
 export const CompanyResponseSchema = z.object({
   id: z.string(),
   name: z.string(),
-  iconImageUrl: z.string(),
+  iconImageUrl: z.string().nullable(),
 });
 export type CompanyResponse = z.infer<typeof CompanyResponseSchema>;
 

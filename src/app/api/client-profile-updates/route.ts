@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ClientProfileUpdatesRequestSchema, CustomFieldUpdates } from '@/types/clientProfileUpdates';
+import {
+  ClientProfileUpdatesRequestSchema,
+  CustomFieldUpdates,
+  ParsedClientProfileUpdatesResponse,
+} from '@/types/clientProfileUpdates';
 import { CopilotAPI } from '@/utils/copilotApiUtils';
-import { getCurrentUser, handleError, respondError } from '@/utils/common';
+import { handleError, respondError } from '@/utils/common';
 import { ClientProfileUpdatesService } from '@/app/api/client-profile-updates/services/clientProfileUpdates.service';
-import { ClientResponse } from '@/types/common';
+import { ClientResponse, CompanyResponse } from '@/types/common';
 import { z } from 'zod';
-import { copilotApi } from 'copilot-node-sdk';
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
@@ -89,19 +92,52 @@ export async function GET(request: NextRequest) {
   const copilotClient = new CopilotAPI(z.string().parse(token));
   const currentUser = await copilotClient.me();
   //todo:: check currentUser.isClientAccessLimited later
+
   const clients = await copilotClient.getClients();
   const clientLookup: Record<string, any> = {};
   clients.data?.forEach((client) => {
     clientLookup[client.id] = client;
   });
+
   const companies = await copilotClient.getCompanies();
   const companyLookup: Record<string, any> = {};
   companies.data?.forEach((company) => {
     companyLookup[company.id] = company;
   });
+
+  const customFields = await copilotClient.getCustomFields();
+  const customFieldLookup: Record<string, any> = {};
+  customFields.data?.forEach((customField) => {
+    customFieldLookup[customField.id] = customField;
+  });
+  // let parsedCustom
+
   const service = new ClientProfileUpdatesService();
   let clientProfileUpdates = await service.findByCompanyIds([]);
-  clientProfileUpdates.forEach((update) => {});
+  let parsedClientProfileUpdates: ParsedClientProfileUpdatesResponse[] = [];
+  parsedClientProfileUpdates = clientProfileUpdates.map((update) => {
+    const client: ClientResponse = clientLookup[update.clientId];
+    const company: CompanyResponse = companyLookup[update.companyId];
+    return {
+      id: update.id,
+      client: {
+        name: client.givenName + ' ' + client.familyName,
+        email: client.email,
+        avatarImageUrl: client.avatarImageUrl,
+      },
+      company: {
+        name: company.name,
+        iconImageUrl: company.iconImageUrl,
+      },
+      // lastUpdated: update.updatedAt,
+      // customFields: z.array(z.object({
+      //   name: z.string(),
+      //   key: z.string(),
+      //   value: z.union([z.string(), z.array(z.string())]),
+      //   isChanged: z.boolean(),
+      // }))
+    };
+  });
 
-  return NextResponse.json(clientProfileUpdates);
+  return NextResponse.json(parsedClientProfileUpdates);
 }
