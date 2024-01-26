@@ -4,10 +4,12 @@ import { FC, ReactNode, useState, createContext, Dispatch, SetStateAction } from
 
 export interface IAppState {
   showSidebar: boolean;
+  searchKeyword: string;
 }
 
 export interface IAppContext {
   showSidebar: boolean;
+  searchKeyword: string;
   setAppState: Dispatch<SetStateAction<IAppState>>;
 }
 
@@ -19,13 +21,15 @@ export const AppContext = createContext<IAppContext | null>(null);
 
 export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
   const [state, setState] = useState<IAppState>({
-    showSidebar: true,
+    showSidebar: false,
+    searchKeyword: '',
   });
 
   return (
     <AppContext.Provider
       value={{
         showSidebar: state.showSidebar,
+        searchKeyword: state.searchKeyword,
         setAppState: setState,
       }}
     >
