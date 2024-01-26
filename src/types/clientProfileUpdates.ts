@@ -26,6 +26,7 @@ export const ClientProfileUpdatesResponseSchema = z.array(
     companyId: z.string().uuid(),
     customFields: CustomFieldUpdatesSchema,
     changedFields: CustomFieldUpdatesSchema,
+    createdAt: z.date(),
   }),
 );
 export type ClientProfileUpdatesResponse = z.infer<typeof ClientProfileUpdatesResponseSchema>;
@@ -41,7 +42,7 @@ export const ParsedClientProfileUpdatesResponseSchema = z.object({
     name: z.string(),
     iconImageUrl: z.string().nullable(),
   }),
-  // lastUpdated: z.date(),
+  lastUpdated: z.date(),
   // customFields: z.array(z.object({
   //   name: z.string(),
   //   key: z.string(),

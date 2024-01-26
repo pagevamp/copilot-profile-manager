@@ -56,6 +56,7 @@ export const CustomFieldSchema = z.object({
     )
     .optional(),
 });
+export type CustomField = z.infer<typeof CustomFieldSchema>;
 export const CustomFieldResponseSchema = z.object({
   data: z.array(CustomFieldSchema).nullable(),
 });
