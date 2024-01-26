@@ -8,24 +8,24 @@ import { z } from 'zod';
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const token = searchParams.get('token');
-  const companyId = searchParams.get('companyId');
+  const portalId = searchParams.get('portalId');
   if (!token) {
     return respondError('Missing token', 422);
   }
-  if (!companyId) {
-    return respondError('Missing companyId', 422);
+  if (!portalId) {
+    return respondError('Missing portalId', 422);
   }
   const copilotClient = new CopilotAPI(z.string().parse(token));
   const customFields = (await copilotClient.getCustomFields()).data;
 
   const customFieldAccessService = new CustomFieldAccessService();
-  const customFieldAccesses = await customFieldAccessService.findAll(z.string().uuid().parse(companyId));
+  const customFieldAccesses = await customFieldAccessService.findAll(z.string().parse(portalId));
 
   const customFieldsWithAccess = customFields?.map((customField) => {
     const customFieldAccess = customFieldAccesses.find((access) => access.customFieldId === customField.id);
     return {
       ...customField,
-      permission: customFieldAccess ? customFieldAccess.permission : null,
+      permission: customFieldAccess ? customFieldAccess.permissions : [],
     };
   });
 
