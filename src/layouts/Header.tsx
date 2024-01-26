@@ -16,11 +16,14 @@ export const Header = () => {
         padding: { xs: '12px 16px', sm: '20px 24px' },
       })}
     >
-      <Typography variant="lg" fontSize="13px" sx={{ overflow: 'hidden' }}>
+      <Typography variant="lg" fontSize="13px" sx={{ overflow: 'hidden', textWrap: 'nowrap', textOverflow: 'ellipsis' }}>
         Client profile updates
       </Typography>
       <Stack direction="row" columnGap={4} alignItems="center">
-        <SearchBar />
+        <SearchBar
+          value={appState?.searchKeyword as string}
+          getSearchKeyword={(keyword) => appState?.setAppState((prev) => ({ ...prev, searchKeyword: keyword }))}
+        />
         <Toggle
           selected={appState?.showSidebar as boolean}
           handleClick={() => appState?.setAppState((prev) => ({ ...prev, showSidebar: !appState.showSidebar }))}
