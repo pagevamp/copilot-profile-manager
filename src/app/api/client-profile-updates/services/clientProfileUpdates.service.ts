@@ -4,6 +4,7 @@ import {
   ClientProfileUpdates,
   ClientProfileUpdatesResponse,
   ClientProfileUpdatesResponseSchema,
+  UpdateHistory,
 } from '@/types/clientProfileUpdates';
 
 export class ClientProfileUpdatesService {
@@ -41,11 +42,13 @@ export class ClientProfileUpdatesService {
     return ClientProfileUpdatesResponseSchema.parse(clientProfileUpdates);
   }
 
-  async getUpdateHistory(searchKey: string): Promise<any> {
+  async getUpdateHistory(customFieldKey: string, clientId: string, lastUpdated: Date): Promise<UpdateHistory[]> {
     return this.prismaClient.$queryRaw`
-      SELECT *
+      SELECT "changedFields"
       FROM "ClientProfileUpdates"
-      WHERE "changedFields" ->> ${searchKey} IS NOT NULL;
+      WHERE "clientId" = ${clientId}::uuid
+      AND "createdAt" <= ${lastUpdated}
+      AND "changedFields" ->> ${customFieldKey} IS NOT NULL;
     `;
   }
 }

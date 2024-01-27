@@ -47,51 +47,56 @@ export async function GET(request: NextRequest) {
     return respondError('Missing token', 422);
   }
 
-  const copilotClient = new CopilotAPI(z.string().parse(token));
+  try {
+    const copilotClient = new CopilotAPI(z.string().parse(token));
 
-  const [currentUser, clients, companies, portalCustomFields] = await Promise.all([
-    copilotClient.me(),
-    copilotClient.getClients(),
-    copilotClient.getCompanies(),
-    copilotClient.getCustomFields(),
-  ]);
-  //todo:: filter companyIds based on currentUser restrictions
-  const clientProfileUpdates = await new ClientProfileUpdatesService().findByCompanyIds([]);
+    const [currentUser, clients, companies, portalCustomFields] = await Promise.all([
+      copilotClient.me(),
+      copilotClient.getClients(),
+      copilotClient.getCompanies(),
+      copilotClient.getCustomFields(),
+    ]);
+    //todo:: filter companyIds based on currentUser restrictions
+    const clientProfileUpdates = await new ClientProfileUpdatesService().findByCompanyIds([]);
 
-  const clientLookup = createLookup(clients.data, 'id');
-  const companyLookup = createLookup(companies.data, 'id');
+    const clientLookup = createLookup(clients.data, 'id');
+    const companyLookup = createLookup(companies.data, 'id');
 
-  const parsedClientProfileUpdates: ParsedClientProfileUpdatesResponse[] = clientProfileUpdates.map((update) => {
-    const client = clientLookup[update.clientId];
-    const company = companyLookup[update.companyId];
+    const parsedClientProfileUpdates: ParsedClientProfileUpdatesResponse[] = clientProfileUpdates.map((update) => {
+      const client = clientLookup[update.clientId];
+      const company = companyLookup[update.companyId];
 
-    const customFields = portalCustomFields.data?.map((portalCustomField) => {
-      const value = update.customFields[portalCustomField.key] ?? null;
-      const options = getSelectedOptions(portalCustomField, value);
+      const customFields = portalCustomFields.data?.map((portalCustomField) => {
+        const value = update.customFields[portalCustomField.key] ?? null;
+        const options = getSelectedOptions(portalCustomField, value);
+
+        return {
+          name: portalCustomField.name,
+          type: portalCustomField.type,
+          key: portalCustomField.key,
+          value: options.length > 0 ? options : value,
+          isChanged: !!update.changedFields[portalCustomField.key],
+        };
+      });
 
       return {
-        name: portalCustomField.name,
-        type: portalCustomField.type,
-        key: portalCustomField.key,
-        value: options.length > 0 ? options : value,
-        isChanged: !!update.changedFields[portalCustomField.key],
+        id: update.id,
+        client: getClientDetails(client),
+        company: getCompanyDetails(company),
+        lastUpdated: update.createdAt,
+        customFields,
       };
     });
 
-    return {
-      id: update.id,
-      client: getClientDetails(client),
-      company: getCompanyDetails(company),
-      lastUpdated: update.createdAt,
-      customFields,
-    };
-  });
-
-  return NextResponse.json(parsedClientProfileUpdates);
+    return NextResponse.json(parsedClientProfileUpdates);
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
 function getClientDetails(client: ClientResponse) {
   return {
+    id: client.id,
     name: `${client.givenName} ${client.familyName}`,
     email: client.email,
     avatarImageUrl: client.avatarImageUrl,
@@ -100,6 +105,7 @@ function getClientDetails(client: ClientResponse) {
 
 function getCompanyDetails(company: CompanyResponse) {
   return {
+    id: company.id,
     name: company.name,
     iconImageUrl: company.iconImageUrl,
   };

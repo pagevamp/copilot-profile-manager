@@ -34,11 +34,13 @@ export type ClientProfileUpdatesResponse = z.infer<typeof ClientProfileUpdatesRe
 export const ParsedClientProfileUpdatesResponseSchema = z.object({
   id: z.string().uuid(),
   client: z.object({
+    id: z.string().uuid(),
     name: z.string(),
     email: z.string(),
     avatarImageUrl: z.string().nullable(),
   }),
   company: z.object({
+    id: z.string().uuid(),
     name: z.string(),
     iconImageUrl: z.string().nullable(),
   }),
@@ -51,3 +53,8 @@ export const ParsedClientProfileUpdatesResponseSchema = z.object({
   // }))
 });
 export type ParsedClientProfileUpdatesResponse = z.infer<typeof ParsedClientProfileUpdatesResponseSchema>;
+
+export const UpdateHistorySchema = z.object({
+  changedFields: CustomFieldUpdatesSchema,
+});
+export type UpdateHistory = z.infer<typeof UpdateHistorySchema>;
