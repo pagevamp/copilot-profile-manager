@@ -40,4 +40,12 @@ export class ClientProfileUpdatesService {
 
     return ClientProfileUpdatesResponseSchema.parse(clientProfileUpdates);
   }
+
+  async getUpdateHistory(searchKey: string): Promise<any> {
+    return this.prismaClient.$queryRaw`
+      SELECT *
+      FROM "ClientProfileUpdates"
+      WHERE "changedFields" ->> ${searchKey} IS NOT NULL;
+    `;
+  }
 }

@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     copilotClient.getCompanies(),
     copilotClient.getCustomFields(),
   ]);
-
+  //todo:: filter companyIds based on currentUser restrictions
   const clientProfileUpdates = await new ClientProfileUpdatesService().findByCompanyIds([]);
 
   const clientLookup = createLookup(clients.data, 'id');
