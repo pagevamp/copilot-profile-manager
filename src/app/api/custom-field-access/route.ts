@@ -36,7 +36,7 @@ export async function PUT(request: NextRequest) {
   const data = await request.json();
   const customFieldAccess = CustomFieldAccessRequestSchema.safeParse(data);
   if (!customFieldAccess.success) {
-    return NextResponse.json(customFieldAccess.error.issues);
+    return NextResponse.json(customFieldAccess.error.issues, { status: 422 });
   }
   const customFieldAccessService = new CustomFieldAccessService();
   await customFieldAccessService.save(customFieldAccess.data);

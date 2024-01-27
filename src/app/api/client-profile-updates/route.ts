@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   const data = await request.json();
   const clientProfileUpdateRequest = ClientProfileUpdatesRequestSchema.safeParse(data);
   if (!clientProfileUpdateRequest.success) {
-    return NextResponse.json(clientProfileUpdateRequest.error.issues);
+    return NextResponse.json(clientProfileUpdateRequest.error.issues, { status: 422 });
   }
   try {
     //todo: check access
