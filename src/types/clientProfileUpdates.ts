@@ -45,12 +45,7 @@ export const ParsedClientProfileUpdatesResponseSchema = z.object({
     iconImageUrl: z.string().nullable(),
   }),
   lastUpdated: z.date(),
-  // customFields: z.array(z.object({
-  //   name: z.string(),
-  //   key: z.string(),
-  //   value: z.union([z.string(), z.array(z.string())]),
-  //   isChanged: z.boolean(),
-  // }))
+  customFields: z.unknown(),
 });
 export type ParsedClientProfileUpdatesResponse = z.infer<typeof ParsedClientProfileUpdatesResponseSchema>;
 

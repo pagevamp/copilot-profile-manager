@@ -33,8 +33,7 @@ export async function POST(request: NextRequest) {
       changedFields,
     });
 
-    return NextResponse.json(clientUpdateResponse);
-    // return NextResponse.json({  });
+    return NextResponse.json({});
   } catch (error) {
     return handleError(error);
   }
