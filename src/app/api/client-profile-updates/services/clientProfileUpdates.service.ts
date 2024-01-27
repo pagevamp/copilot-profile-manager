@@ -48,7 +48,8 @@ export class ClientProfileUpdatesService {
       FROM "ClientProfileUpdates"
       WHERE "clientId" = ${clientId}::uuid
       AND "createdAt" <= ${lastUpdated}
-      AND "changedFields" ->> ${customFieldKey} IS NOT NULL;
+      AND "changedFields" ->> ${customFieldKey} IS NOT NULL
+      ORDER BY "createdAt" DESC;
     `;
   }
 }
