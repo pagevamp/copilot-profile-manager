@@ -15,6 +15,8 @@ export const ClientResponseSchema = z.object({
   familyName: z.string(),
   email: z.string(),
   companyId: z.string(),
+  status: z.string(),
+  avatarImageUrl: z.string().nullable(),
   customFields: z.record(z.string(), z.union([z.string(), z.array(z.string())])).nullable(),
 });
 export type ClientResponse = z.infer<typeof ClientResponseSchema>;
@@ -27,9 +29,14 @@ export type ClientsResponse = z.infer<typeof ClientsResponseSchema>;
 export const CompanyResponseSchema = z.object({
   id: z.string(),
   name: z.string(),
-  iconImageUrl: z.string(),
+  iconImageUrl: z.string().nullable(),
 });
 export type CompanyResponse = z.infer<typeof CompanyResponseSchema>;
+
+export const CompaniesResponseSchema = z.object({
+  data: z.array(CompanyResponseSchema).nullable(),
+});
+export type CompaniesResponse = z.infer<typeof CompaniesResponseSchema>;
 
 export const CustomFieldSchema = z.object({
   id: z.string(),
@@ -49,7 +56,16 @@ export const CustomFieldSchema = z.object({
     )
     .optional(),
 });
+export type CustomField = z.infer<typeof CustomFieldSchema>;
 export const CustomFieldResponseSchema = z.object({
   data: z.array(CustomFieldSchema).nullable(),
 });
 export type CustomFieldResponse = z.infer<typeof CustomFieldResponseSchema>;
+
+export const ClientRequestSchema = z.object({
+  givenName: z.string().optional(),
+  familyName: z.string().optional(),
+  companyId: z.string().uuid().optional(),
+  customFields: z.record(z.union([z.string(), z.array(z.string())])).optional(),
+});
+export type ClientRequest = z.infer<typeof ClientRequestSchema>;

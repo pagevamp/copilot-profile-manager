@@ -8,18 +8,38 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 enum Permission {
- VIEW
- EDIT
+  VIEW
+  EDIT
 }
 
 model CustomFieldAccess {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customFieldId String       @db.Uuid
+  portalId      String
+  permissions   Permission[]
+  createdAt     DateTime     @default(now()) @db.Timestamptz()
+  updatedAt     DateTime     @updatedAt @ignore @db.Timestamptz()
+}
+
+model ClientProfileUpdates {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  customFieldId String  @db.Uuid
-  companyId     String  @db.Uuid
-  permission    Permission
+  clientId      String   @db.Uuid
+  companyId     String   @db.Uuid
+  portalId      String
+  customFields  Json     @db.JsonB
+  changedFields Json     @db.JsonB
   createdAt     DateTime @default(now()) @db.Timestamptz()
   updatedAt     DateTime @updatedAt @ignore @db.Timestamptz()
+}
+
+model Setting {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  portalId     String
+  data Json     @db.JsonB
+  createdAt    DateTime @default(now()) @db.Timestamptz()
+  updatedAt    DateTime @updatedAt @ignore @db.Timestamptz()
 }

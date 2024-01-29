@@ -1,31 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CustomFieldAccessRequestSchema } from '@/types/customFieldAccess';
 import { CustomFieldAccessService } from '@/app/api/custom-field-access/services/customFieldAccess.service';
-import { errorHandler } from '@/utils/common';
+import { respondError } from '@/utils/common';
 import { CopilotAPI } from '@/utils/copilotApiUtils';
 import { z } from 'zod';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const token = searchParams.get('token');
-  const companyId = searchParams.get('companyId');
+  const portalId = searchParams.get('portalId');
   if (!token) {
-    return errorHandler('Missing token', 422);
+    return respondError('Missing token', 422);
   }
-  if (!companyId) {
-    return errorHandler('Missing companyId', 422);
+  if (!portalId) {
+    return respondError('Missing portalId', 422);
   }
   const copilotClient = new CopilotAPI(z.string().parse(token));
   const customFields = (await copilotClient.getCustomFields()).data;
 
   const customFieldAccessService = new CustomFieldAccessService();
-  const customFieldAccesses = await customFieldAccessService.findAll(z.string().uuid().parse(companyId));
+  const customFieldAccesses = await customFieldAccessService.findAll(z.string().parse(portalId));
 
   const customFieldsWithAccess = customFields?.map((customField) => {
     const customFieldAccess = customFieldAccesses.find((access) => access.customFieldId === customField.id);
     return {
       ...customField,
-      permission: customFieldAccess ? customFieldAccess.permission : null,
+      permission: customFieldAccess ? customFieldAccess.permissions : [],
     };
   });
 
@@ -36,7 +36,7 @@ export async function PUT(request: NextRequest) {
   const data = await request.json();
   const customFieldAccess = CustomFieldAccessRequestSchema.safeParse(data);
   if (!customFieldAccess.success) {
-    return NextResponse.json(customFieldAccess.error.issues);
+    return NextResponse.json(customFieldAccess.error.issues, { status: 422 });
   }
   const customFieldAccessService = new CustomFieldAccessService();
   await customFieldAccessService.save(customFieldAccess.data);

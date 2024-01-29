@@ -17,14 +17,14 @@ export class CustomFieldAccessService {
           customFieldId: {
             in: customFieldIds,
           },
-          companyId: requestData.companyId,
+          portalId: requestData.portalId,
         },
       },
     });
     const accesses = requestData.accesses.map((access) => {
       return {
         ...access,
-        companyId: requestData.companyId,
+        portalId: requestData.portalId,
       };
     });
     const createCustomFields = this.prismaClient.customFieldAccess.createMany({
@@ -34,10 +34,10 @@ export class CustomFieldAccessService {
     await this.prismaClient.$transaction([deleteCustomFields, createCustomFields]);
   }
 
-  async findAll(companyId: string): Promise<CustomFieldAccessResponse> {
+  async findAll(portalId: string): Promise<CustomFieldAccessResponse> {
     const customFieldAccesses = await this.prismaClient.customFieldAccess.findMany({
       where: {
-        companyId: companyId,
+        portalId: portalId,
       },
     });
 

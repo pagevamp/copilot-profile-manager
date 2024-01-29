@@ -6,10 +6,13 @@ import {
   ClientsResponseSchema,
   CompanyResponse,
   CompanyResponseSchema,
+  ClientRequest,
   CustomFieldResponse,
   CustomFieldResponseSchema,
   MeResponse,
   MeResponseSchema,
+  CompaniesResponse,
+  CompaniesResponseSchema,
 } from '@/types/common';
 import { copilotAPIKey } from '@/config';
 
@@ -35,8 +38,17 @@ export class CopilotAPI {
     return ClientsResponseSchema.parse(await this.copilot.listClients({}));
   }
 
+  async updateClient(clientId: string, requestBody: ClientRequest): Promise<ClientResponse> {
+    // @ts-ignore
+    return ClientResponseSchema.parse(await this.copilot.updateAClient({ id: clientId, requestBody }));
+  }
+
   async getCompany(companyId: string): Promise<CompanyResponse> {
     return CompanyResponseSchema.parse(await this.copilot.retrieveACompany({ id: companyId }));
+  }
+
+  async getCompanies(): Promise<CompaniesResponse> {
+    return CompaniesResponseSchema.parse(await this.copilot.listCompanies({}));
   }
 
   async getCustomFields(): Promise<CustomFieldResponse> {
