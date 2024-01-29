@@ -25,7 +25,7 @@ export function createLookup(array: any[] | undefined | null, key: string): Reco
 }
 
 export function getSelectedOptions(portalCustomField: CustomField, value: string | string[]) {
-  const options: any[] = [];
+  const options: unknown[] = [];
 
   if (portalCustomField.type === 'multiSelect' && value && Array.isArray(value) && portalCustomField.options) {
     portalCustomField.options.forEach((option) => {

@@ -22,13 +22,14 @@ export async function POST(request: NextRequest) {
     });
     const changedFields = getObjectDifference(clientUpdateResponse.customFields ?? {}, client.customFields ?? {});
     if (Object.keys(changedFields).length === 0) {
-      return respondError('No changes detected.', 400);
+      return NextResponse.json({});
     }
 
     const service = new ClientProfileUpdatesService();
     await service.save({
       clientId: clientProfileUpdateRequest.data.clientId,
       companyId: clientProfileUpdateRequest.data.companyId,
+      portalId: clientProfileUpdateRequest.data.portalId,
       customFields: clientUpdateResponse.customFields ?? {},
       changedFields,
     });
@@ -41,9 +42,13 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('token');
+  const portalId = request.nextUrl.searchParams.get('portalId');
 
   if (!token) {
     return respondError('Missing token', 422);
+  }
+  if (!portalId) {
+    return respondError('Missing portalId', 422);
   }
 
   try {
@@ -56,7 +61,7 @@ export async function GET(request: NextRequest) {
       copilotClient.getCustomFields(),
     ]);
     //todo:: filter companyIds based on currentUser restrictions
-    const clientProfileUpdates = await new ClientProfileUpdatesService().findByCompanyIds([]);
+    const clientProfileUpdates = await new ClientProfileUpdatesService().findMany(portalId, []);
 
     const clientLookup = createLookup(clients.data, 'id');
     const companyLookup = createLookup(companies.data, 'id');

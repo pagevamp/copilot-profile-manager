@@ -7,6 +7,7 @@ export const ClientProfileUpdatesRequestSchema = z.object({
   token: z.string(),
   clientId: z.string().uuid(),
   companyId: z.string().uuid(),
+  portalId: z.string(),
   form: CustomFieldUpdatesSchema,
 });
 export type ClientProfileUpdatesRequest = z.infer<typeof ClientProfileUpdatesRequestSchema>;
@@ -14,6 +15,7 @@ export type ClientProfileUpdatesRequest = z.infer<typeof ClientProfileUpdatesReq
 export const ClientProfileUpdatesSchema = z.object({
   clientId: z.string().uuid(),
   companyId: z.string().uuid(),
+  portalId: z.string(),
   customFields: CustomFieldUpdatesSchema,
   changedFields: CustomFieldUpdatesSchema,
 });

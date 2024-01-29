@@ -15,24 +15,30 @@ export class ClientProfileUpdatesService {
       data: {
         clientId: requestData.clientId,
         companyId: requestData.companyId,
+        portalId: requestData.portalId,
         customFields: requestData.customFields,
         changedFields: requestData.changedFields,
       },
     });
   }
 
-  async findByCompanyIds(companyIds: Array<string>): Promise<ClientProfileUpdatesResponse> {
+  async findMany(portalId: string, companyIds: Array<string>): Promise<ClientProfileUpdatesResponse> {
     let clientProfileUpdates = [];
     if (companyIds.length > 0) {
       clientProfileUpdates = await this.prismaClient.clientProfileUpdates.findMany({
         where: {
-          id: {
+          portalId: portalId,
+          companyId: {
             in: companyIds,
           },
         },
       });
     } else {
-      clientProfileUpdates = await this.prismaClient.clientProfileUpdates.findMany();
+      clientProfileUpdates = await this.prismaClient.clientProfileUpdates.findMany({
+        where: {
+          portalId: portalId,
+        },
+      });
     }
 
     return ClientProfileUpdatesResponseSchema.parse(clientProfileUpdates);
