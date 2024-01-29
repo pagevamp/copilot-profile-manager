@@ -39,7 +39,7 @@ model ClientProfileUpdates {
 model Setting {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   portalId     String
-  profileLinks Json     @db.JsonB
+  data Json     @db.JsonB
   createdAt    DateTime @default(now()) @db.Timestamptz()
   updatedAt    DateTime @updatedAt @ignore @db.Timestamptz()
 }

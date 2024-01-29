@@ -28,7 +28,9 @@ export class SettingService {
       await this.prismaClient.setting.create({
         data: {
           portalId: requestData.portalId,
-          profileLinks: requestData.profileLinks,
+          data: {
+            profileLinks: requestData.profileLinks,
+          },
         },
       });
 
@@ -40,7 +42,9 @@ export class SettingService {
         id: settingByPortal.id,
       },
       data: {
-        profileLinks: requestData.profileLinks,
+        data: {
+          profileLinks: requestData.profileLinks,
+        },
       },
     });
   }

@@ -26,5 +26,5 @@ export async function GET(request: NextRequest) {
   }
   const setting = await new SettingService().findByPortalId(portalId);
 
-  return NextResponse.json({ data: setting });
+  return NextResponse.json({ data: setting?.data });
 }

@@ -22,6 +22,7 @@ export class ClientProfileUpdatesService {
     });
   }
 
+  // Company Filter is not applied if companyIds is empty
   async findMany(portalId: string, companyIds: Array<string>): Promise<ClientProfileUpdatesResponse> {
     let clientProfileUpdates = [];
     if (companyIds.length > 0) {

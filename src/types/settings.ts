@@ -14,6 +14,8 @@ export type SettingRequest = z.infer<typeof SettingRequestSchema>;
 
 export const SettingResponseSchema = z.object({
   id: z.string().uuid(),
-  profileLinks: z.array(z.nativeEnum(ProfileLinks)),
+  data: z.object({
+    profileLinks: z.array(z.nativeEnum(ProfileLinks)),
+  }),
 });
 export type SettingResponse = z.infer<typeof SettingResponseSchema>;

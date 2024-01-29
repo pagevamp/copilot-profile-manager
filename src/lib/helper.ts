@@ -14,6 +14,7 @@ export function getObjectDifference(obj1: Record<string, string | string[]>, obj
   return diff;
 }
 
+// todo:: Need refactor, possibly create generics
 export function createLookup(array: any[] | undefined | null, key: string): Record<string, any> {
   const lookup: Record<string, any> = {};
 
