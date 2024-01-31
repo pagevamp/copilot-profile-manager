@@ -4,6 +4,7 @@ import MainSection from './views/MainSection';
 import { SidebarDecider } from '@/hoc/SidebarDecider';
 import { apiUrl } from '@/config';
 import { ParsedClientProfileUpdatesResponse } from '@/types/clientProfileUpdates';
+import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
 
 export const revalidate = 0;
 
@@ -17,7 +18,25 @@ async function getClientProfileUpdates({
   const res = await fetch(`${apiUrl}/api/client-profile-updates?token=${token}&portalId=${portalId}`);
 
   if (!res.ok) {
-    throw new Error('Something went wrong while in getClientProfileUpdates');
+    throw new Error('Something went wrong in getClientProfileUpdates');
+  }
+
+  const data = await res.json();
+
+  return data;
+}
+
+async function getCustomFieldAccess({
+  token,
+  portalId,
+}: {
+  token: string;
+  portalId: string;
+}): Promise<CustomFieldAccessResponse> {
+  const res = await fetch(`${apiUrl}/api/custom-field-access?token=${token}&portalId=${portalId}`);
+
+  if (!res.ok) {
+    throw new Error('Something went wrong in getCustomFieldAccess');
   }
 
   const data = await res.json();
@@ -29,6 +48,7 @@ export default async function Home({ searchParams }: { searchParams: { token: st
   const { token, portalId } = searchParams;
 
   const clientProfileUpdates = await getClientProfileUpdates({ token, portalId });
+  const customFieldAccess = await getCustomFieldAccess({ token, portalId });
 
   return (
     <Stack direction="row">
