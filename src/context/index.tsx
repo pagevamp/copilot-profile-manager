@@ -5,11 +5,13 @@ import { FC, ReactNode, useState, createContext, Dispatch, SetStateAction } from
 export interface IAppState {
   showSidebar: boolean;
   searchKeyword: string;
+  clientProfileUpdates: any[];
 }
 
 export interface IAppContext {
   showSidebar: boolean;
   searchKeyword: string;
+  clientProfileUpdates: any[];
   setAppState: Dispatch<SetStateAction<IAppState>>;
 }
 
@@ -23,6 +25,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
   const [state, setState] = useState<IAppState>({
     showSidebar: false,
     searchKeyword: '',
+    clientProfileUpdates: [],
   });
 
   return (
@@ -30,6 +33,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
       value={{
         showSidebar: state.showSidebar,
         searchKeyword: state.searchKeyword,
+        clientProfileUpdates: state.clientProfileUpdates,
         setAppState: setState,
       }}
     >

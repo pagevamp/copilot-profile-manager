@@ -70,11 +70,19 @@ export async function GET(request: NextRequest) {
       const client = clientLookup[update.clientId];
       const company = companyLookup[update.companyId];
 
-      const customFields = portalCustomFields.data?.map((portalCustomField) => {
+      let parsedClientProfileUpdate: ParsedClientProfileUpdatesResponse = {
+        id: update.id,
+        client: getClientDetails(client),
+        company: getCompanyDetails(company),
+        lastUpdated: update.createdAt,
+      };
+
+      portalCustomFields.data?.forEach((portalCustomField) => {
         const value = update.customFields[portalCustomField.key] ?? null;
         const options = getSelectedOptions(portalCustomField, value);
 
-        return {
+        // @ts-ignore
+        parsedClientProfileUpdate[portalCustomField.name] = {
           name: portalCustomField.name,
           type: portalCustomField.type,
           key: portalCustomField.key,
@@ -83,13 +91,7 @@ export async function GET(request: NextRequest) {
         };
       });
 
-      return {
-        id: update.id,
-        client: getClientDetails(client),
-        company: getCompanyDetails(company),
-        lastUpdated: update.createdAt,
-        customFields,
-      };
+      return parsedClientProfileUpdate;
     });
 
     return NextResponse.json(parsedClientProfileUpdates);

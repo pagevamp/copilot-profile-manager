@@ -1,10 +1,12 @@
 import { Box, Popper, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-export const HistoryCellRenderer = ({ value }: { value: string }) => {
-  const h = value.split(' ');
-  const val = h[0];
-  const showDot = h[1] === 'true';
+export const HistoryCellRenderer = ({
+  value,
+}: {
+  value: { name: string; type: string; key: string; value: any; isChanged: boolean };
+}) => {
+  const showDot = value.isChanged;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
@@ -21,6 +23,64 @@ export const HistoryCellRenderer = ({ value }: { value: string }) => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popper' : undefined;
+
+  if (value.value === null) {
+    return null;
+  }
+
+  if (value.type === 'multiSelect') {
+    return (
+      <Box position="relative">
+        {showDot && (
+          <Typography
+            aria-describedby={id}
+            variant="bodyMd"
+            fontSize={20}
+            sx={{
+              position: 'absolute',
+              left: -15,
+              top: 0,
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            &#x2022;
+          </Typography>
+        )}
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{
+            marginTop: '10px',
+          }}
+          columnGap={'2px'}
+        >
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{
+              padding: '4px 8px',
+              border: `1px solid rgba(255, 120, 0, 1)`,
+              // backgroundColor: value.value[0].color,
+              backgroundColor: 'rgba(255, 120, 0, 0.3)',
+              color: 'rgba(255, 120, 0, 1)',
+              fontWeight: '600',
+              borderRadius: '35px',
+              width: 'fit-content',
+            }}
+          >
+            <Typography variant="bodyMd">&#x2022;</Typography>
+
+            <Typography variant="bodySm" fontWeight={500}>
+              {value.value ? value.value[0].label : ''}
+            </Typography>
+          </Stack>
+
+          <Typography variant="bodyMd">+{value.value.length - 1}</Typography>
+        </Stack>
+      </Box>
+    );
+  }
 
   return (
     <Box position="relative">
@@ -40,7 +100,7 @@ export const HistoryCellRenderer = ({ value }: { value: string }) => {
           &#x2022;
         </Typography>
       )}
-      <Typography variant="bodyMd">{val}</Typography>
+      <Typography variant="bodyMd">{value.value}</Typography>
 
       <Popper id={id} open={open} anchorEl={anchorEl}>
         <HistoryList />

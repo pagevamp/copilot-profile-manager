@@ -11,7 +11,7 @@ export class ClientProfileUpdatesService {
   private prismaClient: PrismaClient = DBClient.getInstance();
 
   async save(requestData: ClientProfileUpdates): Promise<void> {
-    await this.prismaClient.clientProfileUpdates.create({
+    await this.prismaClient.clientProtileUpdates.create({
       data: {
         clientId: requestData.clientId,
         companyId: requestData.companyId,
@@ -52,7 +52,8 @@ export class ClientProfileUpdatesService {
       WHERE "clientId" = ${clientId}::uuid
       AND "createdAt" <= ${lastUpdated}
       AND "changedFields" ->> ${customFieldKey} IS NOT NULL
-      ORDER BY "createdAt" DESC;
+      ORDER BY "createdAt" DESC
+      LIMIT 5;
     `;
   }
 }
