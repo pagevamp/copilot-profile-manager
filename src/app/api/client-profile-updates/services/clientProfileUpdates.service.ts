@@ -52,7 +52,8 @@ export class ClientProfileUpdatesService {
       WHERE "clientId" = ${clientId}::uuid
       AND "createdAt" <= ${lastUpdated}
       AND "changedFields" ->> ${customFieldKey} IS NOT NULL
-      ORDER BY "createdAt" DESC;
+      ORDER BY "createdAt" DESC
+      LIMIT 5;
     `;
   }
 }
