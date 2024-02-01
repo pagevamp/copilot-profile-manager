@@ -5,6 +5,7 @@ import { SidebarDecider } from '@/hoc/SidebarDecider';
 import { apiUrl } from '@/config';
 import { ParsedClientProfileUpdatesResponse } from '@/types/clientProfileUpdates';
 import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
+import { ContextUpdate } from '@/hoc/ContextUpdate';
 
 export const revalidate = 0;
 
@@ -39,7 +40,19 @@ async function getCustomFieldAccess({
     throw new Error('Something went wrong in getCustomFieldAccess');
   }
 
-  const data = await res.json();
+  const { data } = await res.json();
+
+  return data;
+}
+
+async function getSettings({ token, portalId }: { token: string; portalId: string }) {
+  const res = await fetch(`${apiUrl}/api/settings?token=${token}&portalId=${portalId}`);
+
+  if (!res.ok) {
+    throw new Error('Something went wrong in getSettings');
+  }
+
+  const { data } = await res.json();
 
   return data;
 }
@@ -49,14 +62,23 @@ export default async function Home({ searchParams }: { searchParams: { token: st
 
   const clientProfileUpdates = await getClientProfileUpdates({ token, portalId });
   const customFieldAccess = await getCustomFieldAccess({ token, portalId });
+  const settings = await getSettings({ token, portalId });
 
   return (
-    <Stack direction="row">
-      <MainSection clientProfileUpdates={clientProfileUpdates} />
+    <ContextUpdate
+      clientProfileUpdates={clientProfileUpdates}
+      settings={settings.profileLinks}
+      access={customFieldAccess}
+      token={token}
+      portalId={portalId}
+    >
+      <Stack direction="row">
+        <MainSection />
 
-      <SidebarDecider>
-        <Sidebar />
-      </SidebarDecider>
-    </Stack>
+        <SidebarDecider>
+          <Sidebar />
+        </SidebarDecider>
+      </Stack>
+    </ContextUpdate>
   );
 }

@@ -6,20 +6,10 @@ import { Header } from '@/layouts/Header';
 import { Box } from '@mui/material';
 import { Sidebar } from './Sidebar';
 import { TableCore } from '@/components/table/Table';
-import { ParsedClientProfileUpdatesResponse } from '@/types/clientProfileUpdates';
-import { useEffect } from 'react';
 
-interface IMainSection {
-  clientProfileUpdates: ParsedClientProfileUpdatesResponse[];
-}
-
-const MainSection = ({ clientProfileUpdates }: IMainSection) => {
+const MainSection = () => {
   const appState = useAppState();
   const windowWidth = useWindowWidth();
-
-  useEffect(() => {
-    appState?.setAppState((prev) => ({ ...prev, clientProfileUpdates }));
-  }, [clientProfileUpdates]);
 
   return (
     <Box

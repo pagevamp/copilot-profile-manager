@@ -1,27 +1,50 @@
+'use client';
+
 import { Box, Stack, Typography, Divider } from '@mui/material';
 import { StyledCheckBox } from '../styled/StyledCheckbox';
-import { useState } from 'react';
+import { useAppState } from '@/hooks/useAppState';
+import { iconsTypeMap } from './iconsTypeMap';
 
-interface ICustomFieldAccessTable {
-  customFields: {
-    id: string;
-    icon: any;
-    field: string;
-    view: boolean;
-    edit: boolean;
-  }[];
-}
+export const CustomFieldAccessTable = () => {
+  const appState = useAppState();
 
-export const CustomFieldAccessTable = ({ customFields }: ICustomFieldAccessTable) => {
-  const [data, setData] = useState<
-    {
-      id: string;
-      icon: any;
-      field: string;
-      view: boolean;
-      edit: boolean;
-    }[]
-  >(customFields);
+  const updateCustomFieldAccess = (checked: boolean, permission: string, id: string) => {
+    let customField = appState?.mutableCustomFieldAccess.find((el: any) => el.id === id);
+    if (checked) {
+      if (permission === 'VIEW') {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes('VIEW') ? customField.permission : [...customField.permission, 'VIEW'],
+        };
+      }
+      if (permission === 'EDIT') {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes('EDIT') ? customField.permission : [...customField.permission, 'EDIT'],
+        };
+      }
+    }
+    if (!checked) {
+      if (permission === 'VIEW') {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes('VIEW') ? [] : customField.permission,
+        };
+      }
+      if (permission === 'EDIT') {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes('EDIT')
+            ? customField.permission.filter((item: string) => item !== 'EDIT')
+            : customField.permission,
+        };
+      }
+    }
+    let indexToUpdate = appState?.mutableCustomFieldAccess.findIndex((item: any) => item.id === id);
+    let allCustomFields = appState?.mutableCustomFieldAccess;
+    allCustomFields[indexToUpdate] = customField;
+    appState?.setAppState((prev) => ({ ...prev, mutableCustomFieldAccess: allCustomFields }));
+  };
 
   return (
     <>
@@ -35,18 +58,40 @@ export const CustomFieldAccessTable = ({ customFields }: ICustomFieldAccessTable
         </Stack>
       </Stack>
       <Divider flexItem />
-      {data.map((field, key) => {
+      {appState?.mutableCustomFieldAccess.map((field: any, key: number) => {
         return (
           <Stack direction="row" justifyContent="space-between" alignItems="center" p="8px 0px" key={key}>
             <Box minWidth="215px">
               <Stack direction="row" alignItems="center" columnGap={2}>
-                {field.icon}
-                <Typography variant="bodyMd">{field.field}</Typography>
+                {iconsTypeMap[field.type]}
+                <Typography variant="bodyMd">{field.name}</Typography>
               </Stack>
             </Box>
             <Stack direction="row" columnGap={12} alignItems="center">
-              <StyledCheckBox checked={field.view} handleChange={(c) => {}} />
-              <StyledCheckBox checked={field.edit} handleChange={(c) => {}} />
+              <StyledCheckBox
+                checked={field.permission.includes('VIEW')}
+                handleChange={(checked) => {
+                  updateCustomFieldAccess(checked, 'VIEW', field.id);
+                }}
+              />
+              {field.permission.includes('VIEW') ? (
+                <StyledCheckBox
+                  checked={field.permission.includes('EDIT')}
+                  handleChange={(checked) => {
+                    updateCustomFieldAccess(checked, 'EDIT', field.id);
+                  }}
+                />
+              ) : (
+                <Stack
+                  direction="row"
+                  justifyContent="end"
+                  sx={{
+                    width: '20px',
+                  }}
+                >
+                  <Typography variant="sm">-</Typography>
+                </Stack>
+              )}
             </Stack>
           </Stack>
         );

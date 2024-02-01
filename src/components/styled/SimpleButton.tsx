@@ -8,4 +8,5 @@ export const SimpleButton = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.color.borders.border}`,
   background: theme.color.base.white,
   cursor: 'pointer',
+  color: '#212B36',
 }));
