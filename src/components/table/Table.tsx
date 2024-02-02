@@ -9,6 +9,7 @@ import { CompanyCellRenderer } from './cellRenderers/CompanyCellRenderer';
 import { HistoryCellRenderer } from './cellRenderers/HistoryCellRenderer';
 import { useAppState } from '@/hooks/useAppState';
 import { getTimeAgo } from '@/utils/getTimeAgo';
+import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
 
 export const TableCore = () => {
   const appState = useAppState();
@@ -115,7 +116,18 @@ export const TableCore = () => {
   }, []);
 
   return (
-    <Box className="ag-theme-quartz" sx={{ height: '90vh', width: '100%', padding: { xs: 0, sm: '24px 24px 0 24px' } }}>
+    <Box
+      className="ag-theme-quartz"
+      sx={{
+        height:
+          arraysHaveSameElements(appState?.mutableSettings, appState?.settings) &&
+          JSON.stringify(appState?.customFieldAccess) === JSON.stringify(appState?.mutableCustomFieldAccess)
+            ? '90vh'
+            : '82vh',
+        width: '100%',
+        padding: { xs: 0, sm: '24px 24px 0 24px' },
+      }}
+    >
       <AgGridReact
         className="on-scroll"
         rowData={rowData}

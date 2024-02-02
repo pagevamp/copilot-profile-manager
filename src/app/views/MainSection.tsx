@@ -6,6 +6,7 @@ import { Header } from '@/layouts/Header';
 import { Box } from '@mui/material';
 import { Sidebar } from './Sidebar';
 import { TableCore } from '@/components/table/Table';
+import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
 
 const MainSection = () => {
   const appState = useAppState();
@@ -17,6 +18,11 @@ const MainSection = () => {
         flexBasis: 0,
         maxWidth: '100%',
         flexGrow: 1,
+        height:
+          arraysHaveSameElements(appState?.mutableSettings, appState?.settings) &&
+          JSON.stringify(appState?.customFieldAccess) === JSON.stringify(appState?.mutableCustomFieldAccess)
+            ? '100vh'
+            : '92vh',
       }}
     >
       <Header />

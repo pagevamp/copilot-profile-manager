@@ -4,6 +4,7 @@ import { CustomFieldAccessTable } from '@/components/customFieldAccessTable/Cust
 import { Box, Stack, Typography } from '@mui/material';
 import { Switch } from '@/components/switch/Switch';
 import { useAppState } from '@/hooks/useAppState';
+import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
 
 export const Sidebar = () => {
   const appState = useAppState();
@@ -45,10 +46,15 @@ export const Sidebar = () => {
         width: { xs: '100%', sm: '400px' },
         borderTop: `1px solid ${theme.color.borders.border}`,
         borderLeft: `1px solid ${theme.color.borders.border}`,
-        height: '100vh',
+        // height: '100vh',
         display: appState?.showSidebar ? 'block' : 'none',
         flexShrink: 0,
         zIndex: 1200,
+        height:
+          arraysHaveSameElements(appState?.mutableSettings, appState?.settings) &&
+          JSON.stringify(appState?.customFieldAccess) === JSON.stringify(appState?.mutableCustomFieldAccess)
+            ? '100vh'
+            : '92vh',
       })}
     >
       <Box

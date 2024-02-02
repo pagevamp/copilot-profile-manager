@@ -10,6 +10,7 @@ export const CustomFieldAccessTable = () => {
 
   const updateCustomFieldAccess = (checked: boolean, permission: string, id: string) => {
     let customField = appState?.mutableCustomFieldAccess.find((el: any) => el.id === id);
+
     if (checked) {
       if (permission === 'VIEW') {
         customField = {
@@ -24,6 +25,7 @@ export const CustomFieldAccessTable = () => {
         };
       }
     }
+
     if (!checked) {
       if (permission === 'VIEW') {
         customField = {
@@ -40,9 +42,12 @@ export const CustomFieldAccessTable = () => {
         };
       }
     }
+
     let indexToUpdate = appState?.mutableCustomFieldAccess.findIndex((item: any) => item.id === id);
-    let allCustomFields = appState?.mutableCustomFieldAccess;
+    let allCustomFields = [...appState?.mutableCustomFieldAccess]; // Create a copy of the array
+
     allCustomFields[indexToUpdate] = customField;
+
     appState?.setAppState((prev) => ({ ...prev, mutableCustomFieldAccess: allCustomFields }));
   };
 
