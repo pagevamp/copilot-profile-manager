@@ -6,9 +6,11 @@ interface IMultiSelect<T extends object> {
   data: T[];
   chipColor: string;
   nameField: (item: T) => string; // Function to extract the name from the item
+  value: any;
+  getSelectedValue: (value: any) => void;
 }
 
-export const MultiSelect = <T extends object>({ data, chipColor, nameField }: IMultiSelect<T>) => {
+export const MultiSelect = <T extends object>({ data, chipColor, nameField, value, getSelectedValue }: IMultiSelect<T>) => {
   const reducedOpacityColor = (opacity: number) => {
     const match = chipColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
     if (match) {
@@ -20,13 +22,17 @@ export const MultiSelect = <T extends object>({ data, chipColor, nameField }: IM
 
   return (
     <Autocomplete
+      onChange={(event: any, newValue: any) => {
+        getSelectedValue(newValue);
+      }}
+      value={value}
       multiple
       id="tags-outlined"
       options={data}
       getOptionLabel={(option: T) => nameField(option)}
       filterSelectedOptions
       autoHighlight
-      renderInput={(params) => <StyledTextInput {...params} placeholder="Favorites" />}
+      renderInput={(params) => <StyledTextInput {...params} />}
       renderTags={(value: T[], getTagProps) =>
         value.map((option: T, index: number) => (
           <Chip

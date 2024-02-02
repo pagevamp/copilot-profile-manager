@@ -13,9 +13,7 @@ export const VariantButton1 = styled(Box)(({ theme }) => ({
 
 export const VariantButton2 = styled(Box)(({ theme }) => ({
   padding: '4px 8px',
-  border: '1px solid #212B36',
   borderRadius: theme.shape.radius400,
   cursor: 'pointer',
-  background: '#212B36',
   color: '#fff',
 }));

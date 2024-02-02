@@ -11,8 +11,7 @@ export class ClientProfileUpdatesService {
   private prismaClient: PrismaClient = DBClient.getInstance();
 
   async save(requestData: ClientProfileUpdates): Promise<void> {
-    //@ts-expect-error prisma generate unexpected error
-    await this.prismaClient.clientProtileUpdates.create({
+    await this.prismaClient.clientProfileUpdates.create({
       data: {
         clientId: requestData.clientId,
         companyId: requestData.companyId,
