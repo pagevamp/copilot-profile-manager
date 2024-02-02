@@ -90,6 +90,12 @@ export const TableCore = () => {
             field: el,
             flex: 1,
             cellRenderer: HistoryCellRenderer,
+            valueGetter: (params: any) => {
+              return {
+                row: params.data,
+                key: el,
+              };
+            },
           },
         ];
       });
