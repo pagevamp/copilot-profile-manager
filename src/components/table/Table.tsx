@@ -59,6 +59,13 @@ export const TableCore = () => {
               cellRenderer: ClientCellRenderer,
               flex: 1,
               comparator: comparatorTypeI,
+              getQuickFilterText: (params: any) => {
+                const data = params.data[el];
+                if (data && data.name !== null) {
+                  return data.name.toString().toLowerCase();
+                }
+                return '';
+              },
               minWidth: 250,
               valueGetter: (params: any) => {
                 const client = params.data[el];
@@ -80,6 +87,13 @@ export const TableCore = () => {
               cellRenderer: CompanyCellRenderer,
               flex: 1,
               comparator: comparatorTypeI,
+              getQuickFilterText: (params: any) => {
+                const data = params.data[el];
+                if (data && data.name !== null) {
+                  return data.name.toString().toLowerCase();
+                }
+                return '';
+              },
               valueGetter: (params: any) => {
                 const company = params.data[el];
                 return {
@@ -99,7 +113,8 @@ export const TableCore = () => {
               flex: 1,
               valueGetter: (params: any) => {
                 const lastUpdated = params.data[el];
-                return `${getTimeAgo(lastUpdated)} ago`;
+                const timeAgo = getTimeAgo(lastUpdated);
+                return timeAgo === 'just now' ? timeAgo : `${timeAgo} ago`;
               },
             },
           ];
@@ -122,7 +137,7 @@ export const TableCore = () => {
                 return '';
               } else {
                 if (data && data.value !== null) {
-                  return data.value.toString().toLowerCase(); // Adjust as needed
+                  return data.value.toString().toLowerCase();
                 }
                 return '';
               }
