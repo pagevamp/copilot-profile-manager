@@ -37,7 +37,6 @@ export const ManagePageContainer = ({
   useMemo(() => {
     if (_customFieldAccess.length > 0) {
       const allowedFields = _customFieldAccess.filter((field: any) => field.permission?.length > 0);
-      console.log(allowedFields);
       const getSelectedValuesForMultiSelect = (key: string) => {
         const values = customFieldsValue[key];
         if (!values) {
@@ -108,7 +107,7 @@ export const ManagePageContainer = ({
     setLoading(false);
   };
 
-  if (allowedCustomField.length === 0 || !allowedCustomField) {
+  if (allowedCustomField && allowedCustomField.length === 0) {
     return <EmptyStateFallback />;
   }
 
