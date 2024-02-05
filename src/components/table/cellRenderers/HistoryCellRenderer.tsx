@@ -1,4 +1,5 @@
 import { useAppState } from '@/hooks/useAppState';
+import { updateColor } from '@/utils/updateColor';
 import { Box, CircularProgress, Popper, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -17,7 +18,9 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
   const key = value.row[value.key].key;
 
   const showDot = data.isChanged;
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [multiSelectAnchor, setMultiSelectAnchor] = React.useState<null | HTMLElement>(null);
 
   const fetchHistory = async () => {
     setLoading(true);
@@ -43,14 +46,25 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
     }
   };
 
+  const handleMouseEnterMultiSelect = (event: React.MouseEvent<HTMLElement>) => {
+    setMultiSelectAnchor(multiSelectAnchor ? null : event.currentTarget);
+  };
+
+  const handleMouseLeaveMultiSelect = (event: React.MouseEvent<HTMLElement>) => {
+    if (multiSelectAnchor === event.currentTarget) {
+      setMultiSelectAnchor(null);
+    }
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popper' : undefined;
+
+  const multiSelectAnchorOpen = Boolean(multiSelectAnchor);
+  const multiSelectAnchorId = multiSelectAnchorOpen ? 'multiselect-popper' : undefined;
 
   if (data.value === null) {
     return null;
   }
-
-  console.log(updateHistory);
 
   if (data.type === 'multiSelect') {
     return (
@@ -63,7 +77,7 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
             sx={{
               position: 'absolute',
               left: -15,
-              top: 0,
+              top: 5,
             }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -84,10 +98,10 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
             alignItems="center"
             sx={{
               padding: '4px 8px',
-              border: `1px solid rgba(255, 120, 0, 1)`,
-              // backgroundColor: value.value[0].color,
-              backgroundColor: 'rgba(255, 120, 0, 0.3)',
-              color: 'rgba(255, 120, 0, 1)',
+              borderColor: updateColor(data.value[0].color, 0.3),
+              border: '2px solid',
+              backgroundColor: updateColor(data.value[0].color, 0.1),
+              color: data.value[0].color,
               fontWeight: '600',
               borderRadius: '35px',
               width: 'fit-content',
@@ -101,10 +115,54 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
             </Typography>
           </Stack>
 
-          <Typography variant="bodyMd">{data.value.length > 1 && `+ ${data.value.length - 1}`}</Typography>
+          <Typography onMouseEnter={handleMouseEnterMultiSelect} onMouseLeave={handleMouseLeaveMultiSelect} variant="bodyMd">
+            {data.value.length > 1 && `+ ${data.value.length - 1}`}
+          </Typography>
         </Stack>
         <Popper id={id} open={open} anchorEl={anchorEl}>
           {loading ? <CircularProgress size={20} color="inherit" /> : <HistoryList updateHistory={updateHistory} />}
+        </Popper>
+        <Popper id={multiSelectAnchorId} open={multiSelectAnchorOpen} anchorEl={multiSelectAnchor}>
+          <Stack
+            direction="row"
+            sx={(theme) => ({
+              border: `1px solid ${theme.color.borders.border}`,
+              borderRadius: theme.shape.radius100,
+              backgroundColor: theme.color.base.white,
+              boxShadow: '0px 8px 24px 0px rgba(0, 0, 0, 0.12)',
+              padding: 4,
+              minWidth: '200px',
+              columnGap: '10px',
+            })}
+          >
+            {data.value.map((el: any, key: number) => {
+              if (key === 0) return null;
+              return (
+                <Stack
+                  key={key}
+                  direction="row"
+                  alignItems="center"
+                  sx={{
+                    padding: '4px 8px',
+                    borderColor: updateColor(el.color, 0.3),
+                    border: '2px solid',
+                    backgroundColor: updateColor(el.color, 0.1),
+                    color: el.color,
+                    fontWeight: '600',
+                    borderRadius: '35px',
+                    width: 'fit-content',
+                    minWidth: '40px',
+                  }}
+                >
+                  <Typography variant="bodyMd">&#x2022;</Typography>
+
+                  <Typography variant="bodySm" fontWeight={500}>
+                    {el.label}
+                  </Typography>
+                </Stack>
+              );
+            })}
+          </Stack>
         </Popper>
       </Box>
     );
@@ -120,7 +178,7 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
           sx={{
             position: 'absolute',
             left: -15,
-            top: 10,
+            top: 15,
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -138,7 +196,6 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
 };
 
 const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
-  console.log(updateHistory);
   return (
     <Box
       sx={(theme) => ({
@@ -166,10 +223,10 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
                         alignItems="center"
                         sx={{
                           padding: '4px 8px',
-                          border: `1px solid rgba(255, 120, 0, 1)`,
-                          // backgroundColor: value.value[0].color,
-                          backgroundColor: 'rgba(255, 120, 0, 0.3)',
-                          color: 'rgba(255, 120, 0, 1)',
+                          borderColor: updateColor(el.color, 0.3),
+                          border: '2px solid',
+                          backgroundColor: updateColor(el.color, 0.1),
+                          color: el.color,
                           fontWeight: '600',
                           borderRadius: '35px',
                           width: 'fit-content',

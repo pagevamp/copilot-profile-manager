@@ -3,7 +3,6 @@
 import { FooterSave } from '@/components/footerSave/FooterSave';
 import { MultiSelect } from '@/components/multiSelect/MultiSelect';
 import { StyledTextInput } from '@/components/styled/StyledTextInput';
-import { apiUrl } from '@/config';
 import { Stack, Typography, styled } from '@mui/material';
 import { useMemo, useState } from 'react';
 
@@ -142,7 +141,6 @@ export const ManagePageContainer = ({
                   <MultiSelect<{ label: string }>
                     key={key}
                     data={field.options}
-                    chipColor="rgb(0, 0, 255)"
                     nameField={(item) => item.label}
                     value={profileData && profileData[field.key]}
                     getSelectedValue={(value) => {
