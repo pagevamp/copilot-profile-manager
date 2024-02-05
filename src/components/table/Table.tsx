@@ -20,6 +20,28 @@ export const TableCore = () => {
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState<any>([]);
 
+  const comparatorTypeI = (valueA: any, valueB: any) => {
+    if (valueA.name < valueB.name) {
+      return -1;
+    }
+    if (valueA.name > valueB.name) {
+      return 1;
+    }
+
+    return 0;
+  };
+
+  const comparatorTypeII = (valueA: any, valueB: any) => {
+    if (valueA.row[valueA.key].value < valueB.row[valueB.key].value) {
+      return -1;
+    }
+    if (valueA.row[valueA.key].value > valueB.row[valueB.key].value) {
+      return 1;
+    }
+
+    return 0;
+  };
+
   useEffect(() => {
     setRowData(appState?.clientProfileUpdates);
 
@@ -89,6 +111,8 @@ export const TableCore = () => {
           {
             field: el,
             flex: 1,
+            sortable: col[el].type === 'multiSelect' ? false : true,
+            comparator: comparatorTypeII,
             cellRenderer: HistoryCellRenderer,
             valueGetter: (params: any) => {
               return {
@@ -102,17 +126,6 @@ export const TableCore = () => {
       setColDefs(colDefs);
     }
   }, [appState?.clientProfileUpdates]);
-
-  const comparatorTypeI = (valueA: any, valueB: any) => {
-    if (valueA.name < valueB.name) {
-      return -1;
-    }
-    if (valueA.name > valueB.name) {
-      return 1;
-    }
-
-    return 0; // names are equal
-  };
 
   const defaultColDef = useMemo(() => {
     return {
