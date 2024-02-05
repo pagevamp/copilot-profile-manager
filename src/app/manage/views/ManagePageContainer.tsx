@@ -5,6 +5,7 @@ import { MultiSelect } from '@/components/multiSelect/MultiSelect';
 import { StyledTextInput } from '@/components/styled/StyledTextInput';
 import { Stack, Typography, styled } from '@mui/material';
 import { useMemo, useState } from 'react';
+import { EmptyStateFallback } from './EmptyStateFallback';
 
 export const ManagePageContainer = ({
   customFieldAccess,
@@ -106,6 +107,10 @@ export const ManagePageContainer = ({
 
     setLoading(false);
   };
+
+  if (allowedCustomField.length === 0 || !allowedCustomField) {
+    return <EmptyStateFallback />;
+  }
 
   return (
     <>
