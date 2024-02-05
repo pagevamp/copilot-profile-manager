@@ -27,15 +27,16 @@ export const ManagePageContainer = ({
 
   const [allowedCustomField, setAllowedCustomField] = useState<any>(null);
 
-  const customFieldsValue: any | null = client.customFields;
+  const [customFieldsValue, setCustomFieldsValue] = useState<any>(client.customFields);
 
   const [profileData, setProfileData] = useState<any>({});
 
   const [originalProfileData, setOriginalProfileData] = useState<any>({});
 
   useMemo(() => {
-    if (customFieldAccess.length > 0) {
-      const allowedFields = customFieldAccess.filter((field: any) => field.permission?.length > 0);
+    if (_customFieldAccess.length > 0) {
+      const allowedFields = _customFieldAccess.filter((field: any) => field.permission?.length > 0);
+      console.log(allowedFields);
       const getSelectedValuesForMultiSelect = (key: string) => {
         const values = customFieldsValue[key];
         if (!values) {
@@ -94,6 +95,12 @@ export const ManagePageContainer = ({
     const res = await fetch(`/api/custom-field-access?token=${token}&portalId=${portalId}`);
 
     const { data } = await res.json();
+
+    const client = await fetch(`/api/client?clientId=${clientId}&token=${token}`);
+
+    const updatedClientData = await client.json();
+
+    setCustomFieldsValue(updatedClientData.data.customFields);
 
     setCustomFieldAccess(data);
 
