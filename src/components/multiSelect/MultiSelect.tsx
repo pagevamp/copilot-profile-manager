@@ -32,7 +32,7 @@ export const MultiSelect = <T extends object>({ data, nameField, value, getSelec
             {...getTagProps({ index })}
             key={index}
             deleteIcon={<ClearOutlined />}
-            avatar={<FiberManualRecord />}
+            avatar={<FiberManualRecord fontSize="small" />}
             sx={{
               '&.MuiChip-root': {
                 borderColor: updateColor(option.color, 0.3),

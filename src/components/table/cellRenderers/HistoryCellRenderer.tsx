@@ -1,5 +1,6 @@
 import { useAppState } from '@/hooks/useAppState';
 import { updateColor } from '@/utils/updateColor';
+import { FiberManualRecord } from '@mui/icons-material';
 import { Box, CircularProgress, Popper, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -106,9 +107,12 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
               borderRadius: '35px',
               width: 'fit-content',
               minWidth: '40px',
+              columnGap: '6px',
             }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            <Typography variant="bodyMd">&#x2022;</Typography>
+            <FiberManualRecord fontSize="small" />
 
             <Typography variant="bodySm" fontWeight={500}>
               {data.value ? data.value[0].label : ''}
@@ -154,7 +158,7 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
                     minWidth: '40px',
                   }}
                 >
-                  <Typography variant="bodyMd">&#x2022;</Typography>
+                  <FiberManualRecord fontSize="small" />
 
                   <Typography variant="bodySm" fontWeight={500}>
                     {el.label}
@@ -186,7 +190,9 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
           &#x2022;
         </Typography>
       )}
-      <Typography variant="bodyMd">{data.value}</Typography>
+      <Typography variant="bodyMd" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        {data.value}
+      </Typography>
 
       <Popper id={id} open={open} anchorEl={anchorEl}>
         {loading ? <CircularProgress size={20} color="inherit" /> : <HistoryList updateHistory={updateHistory} />}
@@ -208,12 +214,14 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
       })}
     >
       <Typography variant="sm">Update history</Typography>
-      <Stack direction="column" rowGap={3}>
+      <Stack direction="column" rowGap={1.5}>
         {updateHistory.map((history: any, key: number) => {
           if (history.type === 'multiSelect') {
             return (
               <Stack key={key} direction="row" alignItems="center" columnGap={3}>
-                <Typography variant="bodySm">&#x2022;</Typography>
+                <Typography variant="bodyMd" fontSize={20}>
+                  &#x2022;
+                </Typography>
                 <Stack direction="row" columnGap={2}>
                   {history.value.map((el: any, key: number) => {
                     return (
@@ -233,7 +241,7 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
                           minWidth: '40px',
                         }}
                       >
-                        <Typography variant="bodyMd">&#x2022;</Typography>
+                        <FiberManualRecord fontSize="small" />
 
                         <Typography variant="bodySm" fontWeight={500}>
                           {el.label}
@@ -246,9 +254,14 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
             );
           }
           return (
-            <Typography variant="bodySm" key={key}>
-              <li>{history.value}</li>
-            </Typography>
+            <Stack key={key} direction="row" alignItems="center" columnGap={3}>
+              <Typography variant="bodyMd" fontSize={20}>
+                &#x2022;
+              </Typography>
+              <Typography variant="bodySm" key={key}>
+                {history.value}
+              </Typography>
+            </Stack>
           );
         })}
       </Stack>

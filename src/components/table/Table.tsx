@@ -173,7 +173,7 @@ export const TableCore = () => {
             ? '90vh'
             : '82vh',
         width: '100%',
-        padding: { xs: 0, sm: '24px 24px 0 24px' },
+        padding: { xs: 0, sm: '8px 24px 0 24px' },
       }}
     >
       <AgGridReact
