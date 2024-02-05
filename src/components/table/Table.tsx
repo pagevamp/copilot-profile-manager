@@ -113,6 +113,20 @@ export const TableCore = () => {
             flex: 1,
             sortable: col[el].type === 'multiSelect' ? false : true,
             comparator: comparatorTypeII,
+            getQuickFilterText: (params: any) => {
+              const data = params.data[el];
+              if (data.type === 'multiSelect') {
+                if (data && data.value !== null) {
+                  return data.value[0].label;
+                }
+                return '';
+              } else {
+                if (data && data.value !== null) {
+                  return data.value.toString().toLowerCase(); // Adjust as needed
+                }
+                return '';
+              }
+            },
             cellRenderer: HistoryCellRenderer,
             valueGetter: (params: any) => {
               return {
