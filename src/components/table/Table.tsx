@@ -31,15 +31,27 @@ export const TableCore = () => {
     return 0;
   };
 
-  const comparatorTypeII = (valueA: any, valueB: any) => {
-    if (valueA.row[valueA.key].value < valueB.row[valueB.key].value) {
-      return -1;
-    }
-    if (valueA.row[valueA.key].value > valueB.row[valueB.key].value) {
-      return 1;
+  const comparatorTypeII = (valueA: any, valueB: any, nodeA: any, nodeB: any, isInverted: any) => {
+    const _valueA = valueA.row[valueA.key].value;
+    const _valueB = valueB.row[valueB.key].value;
+    if (_valueA === null && _valueB === null) {
+      return 0; // Both are considered equal
+    } else if (_valueA === null) {
+      return isInverted ? -1 : 1; // Null comes before a non-null string/number
+    } else if (_valueB === null) {
+      return isInverted ? 1 : -1; // Non-null string/number comes before null
     }
 
-    return 0;
+    // Convert values to strings for consistent comparison
+    const stringA: any = String(_valueA);
+    const stringB: any = String(_valueB);
+
+    // Perform lexicographical comparison for strings, numeric comparison for numbers
+    if (!isNaN(stringA) && !isNaN(stringB)) {
+      return parseFloat(stringA) - parseFloat(stringB);
+    } else {
+      return stringA.localeCompare(stringB);
+    }
   };
 
   useEffect(() => {
