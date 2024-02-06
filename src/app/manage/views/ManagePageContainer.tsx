@@ -3,8 +3,8 @@
 import { FooterSave } from '@/components/footerSave/FooterSave';
 import { MultiSelect } from '@/components/multiSelect/MultiSelect';
 import { StyledTextInput } from '@/components/styled/StyledTextInput';
-import { Stack, Typography, styled } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { Box, Stack, Tooltip, Typography, styled } from '@mui/material';
+import { FC, ReactElement, useMemo, useState } from 'react';
 import { EmptyStateFallback } from './EmptyStateFallback';
 
 export const ManagePageContainer = ({
@@ -129,19 +129,21 @@ export const ManagePageContainer = ({
               return (
                 <InputContainer key={key}>
                   <Typography variant="md">{field.name}</Typography>
-                  <StyledTextInput
-                    value={profileData && profileData[field.key]}
-                    variant="outlined"
-                    padding="8px 12px"
-                    disabled={!field.permission.includes('EDIT')}
-                    key={key}
-                    onChange={(e) => {
-                      setProfileData((prev: any) => {
-                        return { ...prev, [field.key]: e.target.value };
-                      });
-                    }}
-                    type="text"
-                  />
+                  <ToolTipDecider show={!field.permission.includes('EDIT')}>
+                    <StyledTextInput
+                      value={profileData && profileData[field.key]}
+                      variant="outlined"
+                      padding="8px 12px"
+                      disabled={!field.permission.includes('EDIT')}
+                      key={key}
+                      onChange={(e) => {
+                        setProfileData((prev: any) => {
+                          return { ...prev, [field.key]: e.target.value };
+                        });
+                      }}
+                      type="text"
+                    />
+                  </ToolTipDecider>
                 </InputContainer>
               );
             }
@@ -149,17 +151,22 @@ export const ManagePageContainer = ({
               return (
                 <InputContainer key={key}>
                   <Typography variant="md">{field.name}</Typography>
-                  <MultiSelect<{ label: string }>
-                    key={key}
-                    data={field.options}
-                    nameField={(item) => item.label}
-                    value={profileData && profileData[field.key]}
-                    getSelectedValue={(value) => {
-                      setProfileData((prev: any) => {
-                        return { ...prev, [field.key]: value };
-                      });
-                    }}
-                  />
+                  <ToolTipDecider show={!field.permission.includes('EDIT')}>
+                    <Box>
+                      <MultiSelect<{ label: string }>
+                        key={key}
+                        data={field.options}
+                        nameField={(item) => item.label}
+                        value={profileData && profileData[field.key]}
+                        getSelectedValue={(value) => {
+                          setProfileData((prev: any) => {
+                            return { ...prev, [field.key]: value };
+                          });
+                        }}
+                        disabled={!field.permission.includes('EDIT')}
+                      />
+                    </Box>
+                  </ToolTipDecider>
                 </InputContainer>
               );
             }
@@ -176,3 +183,14 @@ const InputContainer = styled(Stack)({
   flexDirection: 'column',
   rowGap: 1.33,
 });
+
+const ToolTipDecider: FC<{ children: ReactElement; show: boolean }> = ({ children, show }) => {
+  if (show)
+    return (
+      <Tooltip title="This field cannot be updated." placement="bottom-start">
+        {children}
+      </Tooltip>
+    );
+
+  return children;
+};

@@ -51,8 +51,10 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
   const settings = await getSettings({ token, portalId }).then((s) => s.profileLinks);
   const customFieldAccess = await getCustomFieldAccess({ token, portalId });
   // static for now, will be dynamic later after some API decisions are made
-  const clientId = 'a583a0d0-de70-4d14-8bb1-0aacf7424e2c';
-  const companyId = '52eb75a9-2790-4e37-aa7a-c13f7bc3aa91';
+  // const clientId = 'a583a0d0-de70-4d14-8bb1-0aacf7424e2c';
+  // const companyId = '52eb75a9-2790-4e37-aa7a-c13f7bc3aa91';
+  const clientId = '2b37da9b-73b9-4c28-b7ac-144cf39cb13b';
+  const companyId = 'db906431-e721-47e8-8649-bd11b9ed2982';
   const client = await getClient(clientId, token);
 
   return (

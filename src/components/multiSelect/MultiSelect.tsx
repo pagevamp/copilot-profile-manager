@@ -8,9 +8,10 @@ interface IMultiSelect<T extends object> {
   nameField: (item: T) => string; // Function to extract the name from the item
   value: any;
   getSelectedValue: (value: any) => void;
+  disabled: boolean;
 }
 
-export const MultiSelect = <T extends object>({ data, nameField, value, getSelectedValue }: IMultiSelect<T>) => {
+export const MultiSelect = <T extends object>({ data, nameField, value, getSelectedValue, disabled }: IMultiSelect<T>) => {
   return (
     <Autocomplete
       onChange={(event: any, newValue: any) => {
@@ -23,6 +24,7 @@ export const MultiSelect = <T extends object>({ data, nameField, value, getSelec
       getOptionLabel={(option: T) => nameField(option)}
       filterSelectedOptions
       autoHighlight
+      disabled={disabled}
       renderInput={(params) => <StyledTextInput {...params} />}
       renderTags={(value: T[], getTagProps) =>
         value.map((option: any, index: number) => (
