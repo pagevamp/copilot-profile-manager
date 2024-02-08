@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-enum ProfileLinks {
+export enum ProfileLinks {
   ProfileSetting = 'profile_settings',
   PaymentMethod = 'payment_method',
 }

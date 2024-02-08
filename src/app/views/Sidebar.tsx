@@ -5,23 +5,24 @@ import { Box, Stack, Typography } from '@mui/material';
 import { Switch } from '@/components/switch/Switch';
 import { useAppState } from '@/hooks/useAppState';
 import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
+import { ProfileLinks } from '@/types/settings';
 
 export const Sidebar = () => {
   const appState = useAppState();
 
   const handleMutableSettings = (selected: boolean, type: string) => {
     if (!selected) {
-      if (type === 'profile_settings') {
+      if (type === ProfileLinks.ProfileSetting) {
         const newSettings = appState?.mutableSettings.filter((el: string) => el !== type);
         appState?.setAppState((prev) => ({ ...prev, mutableSettings: newSettings }));
       }
-      if (type === 'payment_method') {
+      if (type === ProfileLinks.PaymentMethod) {
         const newSettings = appState?.mutableSettings.filter((el: string) => el !== type);
         appState?.setAppState((prev) => ({ ...prev, mutableSettings: newSettings }));
       }
     }
     if (selected) {
-      if (type === 'profile_settings') {
+      if (type === ProfileLinks.ProfileSetting) {
         appState?.setAppState((prev) => ({
           ...prev,
           mutableSettings: appState?.mutableSettings.includes(type)
@@ -29,7 +30,7 @@ export const Sidebar = () => {
             : [...appState?.mutableSettings, type],
         }));
       }
-      if (type === 'payment_method') {
+      if (type === ProfileLinks.PaymentMethod) {
         appState?.setAppState((prev) => ({
           ...prev,
           mutableSettings: appState?.mutableSettings.includes(type)
@@ -81,9 +82,9 @@ export const Sidebar = () => {
         <Stack direction="row" justifyContent="space-between" p="12px 0px 6px 0px">
           <Typography variant="bodyMd">General profile settings</Typography>
           <Switch
-            selected={appState?.mutableSettings.includes('profile_settings')}
+            selected={appState?.mutableSettings.includes(ProfileLinks.ProfileSetting)}
             getValue={(selected) => {
-              handleMutableSettings(selected, 'profile_settings');
+              handleMutableSettings(selected, ProfileLinks.ProfileSetting);
             }}
           />
         </Stack>
@@ -91,9 +92,9 @@ export const Sidebar = () => {
         <Stack direction="row" justifyContent="space-between" p="6px 0px">
           <Typography variant="bodyMd">Manage payment method</Typography>
           <Switch
-            selected={appState?.mutableSettings.includes('payment_method')}
+            selected={appState?.mutableSettings.includes(ProfileLinks.PaymentMethod)}
             getValue={(selected) => {
-              handleMutableSettings(selected, 'payment_method');
+              handleMutableSettings(selected, ProfileLinks.PaymentMethod);
             }}
           />
         </Stack>
