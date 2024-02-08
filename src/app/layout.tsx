@@ -34,8 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     method: 'PUT',
                     body: JSON.stringify(settingsPayload),
                   });
-
-                  Promise.all([revalidateTag('settings'), revalidateTag('customFieldAccess')]);
+                  revalidateTag('settings');
+                  revalidateTag('customFieldAccess');
                 }}
               />
             </ToggleDecider>
