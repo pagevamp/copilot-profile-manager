@@ -5,6 +5,11 @@ export enum ProfileLinks {
   PaymentMethod = 'payment_method',
 }
 
+export enum Permissions {
+  View = 'VIEW',
+  Edit = 'EDIT',
+}
+
 export const SettingRequestSchema = z.object({
   token: z.string(),
   portalId: z.string(),

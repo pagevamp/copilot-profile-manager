@@ -4,6 +4,7 @@ import { Box, Stack, Typography, Divider } from '@mui/material';
 import { StyledCheckBox } from '../styled/StyledCheckbox';
 import { useAppState } from '@/hooks/useAppState';
 import { iconsTypeMap } from './iconsTypeMap';
+import { Permissions } from '@/types/settings';
 
 export const CustomFieldAccessTable = () => {
   const appState = useAppState();
@@ -12,32 +13,36 @@ export const CustomFieldAccessTable = () => {
     let customField = appState?.mutableCustomFieldAccess.find((el: any) => el.id === id);
 
     if (checked) {
-      if (permission === 'VIEW') {
+      if (permission === Permissions.View) {
         customField = {
           ...customField,
-          permission: customField.permission.includes('VIEW') ? customField.permission : [...customField.permission, 'VIEW'],
+          permission: customField.permission.includes(Permissions.View)
+            ? customField.permission
+            : [...customField.permission, Permissions.View],
         };
       }
-      if (permission === 'EDIT') {
+      if (permission === Permissions.Edit) {
         customField = {
           ...customField,
-          permission: customField.permission.includes('EDIT') ? customField.permission : [...customField.permission, 'EDIT'],
+          permission: customField.permission.includes(Permissions.Edit)
+            ? customField.permission
+            : [...customField.permission, Permissions.Edit],
         };
       }
     }
 
     if (!checked) {
-      if (permission === 'VIEW') {
+      if (permission === Permissions.View) {
         customField = {
           ...customField,
-          permission: customField.permission.includes('VIEW') ? [] : customField.permission,
+          permission: customField.permission.includes(Permissions.View) ? [] : customField.permission,
         };
       }
-      if (permission === 'EDIT') {
+      if (permission === Permissions.Edit) {
         customField = {
           ...customField,
-          permission: customField.permission.includes('EDIT')
-            ? customField.permission.filter((item: string) => item !== 'EDIT')
+          permission: customField.permission.includes(Permissions.Edit)
+            ? customField.permission.filter((item: string) => item !== Permissions.Edit)
             : customField.permission,
         };
       }
@@ -74,16 +79,16 @@ export const CustomFieldAccessTable = () => {
             </Box>
             <Stack direction="row" columnGap={12} alignItems="center">
               <StyledCheckBox
-                checked={field.permission.includes('VIEW')}
+                checked={field.permission.includes(Permissions.View)}
                 handleChange={(checked) => {
-                  updateCustomFieldAccess(checked, 'VIEW', field.id);
+                  updateCustomFieldAccess(checked, Permissions.View, field.id);
                 }}
               />
-              {field.permission.includes('VIEW') ? (
+              {field.permission.includes(Permissions.View) ? (
                 <StyledCheckBox
-                  checked={field.permission.includes('EDIT')}
+                  checked={field.permission.includes(Permissions.Edit)}
                   handleChange={(checked) => {
-                    updateCustomFieldAccess(checked, 'EDIT', field.id);
+                    updateCustomFieldAccess(checked, Permissions.Edit, field.id);
                   }}
                 />
               ) : (
