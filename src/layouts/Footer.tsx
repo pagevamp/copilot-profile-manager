@@ -6,12 +6,7 @@ import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
 import { useState } from 'react';
 
 interface Prop {
-  handleSave(
-    customFieldAccessPayload: { token: string; portalId: string; accesses: any },
-    settingsPayload: { token: string; portalId: string; profileLinks: any },
-    token: string,
-    portalId: string,
-  ): Promise<void>;
+  handleSave(customFieldAccessPayload: string, settingsPayload: string, token: string, portalId: string): Promise<void>;
 }
 
 export const Footer = ({ handleSave }: Prop) => {
@@ -31,16 +26,16 @@ export const Footer = ({ handleSave }: Prop) => {
     setLoading(true);
     try {
       await handleSave(
-        {
+        JSON.stringify({
           token: appState?.token as string,
           portalId: appState?.portalId as string,
           accesses: accesses,
-        },
-        {
+        }),
+        JSON.stringify({
           token: appState?.token as string,
           portalId: appState?.portalId as string,
           profileLinks: appState?.mutableSettings,
-        },
+        }),
         appState?.token as string,
         appState?.portalId as string,
       );

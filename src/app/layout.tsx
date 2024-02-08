@@ -28,11 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   'use server';
                   await fetch(`${apiUrl}/api/custom-field-access?token=${token}&portalId=${portalId}`, {
                     method: 'PUT',
-                    body: JSON.stringify(customFieldAccessPayload),
+                    body: customFieldAccessPayload,
                   });
                   await fetch(`${apiUrl}/api/settings?token=${token}&portalId=${portalId}`, {
                     method: 'PUT',
-                    body: JSON.stringify(settingsPayload),
+                    body: settingsPayload,
                   });
                   revalidateTag('settings');
                   revalidateTag('customFieldAccess');
