@@ -5,7 +5,14 @@ import { useAppState } from '@/hooks/useAppState';
 import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
 import { useState } from 'react';
 
-export const Footer = () => {
+interface Prop {
+  handleSave(
+    customFieldAccessPayload: { token: string; portalId: string; accesses: any },
+    settingsPayload: { token: string; portalId: string; profileLinks: any },
+  ): Promise<void>;
+}
+
+export const Footer = ({ handleSave }: Prop) => {
   const appState = useAppState();
   const [loading, setLoading] = useState(false);
 
@@ -14,52 +21,35 @@ export const Footer = () => {
     appState?.setAppState((prev) => ({ ...prev, mutableCustomFieldAccess: appState?.customFieldAccess }));
   };
 
-  const handleSave = async () => {
-    setLoading(true);
+  const initiateSave = async () => {
     let accesses = appState?.mutableCustomFieldAccess.map(({ id, permission }: any) => ({
       customFieldId: id,
       permissions: permission,
     }));
-    await fetch(`/api/custom-field-access`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        token: appState?.token,
-        portalId: appState?.portalId,
-        accesses: accesses,
-      }),
-    });
-    await fetch(`/api/settings`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        token: appState?.token,
-        portalId: appState?.portalId,
-        profileLinks: appState?.mutableSettings,
-      }),
-    });
-    const settingsRes = await fetch(`/api/settings?token=${appState?.token}&portalId=${appState?.portalId}`);
-    const settings = await settingsRes.json();
-    const customFieldAccessRes = await fetch(
-      `/api/custom-field-access?token=${appState?.token}&portalId=${appState?.portalId}`,
-    );
-    const customFieldAccess = await customFieldAccessRes.json();
-    appState?.setAppState((prev) => ({
-      ...prev,
-      settings: settings.data.profileLinks,
-      mutableSettings: settings.data.profileLinks,
-    }));
-    appState?.setAppState((prev) => ({
-      ...prev,
-      customFieldAccess: customFieldAccess.data,
-      mutableCustomFieldAccess: customFieldAccess.data,
-    }));
-    setLoading(false);
+    setLoading(true);
+    try {
+      await handleSave(
+        {
+          token: appState?.token as string,
+          portalId: appState?.portalId as string,
+          accesses: accesses,
+        },
+        {
+          token: appState?.token as string,
+          portalId: appState?.portalId as string,
+          profileLinks: appState?.mutableSettings,
+        },
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       {arraysHaveSameElements(appState?.mutableSettings, appState?.settings) &&
       JSON.stringify(appState?.customFieldAccess) === JSON.stringify(appState?.mutableCustomFieldAccess) ? null : (
-        <FooterSave type="1" loading={loading} handleSave={handleSave} handleCancel={handleCancel} />
+        <FooterSave type="1" loading={loading} handleSave={initiateSave} handleCancel={handleCancel} />
       )}
     </>
   );

@@ -34,7 +34,9 @@ async function getCustomFieldAccess({
   token: string;
   portalId: string;
 }): Promise<CustomFieldAccessResponse> {
-  const res = await fetch(`${apiUrl}/api/custom-field-access?token=${token}&portalId=${portalId}`);
+  const res = await fetch(`${apiUrl}/api/custom-field-access?token=${token}&portalId=${portalId}`, {
+    next: { tags: ['customFieldAccess'] },
+  });
 
   if (!res.ok) {
     throw new Error('Something went wrong in getCustomFieldAccess');
@@ -46,7 +48,9 @@ async function getCustomFieldAccess({
 }
 
 async function getSettings({ token, portalId }: { token: string; portalId: string }) {
-  const res = await fetch(`${apiUrl}/api/settings?token=${token}&portalId=${portalId}`);
+  const res = await fetch(`${apiUrl}/api/settings?token=${token}&portalId=${portalId}`, {
+    next: { tags: ['settings'] },
+  });
 
   if (!res.ok) {
     throw new Error('Something went wrong in getSettings');

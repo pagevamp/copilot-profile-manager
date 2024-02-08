@@ -5,6 +5,8 @@ import ThemeRegistry from './ThemeRegistry';
 import { AppContextProvider } from '@/context';
 import { ToggleDecider } from '@/hoc/ToggleDecider';
 import { Footer } from '@/layouts/Footer';
+import { apiUrl } from '@/config';
+import { revalidateTag } from 'next/cache';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,7 +23,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeRegistry options={{ key: 'mui' }}>
             <ToggleDecider>
               {children}
-              <Footer />
+              <Footer
+                handleSave={async (customFieldAccessPayload, settingsPayload) => {
+                  'use server';
+                  await fetch(`${apiUrl}/api/custom-field-access`, {
+                    method: 'PUT',
+                    body: JSON.stringify(customFieldAccessPayload),
+                  });
+                  await fetch(`${apiUrl}/api/settings`, {
+                    method: 'PUT',
+                    body: JSON.stringify(settingsPayload),
+                  });
+
+                  await Promise.all([revalidateTag('settings'), revalidateTag('customFieldAccess')]);
+                }}
+              />
             </ToggleDecider>
           </ThemeRegistry>
         </body>
