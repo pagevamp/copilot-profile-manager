@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     body: JSON.stringify(settingsPayload),
                   });
 
-                  await Promise.all([revalidateTag('settings'), revalidateTag('customFieldAccess')]);
+                  Promise.all([revalidateTag('settings'), revalidateTag('customFieldAccess')]);
                 }}
               />
             </ToggleDecider>
