@@ -34,7 +34,7 @@ export const Footer = ({ handleSave }: Prop) => {
         JSON.stringify({
           token: appState?.token as string,
           portalId: appState?.portalId as string,
-          profileLinks: appState?.mutableSettings,
+          profileLinks: ['profile_settings'],
         }),
         appState?.token as string,
         appState?.portalId as string,
