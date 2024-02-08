@@ -5,11 +5,7 @@ import { useAppState } from '@/hooks/useAppState';
 import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
 import { useState } from 'react';
 
-interface Prop {
-  handleSave(customFieldAccessPayload: string, settingsPayload: string, token: string, portalId: string): Promise<void>;
-}
-
-export const Footer = ({ handleSave }: Prop) => {
+export const Footer = () => {
   const appState = useAppState();
   const [loading, setLoading] = useState(false);
 
@@ -18,37 +14,52 @@ export const Footer = ({ handleSave }: Prop) => {
     appState?.setAppState((prev) => ({ ...prev, mutableCustomFieldAccess: appState?.customFieldAccess }));
   };
 
-  const initiateSave = async () => {
+  const handleSave = async () => {
+    setLoading(true);
     let accesses = appState?.mutableCustomFieldAccess.map(({ id, permission }: any) => ({
       customFieldId: id,
       permissions: permission,
     }));
-    setLoading(true);
-    try {
-      await handleSave(
-        JSON.stringify({
-          token: appState?.token as string,
-          portalId: appState?.portalId as string,
-          accesses: accesses,
-        }),
-        JSON.stringify({
-          token: appState?.token as string,
-          portalId: appState?.portalId as string,
-          profileLinks: ['profile_settings'],
-        }),
-        appState?.token as string,
-        appState?.portalId as string,
-      );
-    } finally {
-      setLoading(false);
-    }
+    await fetch(`/api/custom-field-access`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        token: appState?.token,
+        portalId: appState?.portalId,
+        accesses: accesses,
+      }),
+    });
+    await fetch(`/api/settings`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        token: appState?.token,
+        portalId: appState?.portalId,
+        profileLinks: appState?.mutableSettings,
+      }),
+    });
+    const settingsRes = await fetch(`/api/settings?token=${appState?.token}&portalId=${appState?.portalId}`);
+    const settings = await settingsRes.json();
+    const customFieldAccessRes = await fetch(
+      `/api/custom-field-access?token=${appState?.token}&portalId=${appState?.portalId}`,
+    );
+    const customFieldAccess = await customFieldAccessRes.json();
+    appState?.setAppState((prev) => ({
+      ...prev,
+      settings: settings.data.profileLinks,
+      mutableSettings: settings.data.profileLinks,
+    }));
+    appState?.setAppState((prev) => ({
+      ...prev,
+      customFieldAccess: customFieldAccess.data,
+      mutableCustomFieldAccess: customFieldAccess.data,
+    }));
+    setLoading(false);
   };
 
   return (
     <>
       {arraysHaveSameElements(appState?.mutableSettings, appState?.settings) &&
       JSON.stringify(appState?.customFieldAccess) === JSON.stringify(appState?.mutableCustomFieldAccess) ? null : (
-        <FooterSave type="1" loading={loading} handleSave={initiateSave} handleCancel={handleCancel} />
+        <FooterSave type="1" loading={loading} handleSave={handleSave} handleCancel={handleCancel} />
       )}
     </>
   );
