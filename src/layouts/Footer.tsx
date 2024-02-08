@@ -9,6 +9,8 @@ interface Prop {
   handleSave(
     customFieldAccessPayload: { token: string; portalId: string; accesses: any },
     settingsPayload: { token: string; portalId: string; profileLinks: any },
+    token: string,
+    portalId: string,
   ): Promise<void>;
 }
 
@@ -39,6 +41,8 @@ export const Footer = ({ handleSave }: Prop) => {
           portalId: appState?.portalId as string,
           profileLinks: appState?.mutableSettings,
         },
+        appState?.token as string,
+        appState?.portalId as string,
       );
     } finally {
       setLoading(false);

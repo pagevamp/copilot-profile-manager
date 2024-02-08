@@ -24,13 +24,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ToggleDecider>
               {children}
               <Footer
-                handleSave={async (customFieldAccessPayload, settingsPayload) => {
+                handleSave={async (customFieldAccessPayload, settingsPayload, token, portalId) => {
                   'use server';
-                  await fetch(`${apiUrl}/api/custom-field-access`, {
+                  await fetch(`${apiUrl}/api/custom-field-access?token=${token}&portalId=${portalId}`, {
                     method: 'PUT',
                     body: JSON.stringify(customFieldAccessPayload),
                   });
-                  await fetch(`${apiUrl}/api/settings`, {
+                  await fetch(`${apiUrl}/api/settings?token=${token}&portalId=${portalId}`, {
                     method: 'PUT',
                     body: JSON.stringify(settingsPayload),
                   });
