@@ -3,6 +3,8 @@ import { ManagePageContainer } from './views/ManagePageContainer';
 import { SimpleButton } from '@/components/styled/SimpleButton';
 import { apiUrl } from '@/config';
 import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
+import { Settings } from '@mui/icons-material';
+import { ProfileLinks } from '@/types/settings';
 
 export const revalidate = 0;
 
@@ -75,14 +77,16 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
       />
 
       <Stack direction="column" mt={16} rowGap={4}>
-        <Typography variant="xl">Other settings</Typography>
+        {settings && (settings.includes(ProfileLinks.PaymentMethod) || settings.includes(ProfileLinks.ProfileSetting)) && (
+          <Typography variant="xl">Other settings</Typography>
+        )}
         <Stack direction="row" columnGap={4}>
-          {settings && settings.includes('profile_settings') && (
+          {settings && settings.includes(ProfileLinks.PaymentMethod) && (
             <SimpleButton>
               <Typography variant="md">Set a payment method</Typography>
             </SimpleButton>
           )}
-          {settings && settings.includes('payment_method') && (
+          {settings && settings.includes(ProfileLinks.ProfileSetting) && (
             <SimpleButton>
               <Typography variant="md">Go to account settings</Typography>
             </SimpleButton>

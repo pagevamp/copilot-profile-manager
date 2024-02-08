@@ -12,32 +12,16 @@ export const Sidebar = () => {
 
   const handleMutableSettings = (selected: boolean, type: string) => {
     if (!selected) {
-      if (type === ProfileLinks.ProfileSetting) {
-        const newSettings = appState?.mutableSettings.filter((el: string) => el !== type);
-        appState?.setAppState((prev) => ({ ...prev, mutableSettings: newSettings }));
-      }
-      if (type === ProfileLinks.PaymentMethod) {
-        const newSettings = appState?.mutableSettings.filter((el: string) => el !== type);
-        appState?.setAppState((prev) => ({ ...prev, mutableSettings: newSettings }));
-      }
+      const newSettings = appState?.mutableSettings.filter((el: string) => el !== type);
+      appState?.setAppState((prev) => ({ ...prev, mutableSettings: newSettings }));
     }
     if (selected) {
-      if (type === ProfileLinks.ProfileSetting) {
-        appState?.setAppState((prev) => ({
-          ...prev,
-          mutableSettings: appState?.mutableSettings.includes(type)
-            ? appState?.mutableSettings
-            : [...appState?.mutableSettings, type],
-        }));
-      }
-      if (type === ProfileLinks.PaymentMethod) {
-        appState?.setAppState((prev) => ({
-          ...prev,
-          mutableSettings: appState?.mutableSettings.includes(type)
-            ? appState?.mutableSettings
-            : [...appState?.mutableSettings, type],
-        }));
-      }
+      appState?.setAppState((prev) => ({
+        ...prev,
+        mutableSettings: appState?.mutableSettings.includes(type)
+          ? appState?.mutableSettings
+          : [...appState?.mutableSettings, type],
+      }));
     }
   };
 
