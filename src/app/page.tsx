@@ -71,7 +71,7 @@ export default async function Home({ searchParams }: { searchParams: { token: st
   return (
     <ContextUpdate
       clientProfileUpdates={clientProfileUpdates}
-      settings={settings.profileLinks}
+      settings={settings?.profileLinks || []}
       access={customFieldAccess}
       token={token}
       portalId={portalId}
