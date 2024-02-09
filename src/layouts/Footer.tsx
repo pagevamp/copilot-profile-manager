@@ -44,8 +44,8 @@ export const Footer = () => {
     const customFieldAccess = await customFieldAccessRes.json();
     appState?.setAppState((prev) => ({
       ...prev,
-      settings: settings.data.profileLinks,
-      mutableSettings: settings.data.profileLinks,
+      settings: settings?.data?.profileLinks || [],
+      mutableSettings: settings?.data?.profileLinks || [],
     }));
     appState?.setAppState((prev) => ({
       ...prev,

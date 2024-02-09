@@ -50,7 +50,7 @@ async function getClient(clientId: string, token: string) {
 export default async function ManagePage({ searchParams }: { searchParams: { token: string; portalId: string } }) {
   const { token, portalId } = searchParams;
 
-  const settings = await getSettings({ token, portalId }).then((s) => s.profileLinks);
+  const settings = await getSettings({ token, portalId }).then((s) => s?.profileLinks || []);
   const customFieldAccess = await getCustomFieldAccess({ token, portalId });
   // static for now, will be dynamic later after some API decisions are made
   const clientId = 'a583a0d0-de70-4d14-8bb1-0aacf7424e2c';
