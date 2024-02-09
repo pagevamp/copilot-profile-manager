@@ -1,9 +1,13 @@
 import { SwitchIconSelected, SwitchIconUnselected } from '@/icons';
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const Switch = ({ selected, getValue }: { selected: boolean; getValue: (selected: boolean) => void }) => {
   const [_selected, setSelected] = useState(selected);
+
+  useEffect(() => {
+    setSelected(selected);
+  }, [selected]);
 
   return (
     <Box

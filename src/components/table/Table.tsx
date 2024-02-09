@@ -3,114 +3,170 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme
 import './table.css';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ClientCellRenderer } from './cellRenderers/ClientCellRenderer';
 import { CompanyCellRenderer } from './cellRenderers/CompanyCellRenderer';
 import { HistoryCellRenderer } from './cellRenderers/HistoryCellRenderer';
 import { useAppState } from '@/hooks/useAppState';
+import { getTimeAgo } from '@/utils/getTimeAgo';
+import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
 
 export const TableCore = () => {
   const appState = useAppState();
 
   // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState<any>([
-    {
-      Client: { image: 'https://robohash.org/stefan-one', name: 'Tesla', email: 'tesla@gmail.com', id: 1 },
-      company: { image: 'https://robohash.org/generate', name: 'Chase' },
-      'Last updated': '1m',
-      'Phone number': { value: '1928366444', showDot: true },
-      Address: 'Texas',
-      Hobby: 'Music',
-    },
-    {
-      Client: { image: 'https://robohash.org/stefan-eleven', name: 'Wongchi', email: 'wongchi@gmail.com', id: 2 },
-      company: { image: 'https://robohash.org/generate', name: 'Amazon' },
-      'Last updated': '1d',
-      'Phone number': { value: '9283774466', showDot: false },
-      Address: '',
-      Hobby: 'Dance',
-    },
-    {
-      Client: { image: 'https://robohash.org/stefan-hundred', name: 'Holyland', email: 'holyland@gmail.com', id: 3 },
-      company: { image: 'https://robohash.org/generate', name: 'Walt Disney Co.' },
-      'Last updated': '',
-      'Phone number': { value: '2883743322', showDot: true },
-      Address: 'New York',
-      Hobby: 'Flying',
-    },
-    {
-      Client: { image: 'https://robohash.org/stefan-five', name: 'Nokia', email: 'nokia@gmail.com', id: 4 },
-      company: { image: 'https://robohash.org/generate', name: 'Scrappy' },
-      'Last updated': '2d',
-      'Phone number': { value: '9182663344', showDot: true },
-      Address: 'Hongkong',
-      Hobby: '',
-    },
-    {
-      Client: { image: 'https://robohash.org/stefan-four', name: 'Prolink', email: 'prolink@gmail.com', id: 5 },
-      company: { image: 'https://robohash.org/generate', name: 'Facebook' },
-      'Last updated': '1 month',
-      'Phone number': { value: '', showDot: false },
-      Address: 'Manila',
-      Hobby: 'Diving',
-    },
-    {
-      Client: { image: 'https://robohash.org/stefan-three', name: 'Apple', email: 'apple@gmail.com', id: 6 },
-      company: { image: 'https://robohash.org/generate', name: 'Catch' },
-      'Last updated': '12 hours',
-      'Phone number': { value: '3847228833', showDot: false },
-      Address: 'Kathmandu',
-      Hobby: 'Music',
-      chobby: 'Music',
-    },
-  ]);
+  const [rowData, setRowData] = useState<any>([]);
+  //
+  // Column Definitions: Defines & controls grid columns.
+  const [colDefs, setColDefs] = useState<any>([]);
 
-  const comparator = (valueA: any, valueB: any) => {
-    if (valueA < valueB) {
+  const comparatorTypeI = (valueA: any, valueB: any) => {
+    if (valueA.name < valueB.name) {
       return -1;
     }
-    if (valueA > valueB) {
+    if (valueA.name > valueB.name) {
       return 1;
     }
 
-    return 0; // names are equal
+    return 0;
   };
 
-  // Column Definitions: Defines & controls grid columns.
-  const [colDefs, setColDefs] = useState<any>([
-    {
-      field: 'Client',
-      cellRenderer: ClientCellRenderer,
-      flex: 1,
-      comparator,
-      valueGetter: (params: any) => {
-        const client = params.data.Client;
-        return `${client.image} ${client.name} ${client.email}`;
-      },
-    },
-    {
-      field: 'company',
-      cellRenderer: CompanyCellRenderer,
-      flex: 1,
-      comparator,
-      valueGetter: (params: any) => {
-        const company = params.data.company;
-        return `${company.image} ${company.name}`;
-      },
-    },
-    { field: 'Last updated', flex: 1 },
-    {
-      field: 'Phone number',
-      flex: 1,
-      cellRenderer: HistoryCellRenderer,
-      valueGetter: (params: any) => {
-        const phoneProps = params.data['Phone number'];
-        return `${phoneProps.value} ${phoneProps.showDot}`;
-      },
-    },
-    { field: 'Address', flex: 1 },
-    { field: 'Hobby', flex: 1 },
-  ]);
+  const comparatorTypeII = (valueA: any, valueB: any, nodeA: any, nodeB: any, isInverted: any) => {
+    const _valueA = valueA.row[valueA.key].value;
+    const _valueB = valueB.row[valueB.key].value;
+    if (_valueA === null && _valueB === null) {
+      return 0; // Both are considered equal
+    } else if (_valueA === null) {
+      return isInverted ? -1 : 1; // Null comes before a non-null string/number
+    } else if (_valueB === null) {
+      return isInverted ? 1 : -1; // Non-null string/number comes before null
+    }
+
+    // Convert values to strings for consistent comparison
+    const stringA: any = String(_valueA);
+    const stringB: any = String(_valueB);
+
+    // Perform lexicographical comparison for strings, numeric comparison for numbers
+    if (!isNaN(stringA) && !isNaN(stringB)) {
+      return parseFloat(stringA) - parseFloat(stringB);
+    } else {
+      return stringA.localeCompare(stringB);
+    }
+  };
+
+  useEffect(() => {
+    setRowData(appState?.clientProfileUpdates);
+
+    let colDefs: any = [];
+    if (appState?.clientProfileUpdates.length && appState?.clientProfileUpdates.length) {
+      const col = appState?.clientProfileUpdates[0];
+      delete col.id;
+      const keys = Object.keys(col);
+      keys.map((el) => {
+        if (el === 'client') {
+          colDefs = [
+            ...colDefs,
+            {
+              field: 'client',
+              cellRenderer: ClientCellRenderer,
+              flex: 1,
+              comparator: comparatorTypeI,
+              getQuickFilterText: (params: any) => {
+                const data = params.data[el];
+                if (data && data.name !== null) {
+                  return data.name.toString().toLowerCase();
+                }
+                return '';
+              },
+              minWidth: 250,
+              valueGetter: (params: any) => {
+                const client = params.data[el];
+                return {
+                  avatarImageUrl: client.avatarImageUrl,
+                  name: client.name,
+                  email: client.email,
+                };
+              },
+            },
+          ];
+          return;
+        }
+        if (el === 'company') {
+          colDefs = [
+            ...colDefs,
+            {
+              field: 'company',
+              cellRenderer: CompanyCellRenderer,
+              flex: 1,
+              comparator: comparatorTypeI,
+              getQuickFilterText: (params: any) => {
+                const data = params.data[el];
+                if (data && data.name !== null) {
+                  return data.name.toString().toLowerCase();
+                }
+                return '';
+              },
+              valueGetter: (params: any) => {
+                const company = params.data[el];
+                return {
+                  iconImageUrl: company.iconImageUrl,
+                  name: company.name,
+                };
+              },
+            },
+          ];
+          return;
+        }
+        if (el === 'lastUpdated') {
+          colDefs = [
+            ...colDefs,
+            {
+              field: 'lastUpdated',
+              flex: 1,
+              valueGetter: (params: any) => {
+                const lastUpdated = params.data[el];
+                const timeAgo = getTimeAgo(lastUpdated);
+                return timeAgo === 'just now' ? timeAgo : `${timeAgo} ago`;
+              },
+            },
+          ];
+          return;
+        }
+
+        colDefs = [
+          ...colDefs,
+          {
+            field: el,
+            flex: 1,
+            sortable: col[el].type === 'multiSelect' ? false : true,
+            comparator: comparatorTypeII,
+            getQuickFilterText: (params: any) => {
+              const data = params.data[el];
+              if (data.type === 'multiSelect') {
+                if (data && data.value !== null) {
+                  return data.value[0].label;
+                }
+                return '';
+              } else {
+                if (data && data.value !== null) {
+                  return data.value.toString().toLowerCase();
+                }
+                return '';
+              }
+            },
+            cellRenderer: HistoryCellRenderer,
+            valueGetter: (params: any) => {
+              return {
+                row: params.data,
+                key: el,
+              };
+            },
+          },
+        ];
+      });
+      setColDefs(colDefs);
+    }
+  }, [appState?.clientProfileUpdates]);
 
   const defaultColDef = useMemo(() => {
     return {
@@ -120,7 +176,18 @@ export const TableCore = () => {
   }, []);
 
   return (
-    <Box className="ag-theme-quartz" sx={{ height: '90vh', width: '100%', padding: { xs: 0, sm: '24px 24px 0 24px' } }}>
+    <Box
+      className="ag-theme-quartz"
+      sx={{
+        height:
+          arraysHaveSameElements(appState?.mutableSettings, appState?.settings) &&
+          JSON.stringify(appState?.customFieldAccess) === JSON.stringify(appState?.mutableCustomFieldAccess)
+            ? '90vh'
+            : '82vh',
+        width: '100%',
+        padding: { xs: 0, sm: '8px 24px 0 24px' },
+      }}
+    >
       <AgGridReact
         className="on-scroll"
         rowData={rowData}

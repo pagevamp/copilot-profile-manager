@@ -4,6 +4,7 @@ import './globals.css';
 import ThemeRegistry from './ThemeRegistry';
 import { AppContextProvider } from '@/context';
 import { ToggleDecider } from '@/hoc/ToggleDecider';
+import { Footer } from '@/layouts/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,7 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <AppContextProvider>
         <body className={inter.className}>
           <ThemeRegistry options={{ key: 'mui' }}>
-            <ToggleDecider>{children}</ToggleDecider>
+            <ToggleDecider>
+              {children}
+              <Footer />
+            </ToggleDecider>
           </ThemeRegistry>
         </body>
       </AppContextProvider>

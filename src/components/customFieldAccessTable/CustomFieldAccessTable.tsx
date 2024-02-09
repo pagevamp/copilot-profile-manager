@@ -1,27 +1,60 @@
+'use client';
+
 import { Box, Stack, Typography, Divider } from '@mui/material';
 import { StyledCheckBox } from '../styled/StyledCheckbox';
-import { useState } from 'react';
+import { useAppState } from '@/hooks/useAppState';
+import { iconsTypeMap } from './iconsTypeMap';
+import { Permissions } from '@/types/settings';
 
-interface ICustomFieldAccessTable {
-  customFields: {
-    id: string;
-    icon: any;
-    field: string;
-    view: boolean;
-    edit: boolean;
-  }[];
-}
+export const CustomFieldAccessTable = () => {
+  const appState = useAppState();
 
-export const CustomFieldAccessTable = ({ customFields }: ICustomFieldAccessTable) => {
-  const [data, setData] = useState<
-    {
-      id: string;
-      icon: any;
-      field: string;
-      view: boolean;
-      edit: boolean;
-    }[]
-  >(customFields);
+  const updateCustomFieldAccess = (checked: boolean, permission: string, id: string) => {
+    let customField = appState?.mutableCustomFieldAccess.find((el: any) => el.id === id);
+
+    if (checked) {
+      if (permission === Permissions.View) {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes(Permissions.View)
+            ? customField.permission
+            : [...customField.permission, Permissions.View],
+        };
+      }
+      if (permission === Permissions.Edit) {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes(Permissions.Edit)
+            ? customField.permission
+            : [...customField.permission, Permissions.Edit],
+        };
+      }
+    }
+
+    if (!checked) {
+      if (permission === Permissions.View) {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes(Permissions.View) ? [] : customField.permission,
+        };
+      }
+      if (permission === Permissions.Edit) {
+        customField = {
+          ...customField,
+          permission: customField.permission.includes(Permissions.Edit)
+            ? customField.permission.filter((item: string) => item !== Permissions.Edit)
+            : customField.permission,
+        };
+      }
+    }
+
+    let indexToUpdate = appState?.mutableCustomFieldAccess.findIndex((item: any) => item.id === id);
+    let allCustomFields = [...appState?.mutableCustomFieldAccess]; // Create a copy of the array
+
+    allCustomFields[indexToUpdate] = customField;
+
+    appState?.setAppState((prev) => ({ ...prev, mutableCustomFieldAccess: allCustomFields }));
+  };
 
   return (
     <>
@@ -35,18 +68,40 @@ export const CustomFieldAccessTable = ({ customFields }: ICustomFieldAccessTable
         </Stack>
       </Stack>
       <Divider flexItem />
-      {data.map((field, key) => {
+      {appState?.mutableCustomFieldAccess.map((field: any, key: number) => {
         return (
           <Stack direction="row" justifyContent="space-between" alignItems="center" p="8px 0px" key={key}>
             <Box minWidth="215px">
               <Stack direction="row" alignItems="center" columnGap={2}>
-                {field.icon}
-                <Typography variant="bodyMd">{field.field}</Typography>
+                {iconsTypeMap[field.type]}
+                <Typography variant="bodyMd">{field.name}</Typography>
               </Stack>
             </Box>
             <Stack direction="row" columnGap={12} alignItems="center">
-              <StyledCheckBox checked={field.view} handleChange={(c) => {}} />
-              <StyledCheckBox checked={field.edit} handleChange={(c) => {}} />
+              <StyledCheckBox
+                checked={field.permission.includes(Permissions.View)}
+                handleChange={(checked) => {
+                  updateCustomFieldAccess(checked, Permissions.View, field.id);
+                }}
+              />
+              {field.permission.includes(Permissions.View) ? (
+                <StyledCheckBox
+                  checked={field.permission.includes(Permissions.Edit)}
+                  handleChange={(checked) => {
+                    updateCustomFieldAccess(checked, Permissions.Edit, field.id);
+                  }}
+                />
+              ) : (
+                <Stack
+                  direction="row"
+                  justifyContent="end"
+                  sx={{
+                    width: '20px',
+                  }}
+                >
+                  <Typography variant="sm">-</Typography>
+                </Stack>
+              )}
             </Stack>
           </Stack>
         );

@@ -47,7 +47,6 @@ export const ParsedClientProfileUpdatesResponseSchema = z.object({
     iconImageUrl: z.string().nullable(),
   }),
   lastUpdated: z.date(),
-  customFields: z.unknown(),
 });
 export type ParsedClientProfileUpdatesResponse = z.infer<typeof ParsedClientProfileUpdatesResponseSchema>;
 

@@ -1,8 +1,13 @@
 import { z } from 'zod';
 
-enum ProfileLinks {
+export enum ProfileLinks {
   ProfileSetting = 'profile_settings',
   PaymentMethod = 'payment_method',
+}
+
+export enum Permissions {
+  View = 'VIEW',
+  Edit = 'EDIT',
 }
 
 export const SettingRequestSchema = z.object({
