@@ -139,7 +139,7 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
               columnGap: '10px',
             })}
           >
-            {data.value.map((el: any, key: number) => {
+            {data.value.slice(0, 4).map((el: any, key: number) => {
               if (key === 0) return null;
               return (
                 <Stack
@@ -215,7 +215,7 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
     >
       <Typography variant="sm">Update history</Typography>
       <Stack direction="column" rowGap={1.5}>
-        {updateHistory.map((history: any, key: number) => {
+        {updateHistory.slice(0, 4).map((history: any, key: number) => {
           if (history.type === 'multiSelect') {
             return (
               <Stack key={key} direction="row" alignItems="center" columnGap={3}>
