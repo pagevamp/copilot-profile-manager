@@ -114,5 +114,6 @@ function getCompanyDetails(company: CompanyResponse) {
     id: company.id,
     name: company.name,
     iconImageUrl: company.iconImageUrl,
+    fallbackColor: company.fallbackColor,
   };
 }
