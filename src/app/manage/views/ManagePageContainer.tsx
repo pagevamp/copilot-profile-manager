@@ -74,7 +74,8 @@ export const ManagePageContainer = ({
         if (Array.isArray(obj[key])) {
           result[key] = obj[key].map((item: any) => item.key);
         } else {
-          result[key] = obj[key];
+          // Jugaad because copilot API doesn't update customFields if any value is empty string
+          result[key] = obj[key] === '' ? '<empty>' : obj[key];
         }
       }
       return result;
@@ -131,7 +132,7 @@ export const ManagePageContainer = ({
                   <Typography variant="md">{field.name}</Typography>
                   <ToolTipDecider show={!field.permission.includes('EDIT')}>
                     <StyledTextInput
-                      value={profileData && profileData[field.key]}
+                      value={profileData && profileData[field.key] === '<empty>' ? '' : profileData[field.key]}
                       variant="outlined"
                       padding="8px 12px"
                       disabled={!field.permission.includes('EDIT')}
