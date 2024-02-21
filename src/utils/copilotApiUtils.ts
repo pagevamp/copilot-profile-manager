@@ -13,11 +13,16 @@ import {
   MeResponseSchema,
   CompaniesResponse,
   CompaniesResponseSchema,
+  WorkspaceResponse,
+  WorkspaceResponseSchema,
+  Token,
 } from '@/types/common';
 import { copilotAPIKey } from '@/config';
 
+export type CopilotApi = typeof Copilot & { getTokenPayload?: () => Promise<Token> };
+
 export class CopilotAPI {
-  copilot: typeof Copilot;
+  copilot: CopilotApi;
 
   constructor(apiToken: string) {
     this.copilot = copilotApi({
@@ -28,6 +33,10 @@ export class CopilotAPI {
 
   async me(): Promise<MeResponse> {
     return MeResponseSchema.parse(await this.copilot.getUserInfo());
+  }
+
+  async getWorkspace(): Promise<WorkspaceResponse> {
+    return WorkspaceResponseSchema.parse(await this.copilot.getWorkspaceInfo());
   }
 
   async getClient(clientId: string): Promise<ClientResponse> {

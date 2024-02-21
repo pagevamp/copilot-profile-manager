@@ -61,7 +61,10 @@ export const TableCore = () => {
     if (appState?.clientProfileUpdates.length && appState?.clientProfileUpdates.length) {
       const col = appState?.clientProfileUpdates[0];
       delete col.id;
-      const keys = Object.keys(col);
+      let keys = Object.keys(col);
+      if (!appState.workspace?.isCompaniesEnabled) {
+        keys = keys.filter((key: string) => key !== 'company');
+      }
       keys.map((el) => {
         if (el === 'client') {
           colDefs = [

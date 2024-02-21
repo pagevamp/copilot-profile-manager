@@ -1,5 +1,6 @@
 'use client';
 
+import { WorkspaceResponse } from '@/types/common';
 import { FC, ReactNode, useState, createContext, Dispatch, SetStateAction } from 'react';
 
 export interface IAppState {
@@ -12,6 +13,7 @@ export interface IAppState {
   mutableSettings: any;
   token: string;
   portalId: string;
+  workspace?: WorkspaceResponse;
 }
 
 export interface IAppContext {
@@ -24,6 +26,7 @@ export interface IAppContext {
   mutableSettings: any;
   token: string;
   portalId: string;
+  workspace?: WorkspaceResponse;
   setAppState: Dispatch<SetStateAction<IAppState>>;
 }
 
@@ -44,6 +47,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     mutableSettings: [],
     token: '',
     portalId: '',
+    workspace: { isCompaniesEnabled: undefined },
   });
 
   return (
@@ -58,6 +62,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
         mutableSettings: state.mutableSettings,
         token: state.token,
         portalId: state.portalId,
+        workspace: state.workspace,
         setAppState: setState,
       }}
     >
