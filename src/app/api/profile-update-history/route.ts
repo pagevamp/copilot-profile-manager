@@ -45,6 +45,13 @@ export async function GET(request: NextRequest) {
         value: options.length > 0 ? options : value,
       };
     });
+    // If update history contains fewer than 4 items we assume the oldest value to start from empty
+    if (parsedUpdateHistory.length < 4) {
+      parsedUpdateHistory.push({
+        type: 'text',
+        value: 'Empty',
+      });
+    }
 
     return NextResponse.json(parsedUpdateHistory);
   } catch (error) {
