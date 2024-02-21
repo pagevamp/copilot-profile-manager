@@ -191,7 +191,7 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
         </Typography>
       )}
       <Typography variant="bodyMd" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        {data.value === '<empty>' ? '' : data.value}
+        {data.value}
       </Typography>
 
       <Popper id={id} open={open} anchorEl={anchorEl}>
@@ -259,7 +259,7 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
                 &#x2022;
               </Typography>
               <Typography variant="bodySm" key={key}>
-                {history.value === '<empty>' ? '' : history.value}
+                {history.value}
               </Typography>
             </Stack>
           );
