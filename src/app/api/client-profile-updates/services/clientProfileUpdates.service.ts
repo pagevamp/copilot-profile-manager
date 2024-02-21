@@ -53,7 +53,7 @@ export class ClientProfileUpdatesService {
       AND "createdAt" <= ${lastUpdated}
       AND "changedFields" ->> ${customFieldKey} IS NOT NULL
       ORDER BY "createdAt" DESC
-      LIMIT 5;
+      LIMIT 4;
     `;
   }
 }
