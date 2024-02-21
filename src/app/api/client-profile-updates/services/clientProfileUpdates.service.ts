@@ -33,11 +33,17 @@ export class ClientProfileUpdatesService {
             in: companyIds,
           },
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       });
     } else {
       clientProfileUpdates = await this.prismaClient.clientProfileUpdates.findMany({
         where: {
           portalId: portalId,
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       });
     }
