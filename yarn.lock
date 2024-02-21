@@ -2213,10 +2213,10 @@ convert-source-map@^2.0.0:
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-2.0.0.tgz#4b560f649fc4e918dd0ab75cf4961e8bc882d82a"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
 
-copilot-node-sdk@^0.0.45:
-  version "0.0.45"
-  resolved "https://registry.yarnpkg.com/copilot-node-sdk/-/copilot-node-sdk-0.0.45.tgz#82127dd6a4ff149d633b1e416aa7d0b636b4e8d8"
-  integrity sha512-K0ufAvAN2JSRst6KZGH+YSr7auiNg2oaeUK7ccAEwDMvfdtuF2MeUK+B894C5GobeOJapcVAL3BGGaJA0QKA8A==
+copilot-node-sdk@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/copilot-node-sdk/-/copilot-node-sdk-1.2.2.tgz#7f23c14669630f016f6ce6d92ac667f5b8d0ff4a"
+  integrity sha512-UqGYrwH/rqEjeuP+fqZQx7z2/1XhKELgkiZDhNr5zHhoI8DC4owoQEJTe/0lI4H/rJTLqZTBqagzWohuG4OOcg==
   dependencies:
     isomorphic-fetch "^3.0.0"
     jsonwebtoken "^9.0.2"

@@ -5,7 +5,7 @@ export const MeResponseSchema = z.object({
   givenName: z.string(),
   familyName: z.string(),
   email: z.string(),
-  portalName: z.string(),
+  portalName: z.string().optional(),
 });
 export type MeResponse = z.infer<typeof MeResponseSchema>;
 
