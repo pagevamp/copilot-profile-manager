@@ -10,6 +10,7 @@ import { HistoryCellRenderer } from './cellRenderers/HistoryCellRenderer';
 import { useAppState } from '@/hooks/useAppState';
 import { getTimeAgo } from '@/utils/getTimeAgo';
 import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
+import { order } from '@/utils/orderable';
 
 export const TableCore = () => {
   const appState = useAppState();
@@ -61,11 +62,17 @@ export const TableCore = () => {
     if (appState?.clientProfileUpdates.length && appState?.clientProfileUpdates.length) {
       const col = appState?.clientProfileUpdates[0];
       delete col.id;
-      let keys = Object.keys(col);
+
+      let keys = [
+        // This destructure is for essential meta info fields: client, company, last updated
+        ...Object.keys(col).slice(0, 3),
+        // Rest of these cols are for profile custom fields
+        ...order(appState?.mutableCustomFieldAccess).map((field: { name: string }) => field.name),
+      ];
       if (!appState.workspace?.isCompaniesEnabled) {
         keys = keys.filter((key: string) => key !== 'company');
       }
-      keys.map((el) => {
+      keys.map((el: string) => {
         if (el === 'client') {
           colDefs = [
             ...colDefs,
