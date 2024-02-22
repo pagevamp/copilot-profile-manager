@@ -5,6 +5,7 @@ import { StyledCheckBox } from '../styled/StyledCheckbox';
 import { useAppState } from '@/hooks/useAppState';
 import { iconsTypeMap } from './iconsTypeMap';
 import { Permissions } from '@/types/settings';
+import { order } from '@/utils/orderable';
 
 export const CustomFieldAccessTable = () => {
   const appState = useAppState();
@@ -68,7 +69,7 @@ export const CustomFieldAccessTable = () => {
         </Stack>
       </Stack>
       <Divider flexItem />
-      {appState?.mutableCustomFieldAccess.map((field: any, key: number) => {
+      {order(appState?.mutableCustomFieldAccess).map((field: any, key: number) => {
         return (
           <Stack direction="row" justifyContent="space-between" alignItems="center" p="8px 0px" key={key}>
             <Box minWidth="215px">

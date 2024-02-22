@@ -5,7 +5,7 @@ export const MeResponseSchema = z.object({
   givenName: z.string(),
   familyName: z.string(),
   email: z.string(),
-  portalName: z.string(),
+  portalName: z.string().optional(),
 });
 export type MeResponse = z.infer<typeof MeResponseSchema>;
 
@@ -30,6 +30,7 @@ export const CompanyResponseSchema = z.object({
   id: z.string(),
   name: z.string(),
   iconImageUrl: z.string().nullable(),
+  fallbackColor: z.string().nullish(),
 });
 export type CompanyResponse = z.infer<typeof CompanyResponseSchema>;
 

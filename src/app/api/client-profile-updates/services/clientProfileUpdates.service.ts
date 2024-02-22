@@ -33,11 +33,17 @@ export class ClientProfileUpdatesService {
             in: companyIds,
           },
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       });
     } else {
       clientProfileUpdates = await this.prismaClient.clientProfileUpdates.findMany({
         where: {
           portalId: portalId,
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       });
     }
@@ -53,7 +59,7 @@ export class ClientProfileUpdatesService {
       AND "createdAt" <= ${lastUpdated}
       AND "changedFields" ->> ${customFieldKey} IS NOT NULL
       ORDER BY "createdAt" DESC
-      LIMIT 5;
+      LIMIT 4;
     `;
   }
 }

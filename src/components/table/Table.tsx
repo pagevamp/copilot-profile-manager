@@ -111,6 +111,7 @@ export const TableCore = () => {
                 return {
                   iconImageUrl: company.iconImageUrl,
                   name: company.name,
+                  fallbackColor: company.fallbackColor,
                 };
               },
             },
