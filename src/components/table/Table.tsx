@@ -9,7 +9,7 @@ import { CompanyCellRenderer } from './cellRenderers/CompanyCellRenderer';
 import { HistoryCellRenderer } from './cellRenderers/HistoryCellRenderer';
 import { useAppState } from '@/hooks/useAppState';
 import { getTimeAgo } from '@/utils/getTimeAgo';
-import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
+import { arraysHaveSameElements, sliceTillElement } from '@/utils/array';
 import { order } from '@/utils/orderable';
 
 export const TableCore = () => {
@@ -65,7 +65,7 @@ export const TableCore = () => {
 
       let keys = [
         // This destructure is for essential meta info fields: client, company, last updated
-        ...Object.keys(col).slice(0, 3),
+        ...sliceTillElement(Object.keys(col), 'lastUpdated'),
         // Rest of these cols are for profile custom fields
         ...order(appState?.mutableCustomFieldAccess).map((field: { name: string }) => field.name),
       ];

@@ -2,7 +2,7 @@
 
 import { FooterSave } from '@/components/footerSave/FooterSave';
 import { useAppState } from '@/hooks/useAppState';
-import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
+import { arraysHaveSameElements } from '@/utils/array';
 import { useState } from 'react';
 
 export const Footer = () => {

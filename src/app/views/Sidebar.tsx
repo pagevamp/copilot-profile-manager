@@ -4,7 +4,7 @@ import { CustomFieldAccessTable } from '@/components/customFieldAccessTable/Cust
 import { Box, Stack, Typography } from '@mui/material';
 import { Switch } from '@/components/switch/Switch';
 import { useAppState } from '@/hooks/useAppState';
-import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
+import { arraysHaveSameElements } from '@/utils/array';
 import { ProfileLinks } from '@/types/settings';
 
 export const Sidebar = () => {
