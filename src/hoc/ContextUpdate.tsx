@@ -2,6 +2,7 @@
 
 import { useAppState } from '@/hooks/useAppState';
 import { ParsedClientProfileUpdatesResponse } from '@/types/clientProfileUpdates';
+import { WorkspaceResponse } from '@/types/common';
 import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
 import { ReactNode, useEffect } from 'react';
 
@@ -12,10 +13,23 @@ interface IContextUpdate {
   settings: any;
   token: string;
   portalId: string;
+  workspace: WorkspaceResponse;
 }
 
-export const ContextUpdate = ({ children, clientProfileUpdates, access, settings, token, portalId }: IContextUpdate) => {
+export const ContextUpdate = ({
+  children,
+  clientProfileUpdates,
+  access,
+  settings,
+  token,
+  portalId,
+  workspace,
+}: IContextUpdate) => {
   const appState = useAppState();
+
+  useEffect(() => {
+    appState?.setAppState((prev) => ({ ...prev, workspace }));
+  }, [workspace]);
 
   useEffect(() => {
     appState?.setAppState((prev) => ({ ...prev, clientProfileUpdates }));

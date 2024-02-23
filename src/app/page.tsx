@@ -6,6 +6,7 @@ import { apiUrl } from '@/config';
 import { ParsedClientProfileUpdatesResponse } from '@/types/clientProfileUpdates';
 import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
 import { ContextUpdate } from '@/hoc/ContextUpdate';
+import { getWorkspaceInfo } from '../../services/workspace';
 
 export const revalidate = 0;
 
@@ -67,6 +68,7 @@ export default async function Home({ searchParams }: { searchParams: { token: st
   const clientProfileUpdates = await getClientProfileUpdates({ token, portalId });
   const customFieldAccess = await getCustomFieldAccess({ token, portalId });
   const settings = await getSettings({ token, portalId });
+  const workspace = await getWorkspaceInfo({ token, portalId });
 
   return (
     <ContextUpdate
@@ -75,6 +77,7 @@ export default async function Home({ searchParams }: { searchParams: { token: st
       access={customFieldAccess}
       token={token}
       portalId={portalId}
+      workspace={workspace}
     >
       <Stack direction="row">
         <MainSection />

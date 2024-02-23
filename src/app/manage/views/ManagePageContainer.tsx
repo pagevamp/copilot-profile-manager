@@ -6,6 +6,7 @@ import { StyledTextInput } from '@/components/styled/StyledTextInput';
 import { Box, Stack, Tooltip, Typography, styled } from '@mui/material';
 import { FC, ReactElement, useMemo, useState } from 'react';
 import { EmptyStateFallback } from './EmptyStateFallback';
+import { order } from '@/utils/orderable';
 
 export const ManagePageContainer = ({
   customFieldAccess,
@@ -124,7 +125,7 @@ export const ManagePageContainer = ({
         }}
       >
         {allowedCustomField &&
-          allowedCustomField.map((field: any, key: number) => {
+          order(allowedCustomField).map((field: any, key: number) => {
             if (field.type !== 'multiSelect') {
               return (
                 <InputContainer key={key}>

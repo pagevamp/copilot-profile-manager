@@ -6,7 +6,7 @@ import { Header } from '@/layouts/Header';
 import { Box } from '@mui/material';
 import { Sidebar } from './Sidebar';
 import { TableCore } from '@/components/table/Table';
-import { arraysHaveSameElements } from '@/utils/arrayHaveSameElements';
+import { arraysHaveSameElements } from '@/utils/array';
 
 const MainSection = () => {
   const appState = useAppState();
