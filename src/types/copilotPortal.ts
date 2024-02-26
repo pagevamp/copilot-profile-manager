@@ -1,4 +1,4 @@
-type PortalRoutes =
+export type PortalRoutes =
   | 'messages'
   | 'files'
   | 'contracts'

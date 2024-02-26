@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 import { TypographyPropsVariantOverrides } from '@mui/material/Typography/Typography';
 import { OverridableStringUnion } from '@mui/types';
 import { Variant } from '@mui/material/styles/createTypography';
-import Link from 'next/link';
+import { PortalRoutes } from '@/types/copilotPortal';
 
 interface ButtonProps {
   children: string | JSX.Element;
