@@ -15,7 +15,7 @@ interface ButtonProps {
 }
 
 const Button = ({ children, route, onClick, typographyVariant = 'md' }: ButtonProps) => {
-  onClick = onClick || (() => window.parent.postMessage({ type: 'history.push', route: route || '#' }, '*'));
+  onClick = onClick || (route && (() => window.parent.postMessage({ type: 'history.push', route }, '*')));
 
   return (
     <SimpleButton onClick={onClick}>
