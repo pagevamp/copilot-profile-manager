@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 interface ButtonProps {
   children: string | JSX.Element;
-  route?: string;
+  route?: PortalRoutes;
   typographyVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   onClick?: () => void;
 }
