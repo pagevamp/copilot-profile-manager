@@ -20,7 +20,10 @@ export async function POST(request: NextRequest) {
     const clientUpdateResponse = await copilotClient.updateClient(clientProfileUpdateRequest.data.clientId, {
       customFields: clientProfileUpdateRequest.data.form,
     });
-    const changedFields = getObjectDifference(clientUpdateResponse.customFields ?? {}, client.customFields ?? {});
+    const changedFields = getObjectDifference(
+      (clientUpdateResponse.customFields ?? {}) as Record<string, any>,
+      (client.customFields ?? {}) as Record<string, any>,
+    );
     if (Object.keys(changedFields).length === 0) {
       return NextResponse.json({});
     }
@@ -30,7 +33,7 @@ export async function POST(request: NextRequest) {
       clientId: clientProfileUpdateRequest.data.clientId,
       companyId: clientProfileUpdateRequest.data.companyId,
       portalId: clientProfileUpdateRequest.data.portalId,
-      customFields: clientUpdateResponse.customFields ?? {},
+      customFields: (clientUpdateResponse.customFields ?? {}) as Record<string, any>,
       changedFields,
     });
 
