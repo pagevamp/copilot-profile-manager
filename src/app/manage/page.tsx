@@ -4,6 +4,7 @@ import { apiUrl } from '@/config';
 import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
 import { ProfileLinks } from '@/types/settings';
 import Button from '@/components/atoms/Button';
+import { PortalRoutes } from '@/types/copilotPortal';
 
 export const revalidate = 0;
 
@@ -81,10 +82,10 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
         )}
         <Stack direction="row" columnGap={4}>
           {settings && settings.includes(ProfileLinks.PaymentMethod) && (
-            <Button route={'billing'}>Set a payment method</Button>
+            <Button route={PortalRoutes.Billing}>Set a payment method</Button>
           )}
           {settings && settings.includes(ProfileLinks.ProfileSetting) && (
-            <Button route={'settings'}>Go to account settings</Button>
+            <Button route={PortalRoutes.Settings}>Go to account settings</Button>
           )}
         </Stack>
       </Stack>
