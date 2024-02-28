@@ -10,13 +10,14 @@ import { ReactNode } from 'react';
 
 interface ButtonProps {
   children: string | ReactNode;
-  route?: AvailablePortalRoutes;
+  parentRouteOnClick?: AvailablePortalRoutes;
   typographyVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
   onClick?: () => void;
 }
 
-const Button = ({ children, route, onClick, typographyVariant = 'md' }: ButtonProps) => {
-  const handleClick = onClick || (route && (() => window.parent.postMessage({ type: 'history.push', route }, '*')));
+const Button = ({ children, parentRouteOnClick, onClick, typographyVariant = 'md' }: ButtonProps) => {
+  const handleClick =
+    onClick || (parentRouteOnClick && (() => window.parent.postMessage({ type: 'history.push', parentRouteOnClick }, '*')));
 
   return (
     <SimpleButton onClick={handleClick}>

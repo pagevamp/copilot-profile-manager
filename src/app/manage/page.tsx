@@ -82,10 +82,10 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
         )}
         <Stack direction="row" columnGap={4}>
           {settings && settings.includes(ProfileLinks.PaymentMethod) && (
-            <Button route={PortalRoutes.Billing}>Set a payment method</Button>
+            <Button parentRouteOnClick={PortalRoutes.Billing}>Set a payment method</Button>
           )}
           {settings && settings.includes(ProfileLinks.ProfileSetting) && (
-            <Button route={PortalRoutes.Settings}>Go to account settings</Button>
+            <Button parentRouteOnClick={PortalRoutes.Settings}>Go to account settings</Button>
           )}
         </Stack>
       </Stack>
