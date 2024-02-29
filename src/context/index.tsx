@@ -47,7 +47,7 @@ export const AppContextProvider: FC<IAppCoreProvider> = ({ children }) => {
     mutableSettings: [],
     token: '',
     portalId: '',
-    workspace: { isCompaniesEnabled: undefined, id: '' },
+    workspace: { id: '' },
   });
 
   return (
