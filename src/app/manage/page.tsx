@@ -1,10 +1,10 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { ManagePageContainer } from './views/ManagePageContainer';
-import { SimpleButton } from '@/components/styled/SimpleButton';
 import { apiUrl } from '@/config';
 import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
-import { Settings } from '@mui/icons-material';
 import { ProfileLinks } from '@/types/settings';
+import { PortalRoutes } from '@/types/copilotPortal';
+import RedirectButton from '@/components/atoms/RedirectButton';
 
 export const revalidate = 0;
 
@@ -82,14 +82,10 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
         )}
         <Stack direction="row" columnGap={4}>
           {settings && settings.includes(ProfileLinks.PaymentMethod) && (
-            <SimpleButton>
-              <Typography variant="md">Set a payment method</Typography>
-            </SimpleButton>
+            <RedirectButton route={PortalRoutes.Billing}>Set a payment method</RedirectButton>
           )}
           {settings && settings.includes(ProfileLinks.ProfileSetting) && (
-            <SimpleButton>
-              <Typography variant="md">Go to account settings</Typography>
-            </SimpleButton>
+            <RedirectButton route={PortalRoutes.Settings}>Go to account settings</RedirectButton>
           )}
         </Stack>
       </Stack>
