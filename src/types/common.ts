@@ -47,7 +47,6 @@ export const ClientResponseSchema = z.object({
   status: z.string(),
   avatarImageUrl: z.string().nullable(),
   customFields: z.record(z.string(), z.union([z.string(), z.array(z.string())]).nullable()).nullish(),
-  // customFields: z.any(),
 });
 export type ClientResponse = z.infer<typeof ClientResponseSchema>;
 
@@ -98,6 +97,5 @@ export const ClientRequestSchema = z.object({
   familyName: z.string().optional(),
   companyId: z.string().uuid().optional(),
   customFields: z.record(z.union([z.string(), z.array(z.string())]).nullable()).nullish(),
-  // customFields: z.any(),
 });
 export type ClientRequest = z.infer<typeof ClientRequestSchema>;
