@@ -64,7 +64,7 @@ async function getSettings({ token, portalId }: { token: string; portalId: strin
 }
 
 export default async function Home({ searchParams }: { searchParams: { token: string; portalId: string } }) {
-  const token = z.string().parse(searchParams);
+  const token = z.string().parse(searchParams.token);
   const copilotClient = new CopilotAPI(token);
   const workspace = await copilotClient.getWorkspace();
   const { id: portalId } = workspace;
