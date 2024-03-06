@@ -25,6 +25,20 @@ export function createLookup(array: any[] | undefined | null, key: string): Reco
   return lookup;
 }
 
+export function createMapLookup<T extends Record<string, unknown>>(
+  array: T[] | undefined | null,
+  key: string,
+): Map<string, T> {
+  const mapItems = (array ?? [])
+    .map((item) => {
+      if (key in item) return [item[key], item];
+      return null;
+    })
+    .filter(Boolean);
+  const lookup: Map<string, any> = new Map();
+  return lookup;
+}
+
 export function getSelectedOptions(portalCustomField: CustomField, value: string | string[]) {
   const options: unknown[] = [];
 
