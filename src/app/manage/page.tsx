@@ -7,6 +7,7 @@ import { PortalRoutes } from '@/types/copilotPortal';
 import RedirectButton from '@/components/atoms/RedirectButton';
 import { z } from 'zod';
 import { CopilotAPI } from '@/utils/copilotApiUtils';
+import InvalidToken from '@/components/atoms/InvalidToken';
 
 export const revalidate = 0;
 
@@ -52,8 +53,9 @@ async function getClient(clientId: string, token: string) {
 export default async function ManagePage({ searchParams }: { searchParams: { token: string; portalId: string } }) {
   const tokenParsed = z.string().safeParse(searchParams.token);
   if (!tokenParsed.success) {
-    return <div className="flex justify-center items-center">Please provide a valid token!</div>;
+    return <InvalidToken />;
   }
+
   const token = tokenParsed.data;
 
   const copilotClient = new CopilotAPI(token);
