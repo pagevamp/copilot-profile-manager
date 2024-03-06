@@ -8,6 +8,7 @@ import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
 import { ContextUpdate } from '@/hoc/ContextUpdate';
 import { CopilotAPI } from '@/utils/copilotApiUtils';
 import { z } from 'zod';
+import InvalidToken from '@/components/atoms/InvalidToken';
 
 export const revalidate = 0;
 
@@ -67,7 +68,7 @@ export default async function Home({ searchParams }: { searchParams: { token: st
   const tokenParsed = z.string().safeParse(searchParams.token);
 
   if (!tokenParsed.success) {
-    return <div className="flex justify-center items-center">Please provide a valid token!</div>;
+    return <InvalidToken />;
   }
 
   const token = tokenParsed.data;
