@@ -41,11 +41,13 @@ export const ParsedClientProfileUpdatesResponseSchema = z.object({
     email: z.string(),
     avatarImageUrl: z.string().nullable(),
   }),
-  company: z.object({
-    id: z.string().uuid(),
-    name: z.string(),
-    iconImageUrl: z.string().nullable(),
-  }),
+  company: z
+    .object({
+      id: z.string().uuid(),
+      name: z.string(),
+      iconImageUrl: z.string().nullable(),
+    })
+    .optional(),
   lastUpdated: z.date(),
 });
 export type ParsedClientProfileUpdatesResponse = z.infer<typeof ParsedClientProfileUpdatesResponseSchema>;
