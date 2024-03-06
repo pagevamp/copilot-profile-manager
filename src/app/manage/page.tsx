@@ -50,7 +50,11 @@ async function getClient(clientId: string, token: string) {
 }
 
 export default async function ManagePage({ searchParams }: { searchParams: { token: string; portalId: string } }) {
-  const token = z.string().parse(searchParams.token);
+  const tokenParsed = z.string().safeParse(searchParams.token);
+  if (!tokenParsed.success) {
+    return <div className="flex justify-center items-center">Please provide a valid token!</div>;
+  }
+  const token = tokenParsed.data;
 
   const copilotClient = new CopilotAPI(token);
 
