@@ -5,7 +5,7 @@ import { handleError, respondError } from '@/utils/common';
 import { ClientProfileUpdatesService } from '@/app/api/client-profile-updates/services/clientProfileUpdates.service';
 import { ClientResponse, CompanyResponse } from '@/types/common';
 import { z } from 'zod';
-import { createLookup, getObjectDifference, getSelectedOptions } from '@/lib/helper';
+import { createLookup, createMapLookup, getObjectDifference, getSelectedOptions } from '@/lib/helper';
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
@@ -67,16 +67,16 @@ export async function GET(request: NextRequest) {
     const clientProfileUpdates = await new ClientProfileUpdatesService().findMany(portalId, []);
 
     const clientLookup = createLookup(clients.data, 'id');
-    const companyLookup = createLookup(companies.data, 'id');
+    const companyLookup = createMapLookup(companies.data, 'id');
 
     const parsedClientProfileUpdates: ParsedClientProfileUpdatesResponse[] = clientProfileUpdates.map((update) => {
       const client = clientLookup[update.clientId];
-      const company = companyLookup[update.companyId];
+      const company = companyLookup.get(update.companyId);
 
       let parsedClientProfileUpdate: ParsedClientProfileUpdatesResponse = {
         id: update.id,
         client: getClientDetails(client),
-        company: getCompanyDetails(company),
+        company: company ? getCompanyDetails(company) : undefined,
         lastUpdated: update.createdAt,
       };
 
