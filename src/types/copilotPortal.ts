@@ -3,9 +3,9 @@ export enum PortalRoutes {
   Files = 'files',
   Contracts = 'contracts',
   Forms = 'forms',
-  Billing = 'billing',
+  Billing = 'settings.billing',
   Helpdesk = 'helpdesk',
-  Profile = 'profile',
+  Profile = 'settings.profile',
   Settings = 'settings',
   Notifications = 'notifications',
 }
