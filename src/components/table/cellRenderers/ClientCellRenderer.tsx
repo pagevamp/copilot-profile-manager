@@ -6,6 +6,7 @@ export const ClientCellRenderer = ({
   value: { avatarImageUrl: string; email: string; name: string; fallbackColor: string };
 }) => {
   const { avatarImageUrl, email, name, fallbackColor } = value;
+
   return (
     <Stack direction="row" alignItems="center" gap={3} marginTop="10px">
       {avatarImageUrl ? (
