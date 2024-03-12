@@ -93,7 +93,7 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
             <RedirectButton route={PortalRoutes.Billing}>Set a payment method</RedirectButton>
           )}
           {settings && settings.includes(ProfileLinks.ProfileSetting) && (
-            <RedirectButton route={PortalRoutes.Settings}>Go to account settings</RedirectButton>
+            <RedirectButton route={PortalRoutes.Profile}>Go to account settings</RedirectButton>
           )}
         </Stack>
       </Stack>
