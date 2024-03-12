@@ -206,6 +206,7 @@ export const TableCore = () => {
         defaultColDef={defaultColDef}
         suppressMovableColumns={true}
         quickFilterText={appState?.searchKeyword}
+        overlayNoRowsTemplate={"Your clients have not yet made any Profile updates."}
       />
     </Box>
   );
