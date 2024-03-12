@@ -11,6 +11,7 @@ import { useAppState } from '@/hooks/useAppState';
 import { getTimeAgo } from '@/utils/getTimeAgo';
 import { arraysHaveSameElements, sliceTillElement } from '@/utils/array';
 import { order } from '@/utils/orderable';
+import copilotTheme from '@/utils/copilotTheme';
 
 export const TableCore = () => {
   const appState = useAppState();
@@ -91,10 +92,12 @@ export const TableCore = () => {
               minWidth: 250,
               valueGetter: (params: any) => {
                 const client = params.data[el];
+                const company = params.data['company'];
                 return {
                   avatarImageUrl: client.avatarImageUrl,
                   name: client.name,
                   email: client.email,
+                  fallbackColor: company.fallbackColor || copilotTheme.colors.primary,
                 };
               },
             },
