@@ -86,43 +86,51 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
             &#x2022;
           </Typography>
         )}
-        <Stack
-          direction="row"
-          alignItems="center"
-          sx={{
-            marginTop: '10px',
-          }}
-          columnGap={'2px'}
-        >
+        {data?.value?.[0] ? (
           <Stack
             direction="row"
             alignItems="center"
             sx={{
-              padding: '4px 8px',
-              borderColor: updateColor(data.value[0].color, 0.3),
-              border: '2px solid',
-              backgroundColor: updateColor(data.value[0].color, 0.1),
-              color: data.value[0].color,
-              fontWeight: '600',
-              borderRadius: '35px',
-              width: 'fit-content',
-              minWidth: '40px',
-              columnGap: '6px',
+              marginTop: '10px',
             }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            columnGap={'2px'}
           >
-            <FiberManualRecord fontSize="small" />
+            <Stack
+              direction="row"
+              alignItems="center"
+              sx={{
+                padding: '4px 8px',
+                borderColor: updateColor(data.value[0].color, 0.3),
+                border: '2px solid',
+                backgroundColor: updateColor(data.value[0].color, 0.1),
+                color: data.value[0].color,
+                fontWeight: '600',
+                borderRadius: '35px',
+                width: 'fit-content',
+                minWidth: '40px',
+                columnGap: '6px',
+              }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <FiberManualRecord fontSize="small" />
 
-            <Typography variant="bodySm" fontWeight={500}>
-              {data.value ? data.value[0].label : ''}
+              <Typography variant="bodySm" fontWeight={500}>
+                {data.value ? data.value[0].label : ''}
+              </Typography>
+            </Stack>
+
+            <Typography
+              onMouseEnter={handleMouseEnterMultiSelect}
+              onMouseLeave={handleMouseLeaveMultiSelect}
+              variant="bodyMd"
+            >
+              {data.value.length > 1 && `+ ${data.value.length - 1}`}
             </Typography>
           </Stack>
-
-          <Typography onMouseEnter={handleMouseEnterMultiSelect} onMouseLeave={handleMouseLeaveMultiSelect} variant="bodyMd">
-            {data.value.length > 1 && `+ ${data.value.length - 1}`}
-          </Typography>
-        </Stack>
+        ) : (
+          <></>
+        )}
         <Popper id={id} open={open} anchorEl={anchorEl}>
           {loading ? <CircularProgress size={20} color="inherit" /> : <HistoryList updateHistory={updateHistory} />}
         </Popper>
@@ -139,7 +147,7 @@ export const HistoryCellRenderer = ({ value }: { value: { row: any; key: string 
               columnGap: '10px',
             })}
           >
-            {data.value.map((el: any, key: number) => {
+            {data?.value?.map((el: any, key: number) => {
               if (key === 0) return null;
               return (
                 <Stack
