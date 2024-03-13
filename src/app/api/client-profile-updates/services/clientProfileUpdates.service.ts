@@ -18,6 +18,7 @@ export class ClientProfileUpdatesService {
         portalId: requestData.portalId,
         customFields: requestData.customFields,
         changedFields: requestData.changedFields,
+        wasUpdatedByIU: requestData.wasUpdatedByIU,
       },
     });
   }
@@ -32,6 +33,7 @@ export class ClientProfileUpdatesService {
           companyId: {
             in: companyIds,
           },
+          wasUpdatedByIU: false,
         },
         orderBy: {
           createdAt: 'desc',
@@ -41,6 +43,7 @@ export class ClientProfileUpdatesService {
       clientProfileUpdates = await this.prismaClient.clientProfileUpdates.findMany({
         where: {
           portalId: portalId,
+          wasUpdatedByIU: false,
         },
         orderBy: {
           createdAt: 'desc',
