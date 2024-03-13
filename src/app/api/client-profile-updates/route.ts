@@ -34,6 +34,28 @@ export async function POST(request: NextRequest) {
     }
 
     const service = new ClientProfileUpdatesService();
+
+    // First, check if the copilot's custom fields and our recent history are in sync
+    for (const key of Object.keys(changedFields)) {
+      const lastHistory = (await new ClientProfileUpdatesService().getUpdateHistory(key, client.id, new Date()))?.[0]
+        ?.changedFields?.[key];
+      if (!lastHistory) continue;
+
+      // If not, fix it.
+      if (client.customFields?.[key] !== lastHistory) {
+        await service.save({
+          clientId: clientProfileUpdateRequest.data.clientId,
+          companyId: clientProfileUpdateRequest.data.companyId,
+          portalId: clientProfileUpdateRequest.data.portalId,
+          customFields: { ...(clientUpdateResponse.customFields ?? {}), [key]: client.customFields?.[key] } as Record<
+            string,
+            any
+          >,
+          // @ts-expect-error inject key
+          changedFields: { [key]: client.customFields?.[key] },
+        });
+      }
+    }
     await service.save({
       clientId: clientProfileUpdateRequest.data.clientId,
       companyId: clientProfileUpdateRequest.data.companyId,
