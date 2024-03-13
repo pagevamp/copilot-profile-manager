@@ -72,7 +72,6 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  console.log('HIT MOTHERFUCKER');
   const token = request.nextUrl.searchParams.get('token');
   const portalId = request.nextUrl.searchParams.get('portalId');
 
