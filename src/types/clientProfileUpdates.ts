@@ -18,6 +18,7 @@ export const ClientProfileUpdatesSchema = z.object({
   portalId: z.string(),
   customFields: CustomFieldUpdatesSchema,
   changedFields: CustomFieldUpdatesSchema,
+  wasUpdatedByIU: z.boolean().optional(),
 });
 export type ClientProfileUpdates = z.infer<typeof ClientProfileUpdatesSchema>;
 
