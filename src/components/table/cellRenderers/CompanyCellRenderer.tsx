@@ -7,6 +7,8 @@ export const CompanyCellRenderer = ({
   value: { iconImageUrl: string; name: string; fallbackColor?: string };
 }) => {
   const { iconImageUrl, name, fallbackColor } = value;
+  if (!name) return <></>;
+
   return (
     <Stack direction="row" alignItems="center" gap={3} marginTop="15px">
       <CompanyIcon label={name[0]} iconImageUrl={iconImageUrl} fallbackColor={fallbackColor} />

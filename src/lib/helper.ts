@@ -7,6 +7,10 @@ export function getObjectDifference(obj1: Record<string, string | string[]>, obj
     let value2 = obj2[key];
     value1 = Array.isArray(value1) ? value1.sort() : value1;
     value2 = Array.isArray(value2) ? value2.sort() : value2;
+
+    if (value1 === undefined) value1 = '';
+    if (value2 === undefined) value2 = '';
+
     if (JSON.stringify(value1) !== JSON.stringify(value2)) {
       diff[key] = value1;
     }

@@ -20,12 +20,17 @@ export async function POST(request: NextRequest) {
     const clientUpdateResponse = await copilotClient.updateClient(clientProfileUpdateRequest.data.clientId, {
       customFields: clientProfileUpdateRequest.data.form,
     });
+    // NOTE: If you pass empty string as value to a custom field, that key will be deleted from the copilot api
+    // (Probably because it's built in Go and Go does the weird zero value cast thing)
+    // So sending an empty "" is the same as nil
+    clientUpdateResponse.customFields = { ...clientProfileUpdateRequest.data.form, ...clientUpdateResponse.customFields };
+
     const changedFields = getObjectDifference(
       (clientUpdateResponse.customFields ?? {}) as Record<string, any>,
       (client.customFields ?? {}) as Record<string, any>,
     );
     if (Object.keys(changedFields).length === 0) {
-      return NextResponse.json({});
+      return NextResponse.json({ message: 'No changed fields detected' });
     }
 
     const service = new ClientProfileUpdatesService();
@@ -37,7 +42,7 @@ export async function POST(request: NextRequest) {
       changedFields,
     });
 
-    return NextResponse.json({});
+    return NextResponse.json({ message: 'Saved client profile updates along with changed fields' });
   } catch (error) {
     return handleError(error);
   }
@@ -90,7 +95,7 @@ export async function GET(request: NextRequest) {
           type: portalCustomField.type,
           key: portalCustomField.key,
           value: options.length > 0 ? options : value,
-          isChanged: !!update.changedFields[portalCustomField.key],
+          isChanged: update.changedFields[portalCustomField.key] === '' || !!update.changedFields[portalCustomField.key],
         };
       });
 
