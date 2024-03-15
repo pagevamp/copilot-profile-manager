@@ -1,9 +1,11 @@
-import { AddressIcon, MultiSelectIcon, PhoneNumberIcon, TextIcon } from '@/icons';
+import { AddressIcon, EmailIcon, LinkIcon, MultiSelectIcon, NumberIcon, PhoneNumberIcon, TextIcon } from '@/icons';
 
 export const iconsTypeMap: any = {
   phoneNumber: <PhoneNumberIcon />,
   text: <TextIcon />,
   multiSelect: <MultiSelectIcon />,
-  number: <PhoneNumberIcon />,
+  number: <NumberIcon />,
   address: <AddressIcon />,
+  email: <EmailIcon />,
+  url: <LinkIcon />,
 };
