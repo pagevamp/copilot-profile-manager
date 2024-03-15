@@ -8,3 +8,6 @@ export { default as AddressIcon } from './address.svg';
 export { default as MultiSelectIcon } from './multiselect.svg';
 export { default as PhoneNumberIcon } from './phonenumber.svg';
 export { default as TextIcon } from './text.svg';
+export { default as EmailIcon } from './email.svg';
+export { default as LinkIcon } from './link.svg';
+export { default as NumberIcon } from './number.svg';
