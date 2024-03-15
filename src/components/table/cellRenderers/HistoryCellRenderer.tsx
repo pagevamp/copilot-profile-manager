@@ -218,7 +218,8 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
         backgroundColor: theme.color.base.white,
         boxShadow: '0px 8px 24px 0px rgba(0, 0, 0, 0.12)',
         padding: 4,
-        minWidth: '200px',
+        minWidth: '400px',
+        maxWidth: '400px',
       })}
     >
       <Typography variant="sm">Update history</Typography>
@@ -262,12 +263,13 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
             );
           }
           return (
-            <Stack key={key} direction="row" alignItems="center" columnGap={3}>
+            <Stack key={key} direction="row" alignItems="flex-start" columnGap={3}>
               <Typography variant="bodyMd" fontSize={20}>
                 &#x2022;
               </Typography>
               <Typography variant="bodySm" key={key}>
-                {history.value}
+                {history.value.slice(0, 700)}
+                {history.value.length > 700 ? '...' : ''}
               </Typography>
             </Stack>
           );
