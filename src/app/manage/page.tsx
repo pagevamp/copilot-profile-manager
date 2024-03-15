@@ -66,6 +66,7 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
   const customFieldAccess = await getCustomFieldAccess({ token, portalId });
 
   const client = await getClient(clientId, token);
+  const isAccessProvided = customFieldAccess.some((field: any) => field.permission.length > 0);
 
   return (
     <Box
@@ -73,8 +74,7 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
         padding: { xs: '32px 16px', md: '90px 236px' },
       }}
     >
-      <Typography variant="xl">Manage your profile</Typography>
-
+      {isAccessProvided ? <Typography variant="xl">Manage your profile</Typography> : <></>}
       <ManagePageContainer
         customFieldAccess={customFieldAccess}
         client={client}
