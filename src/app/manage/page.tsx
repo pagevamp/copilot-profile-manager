@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { ManagePageContainer } from './views/ManagePageContainer';
 import { apiUrl } from '@/config';
-import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
+import { CustomAccessField, CustomFieldAccessResponse, ModifiedPermissionAccessField } from '@/types/customFieldAccess';
 import { ProfileLinks } from '@/types/settings';
 import { PortalRoutes } from '@/types/copilotPortal';
 import RedirectButton from '@/components/atoms/RedirectButton';
@@ -66,7 +66,10 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
   const customFieldAccess = await getCustomFieldAccess({ token, portalId });
 
   const client = await getClient(clientId, token);
-  const isAccessProvided = customFieldAccess.some((field: any) => field.permission.length > 0);
+
+  const isAccessProvided = customFieldAccess.some(
+    (field) => (field as unknown as ModifiedPermissionAccessField).permission.length > 0,
+  );
 
   return (
     <Box
