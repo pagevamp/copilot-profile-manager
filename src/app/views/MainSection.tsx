@@ -26,10 +26,10 @@ const MainSection = () => {
       }}
     >
       <Header />
-      {windowWidth && (windowWidth <= 600 ? <Sidebar /> : null)}
+      {windowWidth ? windowWidth <= 600 ? <Sidebar /> : <></> : <></>}
 
       {/* If window width is less than 600 and showSidebar is false then show <TableCore/> or else, show <TableCore /> always */}
-      {windowWidth && windowWidth <= 600 ? appState?.showSidebar ? null : <TableCore /> : <TableCore />}
+      {windowWidth ? windowWidth <= 600 ? appState?.showSidebar ? null : <TableCore /> : <TableCore /> : <></>}
     </Box>
   );
 };

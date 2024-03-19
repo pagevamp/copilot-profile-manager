@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { ManagePageContainer } from './views/ManagePageContainer';
 import { apiUrl } from '@/config';
-import { CustomFieldAccessResponse } from '@/types/customFieldAccess';
+import { CustomAccessField, CustomFieldAccessResponse, ModifiedPermissionAccessField } from '@/types/customFieldAccess';
 import { ProfileLinks } from '@/types/settings';
 import { PortalRoutes } from '@/types/copilotPortal';
 import RedirectButton from '@/components/atoms/RedirectButton';
@@ -67,14 +67,17 @@ export default async function ManagePage({ searchParams }: { searchParams: { tok
 
   const client = await getClient(clientId, token);
 
+  const isAccessProvided = customFieldAccess.some(
+    (field) => (field as unknown as ModifiedPermissionAccessField).permission.length > 0,
+  );
+
   return (
     <Box
       sx={{
         padding: { xs: '32px 16px', md: '90px 236px' },
       }}
     >
-      <Typography variant="xl">Manage your profile</Typography>
-
+      {isAccessProvided ? <Typography variant="xl">Manage your profile</Typography> : <></>}
       <ManagePageContainer
         customFieldAccess={customFieldAccess}
         client={client}
