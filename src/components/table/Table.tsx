@@ -97,7 +97,7 @@ export const TableCore = () => {
                   avatarImageUrl: client.avatarImageUrl,
                   name: client.name,
                   email: client.email,
-                  fallbackColor: company.fallbackColor || copilotTheme.colors.primary,
+                  fallbackColor: company?.fallbackColor || copilotTheme.colors.primary,
                 };
               },
             },
@@ -124,7 +124,7 @@ export const TableCore = () => {
                 return {
                   iconImageUrl: company.iconImageUrl,
                   name: company.name,
-                  fallbackColor: company.fallbackColor,
+                  fallbackColor: company?.fallbackColor || copilotTheme.colors.primary,
                 };
               },
             },

@@ -142,9 +142,9 @@ function getClientDetails(client: ClientResponse) {
 
 function getCompanyDetails(company: CompanyResponse) {
   return {
-    id: company.id,
-    name: company.name,
-    iconImageUrl: company.iconImageUrl,
-    fallbackColor: company.fallbackColor,
+    id: company?.id,
+    name: company?.name,
+    iconImageUrl: company?.iconImageUrl,
+    fallbackColor: company?.fallbackColor,
   };
 }

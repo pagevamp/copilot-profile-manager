@@ -1,9 +1,10 @@
+import copilotTheme from '@/utils/copilotTheme';
 import { Box, Stack, Typography } from '@mui/material';
 
 export const ClientCellRenderer = ({
   value,
 }: {
-  value: { avatarImageUrl: string; email: string; name: string; fallbackColor: string };
+  value: { avatarImageUrl: string; email: string; name: string; fallbackColor?: string };
 }) => {
   const { avatarImageUrl, email, name, fallbackColor } = value;
 
@@ -17,7 +18,7 @@ export const ClientCellRenderer = ({
             minWidth: '28px',
             height: '28px',
             borderRadius: '100%',
-            background: fallbackColor,
+            background: fallbackColor || copilotTheme.colors.primary,
             color: 'white',
             display: 'flex',
             justifyContent: 'center',
