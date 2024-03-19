@@ -122,8 +122,8 @@ export const TableCore = () => {
               valueGetter: (params: any) => {
                 const company = params.data[el];
                 return {
-                  iconImageUrl: company.iconImageUrl,
-                  name: company.name,
+                  iconImageUrl: company?.iconImageUrl,
+                  name: company?.name || '',
                   fallbackColor: company?.fallbackColor || copilotTheme.colors.primary,
                 };
               },
