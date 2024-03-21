@@ -39,10 +39,15 @@ export async function POST(request: NextRequest) {
     for (const key of Object.keys(changedFields)) {
       const lastHistory = (await new ClientProfileUpdatesService().getUpdateHistory(key, client.id, new Date()))?.[0]
         ?.changedFields?.[key];
-      if (!lastHistory) continue;
 
-      // If not, fix it.
+      const areHistoriesEmpty =
+        // Case where both have empty values. Make sure to strict check so we don't consider 0 input as empty history
+        (lastHistory === undefined || lastHistory === null || lastHistory === '') &&
+        client.customFields?.[key] === undefined;
+      if (areHistoriesEmpty) continue;
+
       if (client.customFields?.[key] !== lastHistory) {
+        // If not, fix it.
         await service.save({
           clientId: clientProfileUpdateRequest.data.clientId,
           companyId: clientProfileUpdateRequest.data.companyId,
