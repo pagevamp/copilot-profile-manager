@@ -8,8 +8,8 @@ export function getObjectDifference(obj1: Record<string, string | string[]>, obj
     value1 = Array.isArray(value1) ? value1.sort() : value1;
     value2 = Array.isArray(value2) ? value2.sort() : value2;
 
-    if (value1 === undefined || (Array.isArray(value1) && value1.length === 0)) value1 = '';
-    if (value2 === undefined || (Array.isArray(value2) && value2.length === 0)) value2 = '';
+    if (value1 === undefined || (Array.isArray(value1) && !value1.length)) value1 = '';
+    if (value2 === undefined || (Array.isArray(value2) && !value2.length)) value2 = '';
 
     if (JSON.stringify(value1) !== JSON.stringify(value2)) {
       diff[key] = value1;
