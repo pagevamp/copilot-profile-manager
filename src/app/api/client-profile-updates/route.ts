@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     for (const key of Object.keys(changedFields)) {
       const lastHistory = (await new ClientProfileUpdatesService().getUpdateHistory(key, client.id, new Date()))?.[0]
         ?.changedFields?.[key];
-      if (!lastHistory) continue;
+      if ((lastHistory === undefined || lastHistory === '') && client.customFields?.[key] === undefined) continue;
 
       // If not, fix it.
       if (client.customFields?.[key] !== lastHistory) {
