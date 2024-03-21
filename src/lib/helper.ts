@@ -8,6 +8,8 @@ export function getObjectDifference(obj1: Record<string, string | string[]>, obj
     value1 = Array.isArray(value1) ? value1.sort() : value1;
     value2 = Array.isArray(value2) ? value2.sort() : value2;
 
+    // The reason we are converting both values to emptry string is because we save
+    // empty field as '' while copilot deletes that key from customFields entirely so it becomes undefined
     if (value1 === undefined || value1 === null || (Array.isArray(value1) && !value1.length)) value1 = '';
     if (value2 === undefined || value2 === null || (Array.isArray(value2) && !value2.length)) value2 = '';
 
