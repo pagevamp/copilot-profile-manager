@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     );
     const parsedUpdateHistory = updateHistory.map((update) => {
       const value = update.changedFields[customFieldKey];
-      const options = getSelectedOptions(selectedCustomField, value);
+      const options = getSelectedOptions(selectedCustomField, value || '');
       return {
         type: selectedCustomField.type,
         value: options.length > 0 ? options : value,

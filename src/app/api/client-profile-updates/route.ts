@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
 
       portalCustomFields.data?.forEach((portalCustomField) => {
         const value = update.customFields[portalCustomField.key] ?? null;
-        const options = getSelectedOptions(portalCustomField, value);
+        const options = getSelectedOptions(portalCustomField, value || '');
 
         // @ts-ignore
         parsedClientProfileUpdate[portalCustomField.name] = {
