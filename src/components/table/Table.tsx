@@ -240,7 +240,7 @@ export const TableCore = () => {
               on the right. Then if clients make updates, they will show directly on this page.
             </Typography>
             <Link
-              href="https://www.copilot.com/guide/profile-manager-app"
+              href="https://www.copilot.com/guide/profile-manager-app" target="_blank"
               style={{ lineHeight: '3.75em', textDecoration: 'none' }}
             >
               Learn More
