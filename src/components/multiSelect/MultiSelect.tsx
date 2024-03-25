@@ -20,7 +20,7 @@ export const MultiSelect = <T extends object>({ data, nameField, value, getSelec
       value={value}
       multiple
       id="tags-outlined"
-      options={data}
+      options={Array.isArray(data) ? data : []}
       getOptionLabel={(option: T) => nameField(option)}
       filterSelectedOptions
       autoHighlight

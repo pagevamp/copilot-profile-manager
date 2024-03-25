@@ -158,7 +158,7 @@ export const TableCore = () => {
               const data = params.data[el];
               if (data.type === 'multiSelect') {
                 if (data && data.value !== null) {
-                  return data.value[0].label;
+                  return data.value[0]?.label;
                 }
                 return '';
               } else {

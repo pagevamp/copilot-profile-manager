@@ -232,32 +232,35 @@ const HistoryList = ({ updateHistory }: { updateHistory: any }) => {
                   &#x2022;
                 </Typography>
                 <Stack direction="row" columnGap={2}>
-                  {history.value.map((el: any, key: number) => {
-                    return (
-                      <Stack
-                        key={key}
-                        direction="row"
-                        alignItems="center"
-                        sx={{
-                          padding: '4px 8px',
-                          borderColor: updateColor(el.color, 0.3),
-                          border: '2px solid',
-                          backgroundColor: updateColor(el.color, 0.1),
-                          color: el.color,
-                          fontWeight: '600',
-                          borderRadius: '35px',
-                          width: 'fit-content',
-                          minWidth: '40px',
-                        }}
-                      >
-                        <FiberManualRecord fontSize="small" />
+                  {/* history.value can either be "" (empty state) or an array of multi tags */}
+                  {!Array.isArray(history?.value)
+                    ? history.value
+                    : history.value.map((el: any, key: number) => {
+                        return (
+                          <Stack
+                            key={key}
+                            direction="row"
+                            alignItems="center"
+                            sx={{
+                              padding: '4px 8px',
+                              borderColor: updateColor(el.color, 0.3),
+                              border: '2px solid',
+                              backgroundColor: updateColor(el.color, 0.1),
+                              color: el.color,
+                              fontWeight: '600',
+                              borderRadius: '35px',
+                              width: 'fit-content',
+                              minWidth: '40px',
+                            }}
+                          >
+                            <FiberManualRecord fontSize="small" />
 
-                        <Typography variant="bodySm" fontWeight={500}>
-                          {el.label}
-                        </Typography>
-                      </Stack>
-                    );
-                  })}
+                            <Typography variant="bodySm" fontWeight={500}>
+                              {el.label}
+                            </Typography>
+                          </Stack>
+                        );
+                      })}
                 </Stack>
               </Stack>
             );
