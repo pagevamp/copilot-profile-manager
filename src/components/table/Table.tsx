@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme
@@ -12,6 +12,8 @@ import { getTimeAgo } from '@/utils/getTimeAgo';
 import { arraysHaveSameElements, sliceTillElement } from '@/utils/array';
 import { order } from '@/utils/orderable';
 import copilotTheme from '@/utils/copilotTheme';
+import { ClientsIcon } from '@/icons';
+import Link from 'next/link';
 
 export const TableCore = () => {
   const appState = useAppState();
@@ -202,15 +204,49 @@ export const TableCore = () => {
         padding: { xs: 0, sm: '8px 24px 0 24px' },
       }}
     >
-      <AgGridReact
-        className="on-scroll"
-        rowData={rowData}
-        columnDefs={colDefs}
-        defaultColDef={defaultColDef}
-        suppressMovableColumns={true}
-        quickFilterText={appState?.searchKeyword}
-        overlayNoRowsTemplate={'Your clients have not yet made any Profile updates.'}
-      />
+      {rowData?.length ? (
+        <AgGridReact
+          className="on-scroll"
+          rowData={rowData}
+          columnDefs={colDefs}
+          defaultColDef={defaultColDef}
+          suppressMovableColumns={true}
+          quickFilterText={appState?.searchKeyword}
+          overlayNoRowsTemplate={'Your clients have not yet made any Profile updates.'}
+        />
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.25em',
+            alignItems: 'flex-start',
+            margin: '15% auto',
+            maxWidth: '640px',
+          }}
+        >
+          <Box sx={{ padding: '1.2rem', borderRadius: '10px', backgroundColor: '#e8eaf1' }}>
+            <ClientsIcon style={{ scale: '2' }} />
+          </Box>
+          <div>
+            <Typography variant="h5" sx={{ fontSize: '1.75em', fontWeight: '500' }}>
+              Let clients view and update custom fields
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="body1" color={'#60606A'}>
+              With Profile Manager, you can let clients view and edit their own custom fields. Configure custom field access
+              on the right. Then if clients make updates, they will show directly on this page.
+            </Typography>
+            <Link
+              href="https://www.copilot.com/guide/profile-manager-app"
+              style={{ lineHeight: '3.75em', textDecoration: 'none' }}
+            >
+              Learn More
+            </Link>
+          </div>
+        </Box>
+      )}
     </Box>
   );
 };

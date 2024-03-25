@@ -11,3 +11,4 @@ export { default as TextIcon } from './text.svg';
 export { default as EmailIcon } from './email.svg';
 export { default as LinkIcon } from './link.svg';
 export { default as NumberIcon } from './number.svg';
+export { default as ClientsIcon } from './clients.svg';
