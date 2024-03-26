@@ -9,7 +9,7 @@ const NoRowsOverlay = () => (
       flexDirection: 'column',
       gap: '1.25em',
       alignItems: 'flex-start',
-      margin: '0% auto',
+      margin: '20% auto',
       maxWidth: '640px',
     }}
   >
@@ -30,6 +30,7 @@ const NoRowsOverlay = () => (
         <Link
           href="https://www.copilot.com/guide/profile-manager-app"
           style={{ lineHeight: '3.75em', textDecoration: 'none', textAlign: 'left' }}
+          target="_blank"
         >
           Learn More
         </Link>
